@@ -1,22 +1,42 @@
-import { Button } from "./components/ui/button";
+import { RouterProvider } from "react-router-dom"
+import router from "./router/router"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { AuthProvider } from "react-oidc-context"
+import { authConfig } from "./auth/config/authConfig"
+import { isTauri } from "@tauri-apps/api/core"
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
+
+declare global {
+  interface Window {
+    __TANSTACK_QUERY_CLIENT__: import("@tanstack/query-core").QueryClient
+  }
+}
+
+window.__TANSTACK_QUERY_CLIENT__ = queryClient
 
 const App = () => {
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-            <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-md border border-gray-200">
-                <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-                    Welcome
-                </h1>
+  if (isTauri()) {
+    return null
+  }
 
-                <p className="text-gray-600 mb-4">
-                    Your application is running successfully.
-                </p>
+  return <WebRenderer />
+}
 
-                <Button variant="default" className="w-full">
-                    Get Started
-                </Button>
-            </div>
-        </div>
-    );
-};
-export default App;
+export default App
+
+const WebRenderer = () => {
+  return (
+    <AuthProvider {...authConfig}>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </AuthProvider>
+  )
+}
