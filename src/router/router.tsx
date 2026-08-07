@@ -5,6 +5,11 @@ import { createBrowserRouter } from "react-router-dom";
 import EffectRunner from "./EffectRunner";
 import HomePage from "@/pages/home/page";
 import BusinessPartnerList from "@/pages/business/page";
+import OrdersPage from "@/pages/order/OrdersPage";
+import OrderDetailPage from "@/pages/order/OrderDetailPage";
+import OrderItemDetailPage from "@/pages/order/OrderItemDetailPage";
+import InvoicesPage from "@/pages/invoice/InvoicesPage";
+import InvoiceDetailPage from "@/pages/invoice/InvoiceDetailPage";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +27,26 @@ const router = createBrowserRouter([
             {
                 path: "business-partners",
                 element: <BusinessPartnerList />,
+            },
+            {
+                path: "orders",
+                element: <OrdersPage />,
+            },
+            {
+                path: "orders/:orderId",
+                element: <OrderDetailPage />,
+            },
+            {
+                path: "orders/:orderId/items/:orderItemId",
+                element: <OrderItemDetailPage />,
+            },
+            {
+                path: "invoices",
+                element: <InvoicesPage />,
+            },
+            {
+                path: "invoices/:invoiceId",
+                element: <InvoiceDetailPage />,
             },
         ],
     },

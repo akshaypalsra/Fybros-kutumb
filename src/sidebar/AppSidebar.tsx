@@ -1,4 +1,9 @@
-import { Home01Icon, UserGroupIcon } from "@hugeicons/core-free-icons";
+import {
+    Home01Icon,
+    UserGroupIcon,
+    ShoppingCart01Icon,
+    InvoiceIcon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { NavLink } from "react-router-dom";
 import fybrosLogo from "@/assets/fybros-logo.png"
@@ -26,6 +31,16 @@ const items = [
         title: "Business Partners",
         url: "/business-partners",
         icon: UserGroupIcon,
+    },
+    {
+        title: "Orders",
+        url: "/orders",
+        icon: ShoppingCart01Icon,
+    },
+    {
+        title: "Invoices",
+        url: "/invoices",
+        icon: InvoiceIcon,
     },
 ];
 
@@ -95,4 +110,3 @@ export function AppSidebar() {
 </Sidebar>
     );
 }
-
