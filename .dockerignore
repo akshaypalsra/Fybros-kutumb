@@ -1,0 +1,11 @@
+node_modules
+.angular
+.idea
+cdk8s
+dist
+build
+.vscode
+.git
+Dockerfile
+npm-debug.log
+Jenkinsfile

@@ -1,0 +1,4 @@
+language: java
+app:  mvn compile && mvn exec:java -Dexec.mainClass="com.carvia.app.Main"
+imports:
+  - k8s
