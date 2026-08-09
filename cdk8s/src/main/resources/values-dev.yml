@@ -42,7 +42,7 @@ ingress:
       nginx.ingress.kubernetes.io/ssl-redirect: true
     ingressTls:
       - host: kutumb.carvia-test.org
-        secretName: carvia-candidates-web-tls
+        secretName: fybros-kutumb-web-tls
     ingressRules:
       - host: kutumb.carvia-test.org
         pathPrefix: /
