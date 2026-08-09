@@ -112,7 +112,7 @@ pipeline {
 //                branch 'develop'
             }
             tools {
-                jdk "Java21"
+                jdk "Java26"
             }
             steps {
                 withCredentials([file(credentialsId: "${Environment.DEV.k8sCredentialsId}", variable: 'KUBECONFIG')]) {
@@ -133,7 +133,7 @@ pipeline {
 //                }
             }
             tools {
-                jdk "Java21"
+                jdk "Java26"
             }
             steps {
                 withCredentials([file(credentialsId: "${Environment.PRODUCTION.k8sCredentialsId}", variable: 'KUBECONFIG')]) {
