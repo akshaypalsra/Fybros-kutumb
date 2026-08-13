@@ -12,3 +12,22 @@ export interface BusinessPartner {
   createDate: string;
   creditLimit: number;
 }
+
+
+export interface CreditOverview {
+  availableCreditLimit: number
+  creditUtilizationPercentage: number
+}
+
+
+export interface OutstandingSummary {
+  outstandingAmount: number
+  overdueAmount: number
+  totalInvoices: number
+}
+
+
+export interface AgeingBucketResponse {
+  ageingBucket: string
+  bucketAmount: number
+}

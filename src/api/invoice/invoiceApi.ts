@@ -13,12 +13,13 @@ export const searchInvoices = async (
     businessPartnerId: string
 ): Promise<Invoice[]> => {
     const response = await axiosInstance.post<Invoice[]>(
-        "/business-partner/invoices/search",
+        "/business-partners/invoices/search",
        { businessPartnerId }
     );
 
     return response.data;
 };
+
 
 export const getOrderInvoices = async (
     axiosInstance: AxiosInstance,

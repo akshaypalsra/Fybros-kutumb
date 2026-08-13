@@ -1,16 +1,3 @@
-export interface Order {
-  docEntry: number
-  orderNumber: string
-  status: string
-  docDate: string
-  docDueDate?: string
-  cardName?: string | null
-  cardCode?: string
-  shipToCode?: string | null
-  docTotal?: number
-}
-
-
 export interface SearchOrdersFilters {
   fromDate?: string
   toDate?: string
@@ -18,6 +5,46 @@ export interface SearchOrdersFilters {
   verticals?: string[]
 }
 
+
+export interface Order {
+  docEntry: number
+  docNum: number
+  orderNumber: string
+  docDate: string
+  docDueDate: string
+  cardCode: string
+  cardName: string
+  fatherCard: string
+  docTotal: number
+  documentStatus: string
+  cancelled: string
+  comments: string
+  totalItems: number
+  deliveredOrderValue:number
+  totalQuantity: number
+  deliveredQuantity: number
+  pendingQuantity: number
+  cancelledQuantity: number
+  fulfilledPercentage: number
+  openOrderValue: number
+  vertical: string
+  orderStatus: "OPEN" | "CLOSED" | "CANCELLED" | string
+  orderDeliveryStatus: "OPEN" | "FULLY_DELIVERED" | "PARTIALLY_DELIVERED" | string
+  orderType: string
+}
+
+export type TabFilter = "ALL" | "OPEN" | "CLOSED"
+
+export interface OrderStats {
+  openCount: number
+  closedCount: number
+  totalOrderValue: number
+  openOrderValue: number
+  fillRate: number
+  avgOrderSize: number
+  deliveredOrderValue:number
+  
+}
 
 export interface OrderItem {
   id: number
@@ -39,16 +66,16 @@ export interface OrderValue {
 }
 
 export interface OrderItemDetail {
-    lineNumber: number
-    itemCode: string
-    itemDescription: string
-    orderNumber: string
-    price: number
-    hsnCode: string
-    lineTotal: number
-    measureUnit: string
-    quantity: number
-    pendingQuantity: number
-    deliveryQuantity: number
-    deliveryStatus: "OPEN" | "DELIVERED" | "PARTIAL" | string
+  lineNumber: number
+  itemCode: string
+  itemDescription: string
+  orderNumber: string
+  price: number
+  hsnCode: string
+  lineTotal: number
+  measureUnit: string
+  quantity: number
+  pendingQuantity: number
+  deliveryQuantity: number
+  deliveryStatus: "OPEN" | "DELIVERED" | "PARTIAL" | string
 }

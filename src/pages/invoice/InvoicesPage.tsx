@@ -1,160 +1,243 @@
+import { useMemo, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { Link } from "react-router-dom"
-import { Badge } from "@/common/components/ui/badge"
-import { Skeleton } from "@/common/components/ui/skeleton"
 
-import { useInvoiceApi } from "@/api/invoice/useInvoiceApi"
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi"
+import { useInvoiceApi } from "@/api/invoice/useInvoiceApi"
+import type { AgeingBucketResponse, CreditOverview, OutstandingSummary } from "@/types/businessPartner.types"
+import type { DatePreset, Invoice, InvoiceSubTab, Tab, TransactionSubTab } from "@/types/invoice.types"
+import { useTransactionApi, type Transaction } from "@/hooks/useTransaction"
+import { OverviewTab } from "./components/OverviewTab"
+import { ListFilters } from "./components/ListFilters"
+import { FinanceHeader } from "./components/FinanceHeader"
+import { formatMonthYear, getDateCutoff } from "@/utils/invoice.utils"
+import { InvoicesTab } from "./components/InvoicesTab"
+import { TransactionsTab } from "./components/TransactionsTab"
 
-// Local fallback — swap for your project's real `cn` helper (commonly at
-// "@/lib/utils") if you have one.
-const cn = (...classes: (string | false | null | undefined)[]) =>
-  classes.filter(Boolean).join(" ")
 
-interface Invoice {
-  cardCode: string
-  cardName: string | null
-  docDate: string
-  docDueDate: string
-  docEntry: number
-  docTotal: number
-  eDocNo: string | null
-  eWayBillNumber: string | null
-  invoiceNumber: string
-  shipToCode: string | null
-  status: string
-  vertical: string
-}
 
-const STATUS_STYLES: Record<string, string> = {
-  PAID: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  UNPAID: "bg-white/20 text-white border-transparent",
-  OVERDUE: "bg-white text-[#E92739] border-transparent",
-  "PARTIALLY PAID": "bg-amber-100 text-amber-700 border-amber-200",
-}
-
-// status can be missing/null on some records even though the interface
-// says `string` — same issue we hit on OrdersPage. Guard against that
-// instead of crashing on `.toLowerCase()`.
-const StatusBadge = ({
-  status,
-  className,
-}: {
-  status: string | null | undefined
-  className?: string
-}) => (
-  <Badge
-    variant="outline"
-    className={cn(
-      "rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize",
-      (status && STATUS_STYLES[status]) ?? "bg-white/20 text-white border-transparent",
-      className
-    )}
-  >
-    {status ? status.toLowerCase() : "—"}
-  </Badge>
-)
-
-const formatCurrency = (value: number | null | undefined) =>
-  value != null
-    ? value.toLocaleString("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 })
-    : "—"
-
-const formatDate = (value: string | null | undefined) =>
-  value
-    ? new Date(value).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "2-digit" })
-    : "—"
-
-const InvoicesPage = () => {
+const FinanceOverviewPage = () => {
+  const { getBusinessPartners, getCreditOverview, getOutstandingSummary, getAgeingDistribution } =
+    useBusinessPartnerApi()
   const { searchInvoices } = useInvoiceApi()
+  const { searchTransactions } = useTransactionApi()
 
-  const { getBusinessPartners } = useBusinessPartnerApi()
+  const [activeTab, setActiveTab] = useState<Tab>("overview")
 
-  // getBusinessPartners() returns a single BusinessPartner object for the
-  // logged-in user, despite the plural-sounding name — not an array.
+  // Shared list-view filter state (Invoices + Transactions tabs)
+  const [search, setSearch] = useState("")
+  const [datePreset, setDatePreset] = useState<DatePreset>("ALL")
+  const [verticalFilter, setVerticalFilter] = useState<string>("ALL")
+  const [invoiceSubTab, setInvoiceSubTab] = useState<InvoiceSubTab>("ALL")
+  const [transactionSubTab, setTransactionSubTab] = useState<TransactionSubTab>("ALL")
+
   const { data: partner, isLoading: isPartnerLoading } = useQuery({
     queryKey: ["business-partner"],
     queryFn: () => getBusinessPartners(),
   })
 
   const businessPartnerId = partner?.cardCode ?? ""
+  const enabled = !!businessPartnerId
+
+  // GET /api/business-partners/credit-overview
+  const {
+    data: creditOverview,
+    isLoading: isCreditLoading,
+    isError: isCreditError,
+  } = useQuery<CreditOverview>({
+    queryKey: ["credit-overview", businessPartnerId],
+    queryFn: () => getCreditOverview(),
+    enabled,
+  })
+
+  // GET /api/business-partners/outstanding-summary
+  const {
+    data: outstandingSummary,
+    isLoading: isOutstandingLoading,
+    isError: isOutstandingError,
+  } = useQuery<OutstandingSummary>({
+    queryKey: ["outstanding-summary", businessPartnerId],
+    queryFn: () => getOutstandingSummary(),
+    enabled,
+  })
+
+  const {
+    data: ageingDistribution,
+    isLoading: isAgeingLoading,
+    isError: isAgeingError,
+  } = useQuery<AgeingBucketResponse[]>({
+    queryKey: ["ageing-distribution", businessPartnerId],
+    queryFn: () => getAgeingDistribution(),
+    enabled,
+  })
 
   const {
     data: invoices,
     isLoading: isInvoiceLoading,
-    isError,
+    isError: isInvoiceError,
   } = useQuery<Invoice[]>({
     queryKey: ["invoices", businessPartnerId],
-    // NOTE: if this endpoint is paginated the same way searchOrders was
-    // (returning { content: Invoice[], ... } instead of a bare array),
-    // this cast will hide that and you'll hit the same
-    // "invoices.map is not a function" crash. Check the real response
-    // shape and update searchInvoices in useInvoiceApi.ts to return
-    // response.data.content if so — same fix as orderApi.ts.
     queryFn: () => searchInvoices(businessPartnerId) as unknown as Promise<Invoice[]>,
-    enabled: !!businessPartnerId,
+    enabled,
   })
 
-  const isLoading = isPartnerLoading || isInvoiceLoading
-  const invoiceList = invoices ?? []
+  // GET /api/transactions (placeholder — see useTransactionApi)
+  const {
+    data: transactions,
+    isLoading: isTransactionLoading,
+    isError: isTransactionError,
+  } = useQuery<Transaction[]>({
+    queryKey: ["transactions", businessPartnerId],
+    queryFn: () => searchTransactions(businessPartnerId) as unknown as Promise<Transaction[]>,
+    enabled: enabled && activeTab === "transactions",
+  })
+
+  const pendingInvoices = (invoices ?? []).filter((inv) => inv.status !== "PAID")
+
+  const isOverviewLoading =
+    isPartnerLoading || isCreditLoading || isOutstandingLoading || isAgeingLoading || isInvoiceLoading
+  const isOverviewError = isCreditError || isOutstandingError || isAgeingError || isInvoiceError
+
+  // Reset list-view filters whenever the tab changes, and clear search so it
+  // doesn't silently carry over between Invoices and Transactions.
+  const handleTabChange = (tab: Tab) => {
+    setActiveTab(tab)
+    setSearch("")
+    setDatePreset("ALL")
+    setVerticalFilter("ALL")
+  }
+
+  const invoiceVerticals = useMemo(
+    () => Array.from(new Set((invoices ?? []).map((inv) => inv.vertical).filter(Boolean))) as string[],
+    [invoices]
+  )
+  const transactionVerticals = useMemo(
+    () => Array.from(new Set((transactions ?? []).map((t) => t.vertical).filter(Boolean))) as string[],
+    [transactions]
+  )
+
+  const dateCutoff = getDateCutoff(datePreset)
+
+  const baseFilteredInvoices = useMemo(() => {
+    const query = search.trim().toLowerCase()
+    return (invoices ?? []).filter((invoice) => {
+      const matchesSearch = !query || invoice.invoiceNumber?.toLowerCase().includes(query)
+      const matchesVertical = verticalFilter === "ALL" || invoice.vertical === verticalFilter
+      const matchesDate = !dateCutoff || (invoice.docDate && new Date(invoice.docDate) >= dateCutoff)
+      return matchesSearch && matchesVertical && matchesDate
+    })
+  }, [invoices, search, verticalFilter, dateCutoff])
+
+  const invoiceCounts: Partial<Record<InvoiceSubTab, number>> = {
+    ALL: baseFilteredInvoices.length,
+    OPEN: baseFilteredInvoices.filter((i) => i.status !== "PAID").length,
+    CLOSED: baseFilteredInvoices.filter((i) => i.status === "PAID").length,
+    OVERDUE: baseFilteredInvoices.filter((i) => i.status === "OVERDUE").length,
+  }
+
+  const filteredInvoices = baseFilteredInvoices.filter((invoice) => {
+    if (invoiceSubTab === "ALL") return true
+    if (invoiceSubTab === "OPEN") return invoice.status !== "PAID"
+    if (invoiceSubTab === "CLOSED") return invoice.status === "PAID"
+    return invoice.status === "OVERDUE"
+  })
+
+  const invoicesByMonth = useMemo(() => {
+    const groups = new Map<string, Invoice[]>()
+    for (const invoice of filteredInvoices) {
+      const key = formatMonthYear(invoice.docDate)
+      if (!groups.has(key)) groups.set(key, [])
+      groups.get(key)!.push(invoice)
+    }
+    return Array.from(groups.entries())
+  }, [filteredInvoices])
+
+  const baseFilteredTransactions = useMemo(() => {
+    const query = search.trim().toLowerCase()
+    return (transactions ?? []).filter((txn) => {
+      const matchesSearch =
+        !query || txn.referenceNumber?.toLowerCase().includes(query) || txn.orderNumber?.toLowerCase().includes(query)
+      const matchesVertical = verticalFilter === "ALL" || txn.vertical === verticalFilter
+      const matchesDate = !dateCutoff || (txn.transactionDate && new Date(txn.transactionDate) >= dateCutoff)
+      return matchesSearch && matchesVertical && matchesDate
+    })
+  }, [transactions, search, verticalFilter, dateCutoff])
+
+  const transactionCounts: Partial<Record<TransactionSubTab, number>> = {
+    ALL: baseFilteredTransactions.length,
+    CREDIT_NOTE: baseFilteredTransactions.filter((t) => t.noteType === "CREDIT_NOTE").length,
+    DEBIT_NOTE: baseFilteredTransactions.filter((t) => t.noteType === "DEBIT_NOTE").length,
+  }
+
+  const filteredTransactions = baseFilteredTransactions.filter((txn) => {
+    if (transactionSubTab === "ALL") return true
+    return txn.noteType === transactionSubTab
+  })
+
+  const showListFilters = activeTab === "invoices" || activeTab === "transactions"
+  const searchPlaceholder =
+    activeTab === "invoices" ? "Search by invoice number..." : "Search by reference or order no."
+  const availableVerticals = activeTab === "invoices" ? invoiceVerticals : transactionVerticals
 
   return (
-    <div className="mx-auto max-w-6xl p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
-          Invoices
-        </h1>
-      </div>
+    <div className="mx-auto max-w-6xl p-6 lg:p-8">
+      <FinanceHeader
+        partnerName={partner?.cardName ?? ""}
+        partnerCode={partner?.cardCode ?? ""}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+      />
 
-      {isLoading && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} className="h-32 w-full rounded-xl" />
-          ))}
-        </div>
+      {showListFilters && (
+        <ListFilters
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder={searchPlaceholder}
+          datePreset={datePreset}
+          onDatePresetChange={setDatePreset}
+          verticalFilter={verticalFilter}
+          onVerticalFilterChange={setVerticalFilter}
+          availableVerticals={availableVerticals}
+        />
       )}
 
-      {isError && (
-        <p className="text-sm text-destructive">
-          Failed to load invoices. Please try again.
-        </p>
+      {activeTab === "overview" && (
+        <OverviewTab
+          isLoading={isOverviewLoading}
+          isError={isOverviewError}
+          creditOverview={creditOverview}
+          outstandingSummary={outstandingSummary}
+          ageingDistribution={ageingDistribution}
+          pendingInvoices={pendingInvoices}
+          onViewAllInvoices={() => handleTabChange("invoices")}
+        />
       )}
 
-      {!isLoading && !isError && invoiceList.length === 0 && (
-        <p className="text-sm text-muted-foreground">No invoices found.</p>
+      {activeTab === "invoices" && (
+        <InvoicesTab
+          isLoading={isInvoiceLoading}
+          isError={isInvoiceError}
+          outstandingSummary={outstandingSummary}
+          subTab={invoiceSubTab}
+          onSubTabChange={setInvoiceSubTab}
+          counts={invoiceCounts}
+          invoicesByMonth={invoicesByMonth}
+          hasResults={filteredInvoices.length > 0}
+        />
       )}
 
-      {!isLoading && !isError && invoiceList.length > 0 && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {invoiceList.map((invoice) => (
-            <Link
-              key={invoice.docEntry}
-              to={`/invoices/${invoice.docEntry}`}
-              className="block rounded-xl bg-[#E92739] p-5 text-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
-            >
-              <div className="mb-3 flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold">{invoice.invoiceNumber}</p>
-                  <p className="text-xs text-white/70">
-                    {formatDate(invoice.docDate)} &middot; Due {formatDate(invoice.docDueDate)}
-                  </p>
-                </div>
-                <StatusBadge status={invoice.status} className="shrink-0" />
-              </div>
-
-              <p className="mb-4 truncate text-xs text-white/80">
-                {invoice.cardName ?? invoice.cardCode}
-              </p>
-
-              <p className="text-lg font-bold leading-tight">
-                {formatCurrency(invoice.docTotal)}
-              </p>
-            </Link>
-          ))}
-        </div>
+      {activeTab === "transactions" && (
+        <TransactionsTab
+          isLoading={isTransactionLoading}
+          isError={isTransactionError}
+          outstandingSummary={outstandingSummary}
+          subTab={transactionSubTab}
+          onSubTabChange={setTransactionSubTab}
+          counts={transactionCounts}
+          transactions={filteredTransactions}
+        />
       )}
     </div>
   )
 }
 
-export default InvoicesPage
+export default FinanceOverviewPage
