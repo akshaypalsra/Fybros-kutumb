@@ -47,7 +47,7 @@ const WebLogin = () => {
             width={32}
             height={32}
           />
-          <span className="text-xl font-bold tracking-tight text-foreground">
+          <span className="text-xl font-medium tracking-tight text-foreground">
             Fybros Kutumb
           </span>
         </div>

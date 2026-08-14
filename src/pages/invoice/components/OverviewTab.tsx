@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom"
 import { FileText } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+
 import { Badge } from "@/common/components/ui/badge"
 import { Skeleton } from "@/common/components/ui/skeleton"
+import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi"
+import { useInvoiceApi } from "@/api/invoice/useInvoiceApi"
 import type { AgeingBucketResponse, CreditOverview, OutstandingSummary } from "@/types/businessPartner.types"
 import type { Invoice } from "@/types/invoice.types"
 import { formatCompactCurrency, formatCurrency, formatDate } from "@/utils/invoice.utils"
@@ -9,24 +13,69 @@ import { AgeingBar } from "./AgeingBar"
 import { StatusBadge } from "./StatusBadge"
 import { CreditGauge } from "./CreditGauge"
 
-
 export const OverviewTab = ({
-  isLoading,
-  isError,
-  creditOverview,
-  outstandingSummary,
-  ageingDistribution,
-  pendingInvoices,
+  businessPartnerId,
+  enabled,
   onViewAllInvoices,
 }: {
-  isLoading: boolean
-  isError: boolean
-  creditOverview: CreditOverview | undefined
-  outstandingSummary: OutstandingSummary | undefined
-  ageingDistribution: AgeingBucketResponse[] | undefined
-  pendingInvoices: Invoice[]
+  businessPartnerId: string
+  enabled: boolean
   onViewAllInvoices: () => void
 }) => {
+  const { getCreditOverview, getOutstandingSummary, getAgeingDistribution } = useBusinessPartnerApi()
+  const { searchInvoices } = useInvoiceApi()
+
+  const {
+    data: creditOverview,
+    isLoading: isCreditLoading,
+    isError: isCreditError,
+  } = useQuery<CreditOverview>({
+    queryKey: ["credit-overview", businessPartnerId],
+    queryFn: () => getCreditOverview(),
+    enabled,
+  })
+
+  const {
+    data: outstandingSummary,
+    isLoading: isOutstandingLoading,
+    isError: isOutstandingError,
+  } = useQuery<OutstandingSummary>({
+    queryKey: ["outstanding-summary", businessPartnerId],
+    queryFn: () => getOutstandingSummary(),
+    enabled,
+  })
+
+  const {
+    data: ageingDistribution,
+    isLoading: isAgeingLoading,
+    isError: isAgeingError,
+  } = useQuery<AgeingBucketResponse[]>({
+    queryKey: ["ageing-distribution", businessPartnerId],
+    queryFn: () => getAgeingDistribution(),
+    enabled,
+  })
+
+  const {
+    data: overviewInvoices,
+    isLoading: isInvoiceLoading,
+    isError: isInvoiceError,
+  } = useQuery<Invoice[]>({
+    queryKey: ["invoices", businessPartnerId, "overview"],
+    queryFn: () =>
+      searchInvoices({
+        businessPartnerId,
+        invoiceStatus: "PENDING",
+        page: 0,
+        size: 100,
+      }),
+    enabled,
+  })
+
+  const pendingInvoices = (overviewInvoices ?? []).filter((inv) => inv.status !== "PAID")
+
+  const isLoading = isCreditLoading || isOutstandingLoading || isAgeingLoading || isInvoiceLoading
+  const isError = isCreditError || isOutstandingError || isAgeingError || isInvoiceError
+
   if (isError) {
     return <p className="mb-4 text-sm text-destructive">Failed to load your finance overview. Please try again.</p>
   }

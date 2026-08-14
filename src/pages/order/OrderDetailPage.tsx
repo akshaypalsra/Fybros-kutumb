@@ -173,14 +173,14 @@ const OrderDetailPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-6xl p-6 pb-24">
+    <div className="mx-auto max-w-6xl pb-24">
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
-          <h1 className="text-xl font-bold tracking-tight text-foreground">Order Detail</h1>
+          <h1 className="text-xl font-medium tracking-tight text-foreground">Order Detail</h1>
         </div>
         <Button variant="outline" size="icon">
           <Download className="h-4 w-4" />

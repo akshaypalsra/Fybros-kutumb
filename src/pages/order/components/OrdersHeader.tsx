@@ -13,7 +13,7 @@ export const OrdersHeader = ({ partnerName, partnerCode, onNewOrder }: OrdersHea
         {(partnerName ?? "?").charAt(0)}
       </div>
       <div>
-        <h1 className="text-xl font-bold tracking-tight text-foreground">Orders</h1>
+        <h1 className="text-xl font-medium tracking-tight text-foreground">Orders</h1>
         <p className="font-mono text-xs text-muted-foreground">
           {(partnerName ?? "").toUpperCase()} · {partnerCode ?? "—"}
         </p>

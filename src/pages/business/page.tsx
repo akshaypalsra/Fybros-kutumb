@@ -44,7 +44,7 @@ const BusinessPartnerList = () => {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-6xl space-y-6 p-6">
+      <div className="mx-auto max-w-6xl space-y-6">
         <Skeleton className="h-40 w-full rounded-xl" />
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -58,7 +58,7 @@ const BusinessPartnerList = () => {
 
   if (!partner) {
     return (
-      <div className="mx-auto max-w-6xl p-6">
+      <div className="mx-auto max-w-6xl">
         <Card className="rounded-xl border-border">
           <CardContent className="py-12 text-center text-muted-foreground">
             No business partner found.
@@ -70,7 +70,7 @@ const BusinessPartnerList = () => {
 
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
+    <div className="mx-auto max-w-6xl space-y-6">
       {/* Header */}
       <div className="rounded-xl bg-[#E92739] p-8 text-white shadow-sm">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">

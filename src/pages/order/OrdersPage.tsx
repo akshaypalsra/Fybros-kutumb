@@ -40,7 +40,7 @@ const OrdersPage = () => {
   const showContent = !isLoading && !isError && orders
 
   return (
-    <div className="mx-auto max-w-295 p-8">
+    <div className="mx-auto max-w-295">
       <OrdersHeader partnerName={partner?.cardName} partnerCode={partner?.cardCode} />
 
       <OrderFiltersBar

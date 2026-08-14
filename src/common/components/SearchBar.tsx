@@ -2,13 +2,19 @@ import { Search } from "lucide-react"
 import { Input } from "@/common/components/ui/input"
 import { useEffect, useState } from "react"
 
-interface OrderSearchBarProps {
+interface SearchBarProps {
   value: string
   onChange: (value: string) => void
+  placeholder?: string
   debounceMs?: number
 }
 
-export const OrderSearchBar = ({ value, onChange, debounceMs = 400 }: OrderSearchBarProps) => {
+export const SearchBar = ({
+  value,
+  onChange,
+  placeholder = "Search by order no., product, invoice number...",
+  debounceMs = 400,
+}: SearchBarProps) => {
   const [localValue, setLocalValue] = useState(value)
 
   useEffect(() => {
@@ -21,7 +27,6 @@ export const OrderSearchBar = ({ value, onChange, debounceMs = 400 }: OrderSearc
     }, debounceMs)
 
     return () => clearTimeout(timeout)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localValue, debounceMs])
 
   return (
@@ -32,7 +37,7 @@ export const OrderSearchBar = ({ value, onChange, debounceMs = 400 }: OrderSearc
           type="text"
           value={localValue}
           onChange={(e) => setLocalValue(e.target.value)}
-          placeholder="Search by order no., product, invoice number..."
+          placeholder={placeholder}
           className="w-full rounded-lg border-border bg-card py-2.5 pl-10 pr-3.5 text-sm focus-visible:border-[#E92739] focus-visible:ring-2 focus-visible:ring-[#FDE9EB]"
         />
       </div>

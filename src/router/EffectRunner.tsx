@@ -33,7 +33,7 @@ const EffectRunner = () => {
                     <SidebarTrigger />
                 </header>
 
-                <main className="p-6">
+                <main className="p-8">
                     <Outlet />
                 </main>
             </SidebarInset>

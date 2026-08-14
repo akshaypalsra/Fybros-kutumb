@@ -5,7 +5,7 @@ import {
     InvoiceIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import fybrosLogo from "@/assets/fybros-logo.png"
 import {
     Sidebar,
@@ -46,12 +46,17 @@ const items = [
 
 export function AppSidebar() {
     const auth = useAuth()
+    const location = useLocation()
 
     const handleLogout = async () => {
         sessionStorage.removeItem("redirectTo")
         await auth.signoutRedirect()
     }
 
+    // "/" should only be active on an exact match; every other route can
+    // match as a prefix (so /invoices/123 still highlights "Invoices").
+    const isItemActive = (url: string) =>
+        url === "/" ? location.pathname === "/" : location.pathname.startsWith(url)
 
     return (
        <Sidebar>
@@ -77,15 +82,12 @@ export function AppSidebar() {
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.url}>
-              <SidebarMenuButton asChild>
-                <NavLink
-                  to={item.url}
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 ${
-                      isActive ? "font-semibold" : ""
-                    }`
-                  }
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={isItemActive(item.url)}
+                className="data-[active=true]:bg-[#E92739]/10 data-[active=true]:text-[#E92739] data-[active=true]:font-semibold"
+              >
+                <NavLink to={item.url} className="flex items-center gap-2">
                   <HugeiconsIcon icon={item.icon} size={20} />
                   <span>{item.title}</span>
                 </NavLink>

@@ -1,8 +1,11 @@
 import { X } from "lucide-react"
-import { OrderDateFilter } from "./OrderDateFilter"
-import { OrderSearchBar } from "./OrderSearchBar"
-import { OrderVerticalFilter } from "./OrderVerticalFilter"
+
+
+
 import type { Vertical } from "@/api/vertical/verticalApi"
+import { DateFilter } from "../../../common/components/DateFilter"
+import { VerticalFilter } from "../../../common/components/VerticalFilter"
+import { SearchBar } from "../../../common/components/SearchBar"
 
 interface OrderFiltersBarProps {
     query: string
@@ -39,15 +42,15 @@ export const OrderFiltersBar = ({
     return (
         <div className="mb-6 flex flex-wrap items-center gap-3">
             <div className="flex-1 min-w-50">
-                <OrderSearchBar value={query} onChange={onQueryChange} />
+                <SearchBar value={query} onChange={onQueryChange} />
             </div>
-            <OrderDateFilter
+            <DateFilter
                 from={dateFrom}
                 to={dateTo}
                 onFromChange={onDateFromChange}
                 onToChange={onDateToChange}
             />
-            <OrderVerticalFilter
+            <VerticalFilter
                 verticals={verticals}
                 selected={selectedVerticals}
                 onChange={onVerticalsChange}

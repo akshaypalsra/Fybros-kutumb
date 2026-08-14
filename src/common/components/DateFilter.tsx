@@ -1,14 +1,14 @@
 
 import { Input } from "@/common/components/ui/input"
 
-interface OrderDateFilterProps {
+interface DateFilterProps {
   from: string
   to: string
   onFromChange: (value: string) => void
   onToChange: (value: string) => void
 }
 
-export const OrderDateFilter = ({ from, to, onFromChange, onToChange }: OrderDateFilterProps) => (
+export const DateFilter = ({ from, to, onFromChange, onToChange }: DateFilterProps) => (
   <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2">
     <Input
       type="date"

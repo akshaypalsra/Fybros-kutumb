@@ -2,24 +2,45 @@ import type { AxiosInstance } from "axios";
 import type { Invoice, InvoiceStatistics } from "@/types/invoice.types";
 
 export interface SearchInvoicesParams {
-    fromDate?: string;
-    toDate?: string;
-    query?: string;
-    verticals?: string[];
+    businessPartnerId: string
+    fromDate?: string
+    toDate?: string
+    query?: string
+    invoiceStatus?: string
+    verticals?: string[]
+    page?: number
+    size?: number
 }
 
 export const searchInvoices = async (
     axiosInstance: AxiosInstance,
-    businessPartnerId: string
+    {
+        businessPartnerId,
+        fromDate,
+        toDate,
+        query,
+        invoiceStatus,
+        verticals,
+        page = 0,
+        size = 20,
+    }: SearchInvoicesParams
 ): Promise<Invoice[]> => {
     const response = await axiosInstance.post<Invoice[]>(
         "/business-partners/invoices/search",
-       { businessPartnerId }
+        {
+            businessPartnerId,
+            fromDate,
+            toDate,
+            query,
+            invoiceStatus,
+            verticals,
+            page,
+            size,
+        }
     );
 
     return response.data;
 };
-
 
 export const getOrderInvoices = async (
     axiosInstance: AxiosInstance,

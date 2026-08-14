@@ -72,21 +72,21 @@ const OrderItemDetailPage = () => {
 
     if (isError || !item) {
         return (
-            <div className="mx-auto max-w-6xl p-6">
+            <div className="mx-auto max-w-6xl">
                 <p className="text-sm text-destructive">Couldn&apos;t load this item. Please try again.</p>
             </div>
         )
     }
 
     return (
-        <div className="mx-auto max-w-6xl p-6">
+        <div className="mx-auto max-w-6xl">
             {/* Header */}
             <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
                         <ArrowLeft className="h-4 w-4" />
                     </Button>
-                    <h1 className="text-xl font-bold tracking-tight text-foreground">Item Detail</h1>
+                    <h1 className="text-xl font-medium tracking-tight text-foreground">Item Detail</h1>
                 </div>
                 <Button variant="outline" size="icon">
                     <Download className="h-4 w-4" />

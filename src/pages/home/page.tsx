@@ -19,10 +19,10 @@ const HomePage = () => {
   const auth = useAuth();
   const name = auth.user?.profile.name ?? "User";
   const email = auth.user?.profile.email ?? "-";
+  console.log("auth.user", auth.user?.profile);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 p-6">
-      {/* Hero */}
+    <div className="mx-auto max-w-6xl space-y-6">
       <div className="rounded-xl bg-[#E92739] p-8 text-white shadow-sm">
         <h1 className="text-3xl font-bold">Welcome back, {name} 👋</h1>
         <p className="mt-1 text-sm text-white/80">
@@ -30,7 +30,7 @@ const HomePage = () => {
         </p>
       </div>
 
-      {/* User Info */}
+     
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <Card className="rounded-xl border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">

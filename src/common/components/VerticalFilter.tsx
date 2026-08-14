@@ -1,13 +1,13 @@
 import { MultiSelectDropdown } from "@/common/components/MultiSelectDropdown"
 import type { Vertical } from "@/api/vertical/verticalApi"
 
-interface OrderVerticalFilterProps {
+interface VerticalFilterProps {
   verticals: Vertical[]
   selected: string[]
   onChange: (selected: string[]) => void
 }
 
-export const OrderVerticalFilter = ({ verticals, selected, onChange }: OrderVerticalFilterProps) => (
+export const VerticalFilter = ({ verticals, selected, onChange }: VerticalFilterProps) => (
   <MultiSelectDropdown
     options={verticals.map((v) => ({ value: v.code, label: v.displayName }))}
     selected={selected}

@@ -4,15 +4,15 @@ import {
   getOrderInvoices,
   getInvoice,
   getInvoiceStatistics,
-  
+  type SearchInvoicesParams,
 } from "./invoiceApi";
 
 export const useInvoiceApi = () => {
   const { axiosInstance } = useAxios();
 
   return {
-    searchInvoices: (businessPartnerId: string) =>
-      searchInvoices(axiosInstance, businessPartnerId),
+    searchInvoices: (params: SearchInvoicesParams) =>
+      searchInvoices(axiosInstance, params),
     getOrderInvoices: (orderId: string) =>
       getOrderInvoices(axiosInstance, orderId),
     getInvoice: (invoiceId: string) => getInvoice(axiosInstance, invoiceId),
