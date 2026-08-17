@@ -41,7 +41,6 @@ const WebAuthGuard = (props: { children: ReactNode }) => {
     const location = useLocation();
 
     if (auth.isLoading) {
-        console.log("auth.isLoading");
         return (
             <div className="flex justify-center items-center w-full h-screen">
                 <Loader2 className={"size-5 animate-spin"} />
@@ -61,7 +60,7 @@ const WebAuthGuard = (props: { children: ReactNode }) => {
     );
 
     if (!auth.isAuthenticated) {
-        console.log("user is not authenticated");
+
         return <Navigate to={`/login?redirectTo=${redirectTo}`} replace />;
     }
 

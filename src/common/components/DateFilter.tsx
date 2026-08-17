@@ -1,5 +1,5 @@
-
 import { Input } from "@/common/components/ui/input"
+import { Button } from "@/common/components/ui/button"
 
 interface DateFilterProps {
   from: string
@@ -27,16 +27,18 @@ export const DateFilter = ({ from, to, onFromChange, onToChange }: DateFilterPro
       className="h-auto w-33 bg-white border-0 p-0 text-sm shadow-none focus-visible:ring-0"
     />
     {(from || to) && (
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="sm"
         onClick={() => {
           onFromChange("")
           onToChange("")
         }}
-        className="ml-1 text-xs font-medium text-muted-foreground hover:text-foreground"
+        className="ml-1 h-auto p-0 text-xs font-medium text-muted-foreground hover:bg-white hover:text-foreground"
       >
         Clear
-      </button>
+      </Button>
     )}
   </div>
 )

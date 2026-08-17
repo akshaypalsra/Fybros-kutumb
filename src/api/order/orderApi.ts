@@ -2,18 +2,23 @@ import type { AxiosInstance } from "axios";
 import type { Order, OrderItem, OrderValue, PagedResponse, SearchOrdersParams } from "@/types/order.types";
 import type { Invoice } from "@/types/invoice.types";
 
+const toStartOfDayISO = (date?: string) => (date ? `${date}T00:00:00.000Z` : undefined);
+const toEndOfDayISO = (date?: string) => (date ? `${date}T23:59:59.999Z` : undefined);
 
 export const searchOrders = async (
     axiosInstance: AxiosInstance,
-    params: SearchOrdersParams
-): Promise<Order[]> => {
+    params: SearchOrdersParams,
+): Promise<PagedResponse<Order>> => {
     const response = await axiosInstance.post<PagedResponse<Order>>(
         "/business-partners/orders/search",
-        params
-    )
-    return response.data.content
-}
-
+        {
+            ...params,
+            fromDate: toStartOfDayISO(params.fromDate),
+            toDate: toEndOfDayISO(params.toDate),
+        },
+    );
+    return response.data;
+};
 
 export const getOrder = async (
     axiosInstance: AxiosInstance,
@@ -32,7 +37,6 @@ export const getOrderInvoices = async (
 
     return response.data;
 };
-
 
 export const getOrderItems = async (
     axiosInstance: AxiosInstance,
@@ -58,11 +62,18 @@ export const getOrderItem = async (
 
 export const getOrderValue = async (
     axiosInstance: AxiosInstance,
-    businessPartnerId: string
+    businessPartnerId: string,
+    filters?: {
+        fromDate?: string;
+        toDate?: string;
+        query?: string;
+        verticals?: string[];
+        orderStatus?: string;
+    }
 ): Promise<OrderValue> => {
     const response = await axiosInstance.get<OrderValue>(
         "/business-partners/order-value",
-        { params: { businessPartnerId } }
+        { params: { businessPartnerId, ...filters } }
     );
 
     return response.data;

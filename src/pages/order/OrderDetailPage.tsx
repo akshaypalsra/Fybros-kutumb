@@ -16,7 +16,8 @@ import { OrderItemsCard } from "./components/OrderItemsCard";
 import { OrderInvoicesCard } from "./components/OrderInvoicesCard";
 import { OrderInfoCard } from "./components/OrderInfoCard";
 import { OrderHero } from "./components/OrderHero";
-import { OrderDetailHeader } from "./components/OrderDetailHeader";
+import { DetailPageHeader } from "../../common/components/DetailPageHeader";
+
 
 const OrderDetailPage = () => {
   const navigate = useNavigate();
@@ -60,7 +61,11 @@ const OrderDetailPage = () => {
 
   return (
     <div className="mx-auto max-w-6xl pb-24">
-      <OrderDetailHeader onBack={() => navigate(-1)} />
+      <DetailPageHeader
+        title="Order Detail"
+        subtitle={order?.orderNumber}
+        onBack={() => navigate(-1)}
+      />
       <OrderHero order={order} status={overallStatus} />
 
       <div className="grid gap-4 lg:grid-cols-3">

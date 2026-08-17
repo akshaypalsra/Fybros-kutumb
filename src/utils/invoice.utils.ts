@@ -22,6 +22,14 @@ export const formatCompactCurrency = (value: number | null | undefined) => {
   return formatCurrency(value)
 }
 
+
+export const formatSignedCurrency = (value: number | null | undefined) => {
+  if (value == null) return "—"
+  const formatted = formatCurrency(Math.abs(value))
+  return value < 0 ? `−${formatted}` : formatted
+}
+
+
 export const formatDate = (value: string | null | undefined) =>
   value
     ? new Date(value).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "2-digit" })

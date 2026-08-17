@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 import { StatusPill } from "./StatusPill"
 import { FulfillmentBar } from "./FulfillmentBar"
-import { cn, formatCurrency, formatDate, STATUS_RAIL } from "@/utils/orders.utils"
+import { formatCurrency, formatDate } from "@/utils/orders.utils"
 import type { Order } from "@/types/order.types"
 
 
@@ -20,12 +20,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
             to={`/orders/${order.docEntry}`}
             className="relative grid grid-cols-[150px_1.4fr_1fr_170px_120px] items-center gap-5 rounded-xl border border-border bg-card px-5 py-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
         >
-            <span
-                className={cn(
-                    "absolute inset-y-2.5 left-0 w-1 rounded-full",
-                    STATUS_RAIL[order.orderStatus] ?? "bg-muted"
-                )}
-            />
+            
 
             <div className="min-w-0">
                 <p className="truncate font-mono text-[13px] font-semibold text-foreground">
@@ -60,7 +55,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
             </div>
 
             <div className="flex flex-col items-end gap-1.5">
-                <StatusPill status={order.orderStatus} />
+          
                 <StatusPill status={order.orderDeliveryStatus} />
             </div>
         </Link>

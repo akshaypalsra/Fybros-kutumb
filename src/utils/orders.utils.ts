@@ -75,6 +75,8 @@ export const formatCompactCurrency = (value: number | null | undefined) => {
   return `₹${value}`;
 };
 
+
+
 export const formatDate = (value: string | null | undefined) =>
   value
     ? new Date(value).toLocaleDateString("en-IN", {

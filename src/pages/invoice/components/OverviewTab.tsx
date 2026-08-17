@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { FileText } from "lucide-react"
+import { ChevronRight, FileText } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 
 import { Badge } from "@/common/components/ui/badge"
@@ -147,9 +147,10 @@ export const OverviewTab = ({
             type="button"
             variant="link"
             onClick={onViewAllInvoices}
-            className="h-auto p-0 text-sm font-medium text-secondary"
+            className="h-auto gap-1 p-0 text-sm font-medium text-secondary"
           >
             View all
+            <ChevronRight className="h-3.5 w-3.5" />
           </Button>
         </div>
 

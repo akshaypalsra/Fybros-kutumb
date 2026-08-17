@@ -1,58 +1,58 @@
+// src/orders/hooks/useOrdersData.ts
 import { useQuery } from "@tanstack/react-query"
-import { useOrderApi } from "@/api/order/useOrderApi"
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi"
-import type { Order } from "@/types/order.types"
+
+import type { BusinessPartner } from "@/types/businessPartner.types"
+import type { TabFilter } from "@/types/order.types"
+import { useInfiniteOrders } from "@/hooks/useInfiniteOrders"
 
 interface UseOrdersDataParams {
   query: string
   dateFrom: string
   dateTo: string
   selectedVerticals: string[]
-  page?: number
-  size?: number
+  tab: TabFilter
 }
 
-export const useOrdersData = ({
-  query,
-  dateFrom,
-  dateTo,
-  selectedVerticals,
-  page = 0,
-  size = 20,
-}: UseOrdersDataParams) => {
-  const { getBusinessPartners } = useBusinessPartnerApi()
-  const { searchOrders } = useOrderApi()
+export const tabToOrderStatus = (tab: TabFilter): string | undefined => {
+  if (tab === "OPEN") return "OPEN"
+  if (tab === "CLOSED") return "CLOSED"
+  return undefined // ALL — no filter
+}
 
-  const { data: partner, isLoading: isPartnerLoading } = useQuery({
+export const useOrdersData = ({ query, dateFrom, dateTo, selectedVerticals, tab }: UseOrdersDataParams) => {
+  const { getBusinessPartners } = useBusinessPartnerApi()
+  const { data: partner, isLoading: isPartnerLoading, isError: isPartnerError } = useQuery<BusinessPartner>({
     queryKey: ["business-partner"],
     queryFn: () => getBusinessPartners(),
   })
 
-  const businessPartnerId = partner?.cardCode ?? ""
-
   const {
-    data: orders,
+    orders,
     isLoading: isOrdersLoading,
-    isError,
-  } = useQuery<Order[]>({
-    queryKey: ["orders", businessPartnerId, query, dateFrom, dateTo, selectedVerticals, page, size],
-    queryFn: () =>
-      searchOrders({
-        businessPartnerId,
-        query,
-        fromDate: dateFrom || undefined,
-        toDate: dateTo || undefined,
-        verticals: selectedVerticals.length > 0 ? selectedVerticals : undefined,
-        page,
-        size,
-      }),
-    enabled: !!businessPartnerId,
-  })
+    isError: isOrdersError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteOrders(
+    {
+      businessPartnerId: partner?.cardCode ?? "",
+      query: query.trim() || undefined,
+      fromDate: dateFrom || undefined,
+      toDate: dateTo || undefined,
+      verticals: selectedVerticals.length ? selectedVerticals : undefined,
+      orderStatus: tabToOrderStatus(tab),
+    },
+    !!partner?.cardCode,
+  )
 
   return {
     partner,
     orders,
     isLoading: isPartnerLoading || isOrdersLoading,
-    isError,
+    isError: isPartnerError || isOrdersError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   }
 }

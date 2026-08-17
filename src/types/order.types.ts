@@ -34,22 +34,21 @@ export interface Order {
   fulfilledPercentage: number;
   openOrderValue: number;
   vertical: string;
-  orderStatus: "OPEN" | "CLOSED" | "CANCELLED" | string;
   orderDeliveryStatus: "OPEN" | "FULLY_DELIVERED" | "PARTIALLY_DELIVERED" | string;
   orderType: string;
 }
 
+
+export interface OrderValue {
+  orderValue: number;
+  deliveredOrderValue: number;
+  pendingOrderValue: number;
+}
+
+
 export type TabFilter = "ALL" | "OPEN" | "CLOSED";
 
-export interface OrderStats {
-  openCount: number;
-  closedCount: number;
-  totalOrderValue: number;
-  openOrderValue: number;
-  fillRate: number;
-  avgOrderSize: number;
-  deliveredOrderValue: number;
-}
+
 
 export interface OrderItem {
   id: number;
@@ -87,8 +86,10 @@ export interface OrderItemDetail {
 
 export interface PagedResponse<T> {
   content: T[];
-  totalElements?: number;
-  totalPages?: number;
-  number?: number;
-  size?: number;
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
 }

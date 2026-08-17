@@ -46,7 +46,7 @@ export const useAxios = () => {
 
             const now = Date.now() / 1000; // seconds
             if (auth.user.expires_at && auth.user.expires_at < now) {
-                console.log("Token expired, trying to refresh...");
+                
                 try {
                     const refreshedUser = await auth.signinSilent();
                     if (refreshedUser) {

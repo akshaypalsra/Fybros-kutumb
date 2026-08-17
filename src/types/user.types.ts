@@ -10,4 +10,14 @@ export interface User {
   member: boolean;
 }
 
-export type LoggedInUser = Pick<User, "id" | "name" | "email" | "createdDate">;
+export interface LoggedInUser {
+  id: number;
+  title: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  crCode: string;
+  fatherCard: string | null;
+  role: string;
+  active: boolean;
+}

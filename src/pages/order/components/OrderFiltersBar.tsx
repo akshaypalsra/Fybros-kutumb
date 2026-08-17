@@ -1,11 +1,9 @@
 import { X } from "lucide-react"
-
-
-
 import type { Vertical } from "@/api/vertical/verticalApi"
 import { DateFilter } from "../../../common/components/DateFilter"
 import { VerticalFilter } from "../../../common/components/VerticalFilter"
 import { SearchBar } from "../../../common/components/SearchBar"
+import { Button } from "@/common/components/ui/button"
 
 interface OrderFiltersBarProps {
     query: string
@@ -55,16 +53,17 @@ export const OrderFiltersBar = ({
                 selected={selectedVerticals}
                 onChange={onVerticalsChange}
             />
-            {hasActiveFilters && (
-                <button
-                    type="button"
-                    onClick={handleClearAll}
-                    className="flex items-center cursor-pointer gap-1 text-xs font-medium text-muted-foreground hover:text-foreground"
-                >
-                    <X className="h-3.5 w-3.5" />
-                    Clear all
-                </button>
-            )}
+            <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                disabled={!hasActiveFilters}
+                onClick={handleClearAll}
+                className="gap-1 rounded-lg py-4.5 border border-border text-xs font-medium text-muted-foreground hover:text-foreground"
+            >
+                <X className="h-3.5 w-3.5" />
+                Clear all
+            </Button>
         </div>
     )
 }

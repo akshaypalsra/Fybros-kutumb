@@ -19,7 +19,6 @@ const HomePage = () => {
   const auth = useAuth();
   const name = auth.user?.profile.name ?? "User";
   const email = auth.user?.profile.email ?? "-";
-  console.log("auth.user", auth.user?.profile);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">

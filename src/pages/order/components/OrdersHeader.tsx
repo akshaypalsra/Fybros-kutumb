@@ -13,7 +13,7 @@ export const OrdersHeader = ({ partnerName, partnerCode, onNewOrder }: OrdersHea
       <PartnerAvatar partnerName={partnerName} />
       <div>
         <h1 className="text-lg font-normal leading-tight text-foreground">Orders</h1>
-        <p className="font-mono text-xs text-muted-foreground">
+        <p className=" text-xs text-muted-foreground">
           {(partnerName ?? "")} · {partnerCode ?? "—"}
         </p>
       </div>
