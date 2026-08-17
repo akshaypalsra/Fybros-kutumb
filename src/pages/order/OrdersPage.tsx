@@ -23,6 +23,8 @@ const OrdersPage = () => {
     setDateFrom,
     dateTo,
     setDateTo,
+    fromDateIso,
+    toDateIso,
     selectedVerticals,
     setSelectedVerticals,
   } = useOrderFilterState()
@@ -42,8 +44,8 @@ const OrdersPage = () => {
     queryKey: ["order-value", partner?.cardCode, dateFrom, dateTo, query, selectedVerticals, tab],
     queryFn: () =>
       getOrderValue(partner!.cardCode, {
-        fromDate: dateFrom || undefined,
-        toDate: dateTo || undefined,
+        fromDate: fromDateIso,
+        toDate: toDateIso,
         query: query.trim() || undefined,
         verticals: selectedVerticals.length ? selectedVerticals : undefined,
         orderStatus: tabToOrderStatus(tab),

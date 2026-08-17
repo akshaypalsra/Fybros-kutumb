@@ -10,6 +10,7 @@ import { OverviewTab } from "./components/OverviewTab"
 import { InvoicesTab } from "./components/InvoicesTab"
 import { TransactionsTab } from "./components/TransactionsTab"
 import { useVerticals } from "@/hooks/useVerticals"
+import { ScrollToTopButton } from "@/common/components/ScrollToTopButton"
 
 const FinanceOverviewPage = () => {
   const { getBusinessPartners } = useBusinessPartnerApi()
@@ -88,6 +89,8 @@ const FinanceOverviewPage = () => {
           enabled={enabled}
         />
       )}
+
+      <ScrollToTopButton />
     </div>
   )
 }
