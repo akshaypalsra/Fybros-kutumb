@@ -21,7 +21,7 @@ export const SegmentedTabs = <T extends string>({
         className={cn(
           "rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors",
           value === opt.key
-            ? "border-[#E92739] bg-[#E92739]/10 text-[#E92739]"
+            ? "border-secondary bg-secondary/10 text-secondary"
             : "border-transparent text-muted-foreground hover:bg-muted"
         )}
       >

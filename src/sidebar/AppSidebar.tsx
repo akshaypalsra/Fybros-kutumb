@@ -85,7 +85,7 @@ export function AppSidebar() {
               <SidebarMenuButton
                 asChild
                 isActive={isItemActive(item.url)}
-                className="data-[active=true]:bg-[#E92739]/10 data-[active=true]:text-[#E92739] data-[active=true]:font-semibold"
+                className="data-[active=true]:bg-secondary/10 data-[active=true]:text-secondary data-[active=true]:font-semibold"
               >
                 <NavLink to={item.url} className="flex items-center gap-2">
                   <HugeiconsIcon icon={item.icon} size={20} />

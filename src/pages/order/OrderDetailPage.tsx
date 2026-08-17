@@ -29,8 +29,8 @@ type OrderWithExtras = Order & OrderDetailExtras
 const STATUS_STYLES: Record<string, string> = {
   PAID: "bg-emerald-100 text-emerald-700 border-emerald-200",
   DELIVERED: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  UNPAID: "bg-red-100 text-[#E92739] border-red-200",
-  OVERDUE: "bg-red-100 text-[#E92739] border-red-200",
+  UNPAID: "bg-red-100 text-secondary border-red-200",
+  OVERDUE: "bg-red-100 text-secondary border-red-200",
   PENDING: "bg-amber-100 text-amber-700 border-amber-200",
   PARTIAL: "bg-amber-100 text-amber-700 border-amber-200",
   "PARTIALLY PAID": "bg-amber-100 text-amber-700 border-amber-200",
@@ -41,7 +41,7 @@ const STATUS_STYLES: Record<string, string> = {
 
 
 const HERO_STATUS_STYLES: Record<string, string> = {
-  "PARTIAL DELIVERY": "bg-white/90 text-[#E92739] border-transparent",
+  "PARTIAL DELIVERY": "bg-white/90 text-secondary border-transparent",
   DELIVERED: "bg-white/90 text-emerald-700 border-transparent",
   PENDING: "bg-white/90 text-amber-700 border-transparent",
 }
@@ -188,7 +188,7 @@ const OrderDetailPage = () => {
       </div>
 
       {/* Hero */}
-      <div className="mb-6 flex flex-col justify-between gap-4 rounded-xl bg-[#E92739] p-6 text-white shadow-sm sm:flex-row sm:items-center">
+      <div className="mb-6 flex flex-col justify-between gap-4 rounded-xl bg-secondary p-6 text-white shadow-sm sm:flex-row sm:items-center">
         <div>
           <p className="text-lg font-bold">{order?.orderNumber ?? order?.docEntry}</p>
           <p className="mt-1 text-sm text-white/80">
@@ -303,7 +303,7 @@ const OrderDetailPage = () => {
                     className={cn(
                       "rounded-full px-3 py-1 text-xs font-medium capitalize transition-colors",
                       itemFilter === filter
-                        ? "bg-[#E92739] text-white"
+                        ? "bg-secondary text-white"
                         : "text-muted-foreground hover:text-foreground",
                     )}
                   >
@@ -359,7 +359,7 @@ const OrderDetailPage = () => {
 
 
         <div className="space-y-4">
-          <div className="rounded-xl bg-[#E92739] p-5 text-white shadow-sm">
+          <div className="rounded-xl bg-secondary p-5 text-white shadow-sm">
             <p className="text-sm font-medium text-white/90">
               {order?.orderNumber ?? order?.docEntry}
             </p>
@@ -391,12 +391,12 @@ const OrderDetailPage = () => {
                   style={{ width: `${counts.deliveredPct}%` }}
                 />
                 <div className="h-full bg-amber-500" style={{ width: `${counts.pendingPct}%` }} />
-                <div className="h-full bg-[#E92739]" style={{ width: `${counts.cancelledPct}%` }} />
+                <div className="h-full bg-secondary" style={{ width: `${counts.cancelledPct}%` }} />
               </div>
               <div className="mt-2 flex justify-between text-xs">
                 <span className="text-emerald-600">{counts.deliveredPct}% Delivered</span>
                 <span className="text-amber-600">{counts.pendingPct}% Pending</span>
-                <span className="text-[#E92739]">{counts.cancelledPct}% Cancelled</span>
+                <span className="text-secondary">{counts.cancelledPct}% Cancelled</span>
               </div>
 
               <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
@@ -421,7 +421,7 @@ const OrderDetailPage = () => {
                 )}
                 <div className="flex justify-between border-t border-border pt-2">
                   <span className="font-semibold text-foreground">Order Value</span>
-                  <span className="font-semibold text-[#E92739]">
+                  <span className="font-semibold text-secondary">
                     {formatCurrency(computedTotal)}
                   </span>
                 </div>
@@ -439,12 +439,12 @@ const OrderDetailPage = () => {
 
 
           <div className="flex gap-3">
-            <Button className="flex-1 bg-[#E92739] text-white hover:bg-[#E92739]/90">
+            <Button className="flex-1 bg-secondary text-white hover:bg-secondary/90">
               Track Pending Items
             </Button>
             <Button
               variant="outline"
-              className="flex-1 border-[#E92739] text-[#E92739] hover:bg-red-50"
+              className="flex-1 border-secondary text-secondary hover:bg-red-50"
             >
               Reorder Cancelled Items
             </Button>

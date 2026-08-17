@@ -12,7 +12,7 @@ const cn = (...classes: (string | false | null | undefined)[]) => classes.filter
 const STATUS_STYLES: Record<string, string> = {
   PAID: "bg-emerald-100 text-emerald-700 border-emerald-200",
   UNPAID: "bg-white/20 text-white border-transparent",
-  OVERDUE: "bg-white text-[#E92739] border-transparent",
+  OVERDUE: "bg-white text-secondary border-transparent",
   "PARTIALLY PAID": "bg-amber-100 text-amber-700 border-amber-200",
 }
 
@@ -148,7 +148,7 @@ const InvoiceDetailPage = () => {
                     <Link
                       key={so}
                       to={`/orders/${so}`}
-                      className="rounded-lg border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-[#E92739] transition-colors hover:bg-red-100"
+                      className="rounded-lg border border-red-200 bg-red-50 px-3 py-1 text-xs font-medium text-secondary transition-colors hover:bg-red-100"
                     >
                       {so}
                     </Link>
@@ -220,7 +220,7 @@ const InvoiceDetailPage = () => {
                 )}
                 <div className="flex justify-between border-t border-border pt-2">
                   <span className="font-semibold text-foreground">Total invoice value</span>
-                  <span className="font-semibold text-[#E92739]">
+                  <span className="font-semibold text-secondary">
                     {formatCurrency(invoice?.docTotal)}
                   </span>
                 </div>
@@ -230,7 +230,7 @@ const InvoiceDetailPage = () => {
 
           {/* Remarks */}
           {invoice?.remarks && (
-            <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-[#E92739]">
+            <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-secondary">
               <AlertCircle className="mt-0.5 h-4 w-4 flex-none" />
               <p>
                 <span className="font-medium">Remarks:</span> {invoice.remarks}
@@ -241,7 +241,7 @@ const InvoiceDetailPage = () => {
 
         {/* Right column — hero total, payments, references */}
         <div className="space-y-4">
-          <div className="rounded-xl bg-[#E92739] p-5 text-white shadow-sm">
+          <div className="rounded-xl bg-secondary p-5 text-white shadow-sm">
             <div className="mb-3 flex items-start justify-between">
               <div>
                 <p className="text-sm font-medium text-white/90">{invoice?.invoiceNumber}</p>

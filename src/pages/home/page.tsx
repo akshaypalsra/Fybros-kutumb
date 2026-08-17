@@ -23,7 +23,7 @@ const HomePage = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div className="rounded-xl bg-[#E92739] p-8 text-white shadow-sm">
+      <div className="rounded-xl bg-secondary p-8 text-white shadow-sm">
         <h1 className="text-3xl font-bold">Welcome back, {name} 👋</h1>
         <p className="mt-1 text-sm text-white/80">
           You're successfully signed in to <strong>Kutumb</strong>.
@@ -35,7 +35,7 @@ const HomePage = () => {
         <Card className="rounded-xl border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">User</CardTitle>
-            <UserCircle2 className="h-5 w-5 text-[#E92739]" />
+            <UserCircle2 className="h-5 w-5 text-secondary" />
           </CardHeader>
           <CardContent>
             <div className="text-xl font-semibold text-foreground">{name}</div>
@@ -46,7 +46,7 @@ const HomePage = () => {
         <Card className="rounded-xl border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Business Partners</CardTitle>
-            <Building2 className="h-5 w-5 text-[#E92739]" />
+            <Building2 className="h-5 w-5 text-secondary" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-foreground">1</div>
@@ -73,7 +73,7 @@ const HomePage = () => {
         <Card className="rounded-xl border-border">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Account</CardTitle>
-            <Users className="h-5 w-5 text-[#E92739]" />
+            <Users className="h-5 w-5 text-secondary" />
           </CardHeader>
           <CardContent>
             <div className="text-xl font-semibold text-foreground">Kutumb</div>

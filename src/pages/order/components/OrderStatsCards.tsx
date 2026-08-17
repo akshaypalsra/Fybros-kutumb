@@ -9,7 +9,7 @@ interface OrderStatsCardsProps {
 
 export const OrderStatsCards = ({ stats, orderCount }: OrderStatsCardsProps) => (
   <div className="mb-6 grid grid-cols-4 gap-3.5">
-    <Card className="border-0 bg-linear-to-br from-[#E92739] to-[#B81E2D] p-5 text-white">
+    <Card className="border-0 bg-secondary p-5 text-white">
       <CardContent className="p-0">
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide opacity-85">
           Total Order Value
@@ -19,7 +19,7 @@ export const OrderStatsCards = ({ stats, orderCount }: OrderStatsCardsProps) => 
       </CardContent>
     </Card>
 
-    <Card className="border-0 bg-linear-to-br from-[#E92739] to-[#B81E2D] p-5 text-white">
+    <Card className="border-0 bg-secondary p-5 text-white">
       <CardContent className="p-0">
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide opacity-85">Delivered</p>
         <p className="text-2xl font-bold leading-none">{formatCompactCurrency(stats.deliveredOrderValue)}</p>

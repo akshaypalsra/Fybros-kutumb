@@ -96,7 +96,7 @@ const OrderItemDetailPage = () => {
             <div className="grid gap-4 lg:grid-cols-3">
                 {/* Left column — hero summary */}
                 <div className="lg:col-span-1">
-                    <div className="rounded-xl bg-[#E92739] p-5 text-white shadow-sm">
+                    <div className="rounded-xl bg-secondary p-5 text-white shadow-sm">
                         <div className="mb-3 flex items-start justify-between gap-2">
                             <p className="text-base font-bold">{item.itemCode}</p>
                             <StatusBadge status={item.deliveryStatus} className="shrink-0" />

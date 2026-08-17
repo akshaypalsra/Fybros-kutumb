@@ -16,19 +16,19 @@ export const OrderTabs = ({ value, onChange, allCount, openCount, closedCount }:
       <TabsList className="gap-1 rounded-lg border border-border bg-card p-1">
         <TabsTrigger
           value="ALL"
-          className="rounded-md px-4 py-1.5 text-[13px] font-semibold data-[state=active]:bg-[#E92739] data-[state=active]:text-white"
+          className="rounded-md px-4 py-1.5 text-[13px] font-semibold data-[state=active]:bg-secondary data-[state=active]:text-white"
         >
           All ({allCount})
         </TabsTrigger>
         <TabsTrigger
           value="OPEN"
-          className="rounded-md px-4 py-1.5 text-[13px] font-semibold data-[state=active]:bg-[#E92739] data-[state=active]:text-white"
+          className="rounded-md px-4 py-1.5 text-[13px] font-semibold data-[state=active]:bg-secondary data-[state=active]:text-white"
         >
           Open ({openCount})
         </TabsTrigger>
         <TabsTrigger
           value="CLOSED"
-          className="rounded-md px-4 py-1.5 text-[13px] font-semibold data-[state=active]:bg-[#E92739] data-[state=active]:text-white"
+          className="rounded-md px-4 py-1.5 text-[13px] font-semibold data-[state=active]:bg-secondary data-[state=active]:text-white"
         >
           Closed ({closedCount})
         </TabsTrigger>
