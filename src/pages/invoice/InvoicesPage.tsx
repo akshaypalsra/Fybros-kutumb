@@ -86,10 +86,6 @@ const FinanceOverviewPage = () => {
         <TransactionsTab
           businessPartnerId={businessPartnerId}
           enabled={enabled}
-          search={search}
-          dateFrom={dateFrom}
-          dateTo={dateTo}
-          selectedVerticals={selectedVerticals}
         />
       )}
     </div>

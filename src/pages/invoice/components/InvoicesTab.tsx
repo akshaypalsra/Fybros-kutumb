@@ -10,9 +10,10 @@ import type { OutstandingSummary } from "@/types/businessPartner.types"
 import type { Invoice, InvoiceSubTab } from "@/types/invoice.types"
 import { formatCompactCurrency, formatCurrency, formatDate, formatMonthYear, getInvoiceDueLabel } from "@/utils/invoice.utils"
 import { StatCard } from "./StatCard"
-import { SegmentedTabs } from "./SegmentedTabs"
+
 import { INVOICE_SUB_TABS } from "@/constants/Constants"
 import { StatusBadge } from "./StatusBadge"
+import { SegmentedControl } from "@/common/components/SegmentedControl"
 
 export const InvoicesTab = ({
   businessPartnerId,
@@ -32,8 +33,6 @@ export const InvoicesTab = ({
   const { getOutstandingSummary } = useBusinessPartnerApi()
   const { searchInvoices } = useInvoiceApi()
 
-  // Sub-tab lives here now — it resets to "ALL" whenever this tab remounts
-  // (i.e. whenever the user navigates away and back).
   const [subTab, setSubTab] = useState<InvoiceSubTab>("ALL")
 
   const trimmedSearch = search.trim()
@@ -72,8 +71,6 @@ export const InvoicesTab = ({
   const isLoading = isInvoiceLoading || isOutstandingLoading
   const isError = isInvoiceError || isOutstandingError
 
-  // Server already applied search/date/vertical filters — only the sub-tab
-  // split (OPEN/CLOSED/OVERDUE) happens client-side.
   const counts: Partial<Record<InvoiceSubTab, number>> = {
     ALL: (invoices ?? []).length,
     OPEN: (invoices ?? []).filter((i) => i.status !== "PAID").length,
@@ -120,7 +117,13 @@ export const InvoicesTab = ({
       </div>
 
       <div className="mb-4">
-        <SegmentedTabs options={INVOICE_SUB_TABS} value={subTab} onChange={setSubTab} counts={counts} />
+        <SegmentedControl
+          options={INVOICE_SUB_TABS.map((tab) => tab.key)}
+          value={subTab}
+          onChange={setSubTab}
+          counts={counts}
+          getLabel={(key) => INVOICE_SUB_TABS.find((tab) => tab.key === key)?.label ?? key}
+        />
       </div>
 
       {isLoading ? (

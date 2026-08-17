@@ -10,8 +10,6 @@ export const CONSTANTS = {
     ME_QUERY_KEY: "me",
 }
 
-
-
 export const AGEING_COLOR_BY_LABEL: Record<string, string> = {
   "0-30": "bg-emerald-500",
   "30-60": "bg-violet-500",

@@ -5,6 +5,17 @@ export interface InvoiceStatistics {
   totalOutstanding?: number;
 }
 
+export interface SearchInvoicesParams {
+  businessPartnerId: string
+  fromDate?: string
+  toDate?: string
+  query?: string
+  invoiceStatus?: string
+  verticals?: string[]
+  page?: number
+  size?: number
+}
+
 
 export interface InvoiceLineItem {
   itemCode: string
@@ -50,9 +61,9 @@ export interface Invoice {
 
 
 export type Tab = "overview" | "invoices" | "transactions"
- 
+
 export type InvoiceSubTab = "ALL" | "OPEN" | "CLOSED" | "OVERDUE"
- 
+
 export type TransactionSubTab = "ALL" | "CREDIT_NOTE" | "DEBIT_NOTE"
- 
+
 export type DatePreset = "ALL" | "THIS_MONTH" | "LAST_30" | "LAST_90"

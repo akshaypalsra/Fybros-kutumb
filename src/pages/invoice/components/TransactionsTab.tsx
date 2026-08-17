@@ -11,7 +11,7 @@ import { formatCompactCurrency, formatCurrency, formatDate } from "@/utils/invoi
 import { StatCard } from "./StatCard"
 import { TRANSACTION_STATUS_STYLES, TRANSACTION_SUB_TABS } from "@/constants/Constants"
 import { StatusBadge } from "./StatusBadge"
-import { SegmentedTabs } from "./SegmentedTabs"
+import { SegmentedControl } from "@/common/components/SegmentedControl"
 
 export const TransactionsTab = ({
   businessPartnerId,
@@ -19,15 +19,9 @@ export const TransactionsTab = ({
 }: {
   businessPartnerId: string
   enabled: boolean
-  search: string
-  dateFrom: string
-  dateTo: string
-  selectedVerticals: string[]
 }) => {
   const { getOutstandingSummary } = useBusinessPartnerApi()
   const { searchTransactions } = useTransactionApi()
-
-  // Sub-tab lives here now — resets to "ALL" whenever this tab remounts.
   const [subTab, setSubTab] = useState<TransactionSubTab>("ALL")
 
   const {
@@ -40,14 +34,14 @@ export const TransactionsTab = ({
     enabled,
   })
 
-   const {
+  const {
     data: transactions,
     isLoading: isTransactionLoading,
     isError: isTransactionError,
   } = useQuery<Transaction[]>({
     queryKey: ["transactions", businessPartnerId],
     queryFn: () => searchTransactions(businessPartnerId) as unknown as Promise<Transaction[]>,
-    enabled: enabled,
+    enabled,
   })
 
   const isLoading = isTransactionLoading || isOutstandingLoading
@@ -84,7 +78,13 @@ export const TransactionsTab = ({
       </div>
 
       <div className="mb-4">
-        <SegmentedTabs options={TRANSACTION_SUB_TABS} value={subTab} onChange={setSubTab} counts={counts} />
+        <SegmentedControl
+          options={TRANSACTION_SUB_TABS.map((tab) => tab.key)}
+          value={subTab}
+          onChange={setSubTab}
+          counts={counts}
+          getLabel={(key) => TRANSACTION_SUB_TABS.find((tab) => tab.key === key)?.label ?? key}
+        />
       </div>
 
       {isLoading ? (

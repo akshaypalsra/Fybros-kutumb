@@ -31,10 +31,10 @@ const StatusBadge = ({ status }: { status: string }) => (
 const formatCurrency = (value: number | null | undefined) =>
   value != null
     ? value.toLocaleString("en-IN", {
-        style: "currency",
-        currency: "INR",
-        maximumFractionDigits: 0,
-      })
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    })
     : "—"
 
 const formatSignedCurrency = (value: number | null | undefined) => {
@@ -46,10 +46,10 @@ const formatSignedCurrency = (value: number | null | undefined) => {
 const formatDate = (value: string | null | undefined) =>
   value
     ? new Date(value).toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "2-digit",
-      })
+      day: "2-digit",
+      month: "short",
+      year: "2-digit",
+    })
     : "—"
 
 const InvoiceDetailPage = () => {
@@ -77,7 +77,7 @@ const InvoiceDetailPage = () => {
 
   return (
     <div className="mx-auto max-w-6xl">
-      {/* Header */}
+
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
@@ -93,7 +93,7 @@ const InvoiceDetailPage = () => {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        {/* Left column — invoice details, items, tax, remarks */}
+
         <div className="space-y-4 lg:col-span-2">
           <div className="rounded-xl border border-border bg-card p-5">
             <h2 className="mb-4 text-sm font-semibold text-foreground">Invoice Details</h2>
@@ -239,7 +239,7 @@ const InvoiceDetailPage = () => {
           )}
         </div>
 
-        {/* Right column — hero total, payments, references */}
+
         <div className="space-y-4">
           <div className="rounded-xl bg-secondary p-5 text-white shadow-sm">
             <div className="mb-3 flex items-start justify-between">

@@ -51,3 +51,4 @@ export const getDateCutoff = (preset: DatePreset): Date | null => {
   if (preset === "LAST_90") return new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000)
   return null
 }
+

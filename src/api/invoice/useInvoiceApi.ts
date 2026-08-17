@@ -4,8 +4,8 @@ import {
   getOrderInvoices,
   getInvoice,
   getInvoiceStatistics,
-  type SearchInvoicesParams,
 } from "./invoiceApi";
+import type { SearchInvoicesParams } from "@/types/invoice.types";
 
 export const useInvoiceApi = () => {
   const { axiosInstance } = useAxios();

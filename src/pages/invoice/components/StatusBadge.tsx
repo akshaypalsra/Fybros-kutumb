@@ -1,25 +1,21 @@
-import { Badge } from "@/common/components/ui/badge"
-import { STATUS_STYLES } from "@/constants/Constants"
-import { cn } from "@/utils/invoice.utils"
+// src/pages/order/components/StatusBadge.tsx (or wherever it lives)
+import { StatusChip } from "@/common/components/StatusChip";
+import { HERO_STATUS_STYLES, STATUS_STYLES } from "@/utils/orders.utils";
 
+interface StatusBadgeProps {
+  status: string;
+  className?: string;
+  variant?: "default" | "hero";
+  styles?: Record<string, string>;
+}
 
-export const StatusBadge = ({
-  status,
-  styles = STATUS_STYLES,
-  className,
-}: {
-  status: string | null | undefined
-  styles?: Record<string, string>
-  className?: string
-}) => (
-  <Badge
-    variant="outline"
-    className={cn(
-      "shrink-0 rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize",
-      (status && styles[status]) ?? "bg-slate-100 text-slate-700 border-slate-200",
-      className
-    )}
-  >
-    {status ? status.toLowerCase() : "—"}
-  </Badge>
-)
+export const StatusBadge = ({ status, className, variant = "default", styles }: StatusBadgeProps) => (
+  <StatusChip
+    status={status}
+    className={className}
+    styleMap={styles ?? (variant === "hero" ? HERO_STATUS_STYLES : STATUS_STYLES)}
+    fallbackClassName={
+      variant === "hero" ? "bg-white/90 text-foreground border-transparent" : "bg-muted text-muted-foreground border-border"
+    }
+  />
+);

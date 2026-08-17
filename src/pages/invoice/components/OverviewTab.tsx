@@ -12,6 +12,7 @@ import { formatCompactCurrency, formatCurrency, formatDate } from "@/utils/invoi
 import { AgeingBar } from "./AgeingBar"
 import { StatusBadge } from "./StatusBadge"
 import { CreditGauge } from "./CreditGauge"
+import { Button } from "@/common/components/ui/button"
 
 export const OverviewTab = ({
   businessPartnerId,
@@ -93,7 +94,7 @@ export const OverviewTab = ({
 
   return (
     <div className="grid gap-5 lg:grid-cols-3">
-      {/* Credit overview */}
+
       <div className="flex items-center justify-between gap-4 rounded-2xl bg-secondary p-6 text-white shadow-sm lg:col-span-2">
         <div>
           <p className="mb-6 text-sm font-medium text-white/90">Credit overview</p>
@@ -142,9 +143,14 @@ export const OverviewTab = ({
       <div className="rounded-2xl border bg-card p-6 shadow-sm lg:col-span-3">
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm font-medium text-muted-foreground">Pending invoices ({pendingInvoices.length})</p>
-          <button type="button" onClick={onViewAllInvoices} className="text-sm font-medium text-secondary hover:underline">
+          <Button
+            type="button"
+            variant="link"
+            onClick={onViewAllInvoices}
+            className="h-auto p-0 text-sm font-medium text-secondary"
+          >
             View all
-          </button>
+          </Button>
         </div>
 
         {pendingInvoices.length === 0 ? (

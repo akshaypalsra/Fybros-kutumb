@@ -1,16 +1,7 @@
 import type { AxiosInstance } from "axios";
-import type { Invoice, InvoiceStatistics } from "@/types/invoice.types";
+import type { Invoice, InvoiceStatistics, SearchInvoicesParams } from "@/types/invoice.types";
 
-export interface SearchInvoicesParams {
-    businessPartnerId: string
-    fromDate?: string
-    toDate?: string
-    query?: string
-    invoiceStatus?: string
-    verticals?: string[]
-    page?: number
-    size?: number
-}
+
 
 export const searchInvoices = async (
     axiosInstance: AxiosInstance,

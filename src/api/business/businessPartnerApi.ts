@@ -12,7 +12,6 @@ export const getBusinessPartners = async (
   const response = await axiosInstance.get<BusinessPartner>(
     "/business-partners"
   );
-
   return response.data;
 };
 
@@ -22,7 +21,6 @@ export const getOutstandingSummary = async (
   const response = await axiosInstance.get<OutstandingSummary>(
     "/business-partners/outstanding-summary"
   );
-
   return response.data;
 };
 
@@ -32,7 +30,6 @@ export const getCreditOverview = async (
   const response = await axiosInstance.get<CreditOverview>(
     "/business-partners/credit-overview"
   );
-
   return response.data;
 };
 
@@ -43,6 +40,5 @@ export const getAgeingDistribution = async (
   const response = await axiosInstance.get<AgeingBucketResponse[]>(
     "/business-partners/ageing-distribution"
   );
-
   return response.data;
 };

@@ -3,16 +3,10 @@ import { Link } from "react-router-dom"
 
 import { StatusPill } from "./StatusPill"
 import { FulfillmentBar } from "./FulfillmentBar"
-import { cn, formatCurrency, formatDate } from "@/utils/orders.utils"
+import { cn, formatCurrency, formatDate, STATUS_RAIL } from "@/utils/orders.utils"
 import type { Order } from "@/types/order.types"
 
-const STATUS_RAIL: Record<string, string> = {
-    CLOSED: "bg-emerald-500",
-    FULLY_DELIVERED: "bg-emerald-500",
-    OPEN: "bg-amber-500",
-    PARTIALLY_DELIVERED: "bg-blue-500",
-    CANCELLED: "bg-red-500",
-}
+
 
 interface OrderRowProps {
     order: Order

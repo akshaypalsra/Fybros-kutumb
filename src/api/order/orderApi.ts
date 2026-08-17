@@ -1,28 +1,6 @@
 import type { AxiosInstance } from "axios";
-import type { Order, OrderItem, OrderValue } from "@/types/order.types";
+import type { Order, OrderItem, OrderValue, PagedResponse, SearchOrdersParams } from "@/types/order.types";
 import type { Invoice } from "@/types/invoice.types";
-
-export interface PagedResponse<T> {
-    content: T[]
-    totalElements?: number
-    totalPages?: number
-    number?: number
-    size?: number
-}
-
-
-export interface SearchOrdersParams {
-    businessPartnerId: string
-    fromDate?: string
-    toDate?: string
-    query?: string
-    verticals?: string[]
-    page?: number
-    size?: number
-    orderStatus?: string
-}
-
-
 
 
 export const searchOrders = async (
@@ -33,9 +11,10 @@ export const searchOrders = async (
         "/business-partners/orders/search",
         params
     )
-
     return response.data.content
 }
+
+
 export const getOrder = async (
     axiosInstance: AxiosInstance,
     orderId: string

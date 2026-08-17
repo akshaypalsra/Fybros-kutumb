@@ -21,7 +21,6 @@ const WebLogin = () => {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden">
-      {/* Left – Hero */}
       <div className="relative hidden overflow-hidden lg:flex lg:w-[55%]">
         <img
           src={loginHero}
@@ -36,9 +35,7 @@ const WebLogin = () => {
 
       </div>
 
-      {/* Right – Login */}
       <div className="flex flex-1 flex-col items-center justify-center bg-background px-6">
-        {/* Mobile logo */}
         <div className="mb-10 flex items-center gap-3 lg:hidden">
           <img
             src={fybrosLogo}
@@ -47,14 +44,14 @@ const WebLogin = () => {
             width={32}
             height={32}
           />
-          <span className="text-xl font-medium tracking-tight text-foreground">
-            Fybros Kutumb
+          <span className="text-xl font-heading tracking-tight text-foreground">
+            Kutumb
           </span>
         </div>
 
         <div className="w-full max-w-sm space-y-8">
           <div className="space-y-2 text-center">
-            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+            <h2 className="text-2xl font-heading tracking-tight text-foreground">
               Welcome back
             </h2>
             <p className="text-sm text-muted-foreground">
