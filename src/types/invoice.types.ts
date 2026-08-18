@@ -33,30 +33,25 @@ export interface InvoicePayment {
   amount: number
 }
 
+export interface InvoiceOrder {
+  docEntry: number
+  orderNumber: string
+}
+
 export interface Invoice {
+  docEntry: number
+  invoiceNumber: string
   cardCode: string
-  cardName: string | null
   docDate: string
   docDueDate: string
-  docEntry: number
   docTotal: number
-  eDocNo: string | null
-  eWayBillNumber: string | null
-  invoiceNumber: string
-  shipToCode: string | null
-  status: string
   vertical: string
-  settledDate?: string | null
-  salesOrderNumbers?: string[]
-  items?: InvoiceLineItem[]
-  taxableValue?: number
-  igstRate?: number
-  igstAmount?: number
-  roundOff?: number
-  remarks?: string | null
-  payments?: InvoicePayment[]
-  buyerGstin?: string
-  irn?: string
+  status: string
+  cardName: string | null
+  shipToCode: string | null
+  orders: InvoiceOrder[]
+  ewayBillNumber: string | null
+  edocNo: string | null
 }
 
 

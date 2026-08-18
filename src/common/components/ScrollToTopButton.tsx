@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/common/components/ui/button";
-import { cn } from "@/utils/orders.utils";
+import { cn } from "@/utils/common.utils";
 
 
 interface ScrollToTopButtonProps {

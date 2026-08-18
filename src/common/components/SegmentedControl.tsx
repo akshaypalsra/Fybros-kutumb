@@ -1,6 +1,6 @@
-// src/common/components/SegmentedControl.tsx
-import { cn } from "@/utils/orders.utils";
+
 import { Button } from "@/common/components/ui/button";
+import { cn } from "@/utils/common.utils";
 
 interface SegmentedControlProps<T extends string> {
   options: T[];

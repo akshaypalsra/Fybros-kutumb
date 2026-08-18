@@ -1,10 +1,8 @@
-// src/orders/hooks/useOrdersData.ts
 import { useQuery } from "@tanstack/react-query"
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi"
-
 import type { BusinessPartner } from "@/types/businessPartner.types"
 import type { TabFilter } from "@/types/order.types"
-import { useInfiniteOrders } from "@/hooks/useInfiniteOrders"
+import { useInfiniteOrders } from "@/pages/order/hooks/useInfiniteOrders"
 
 interface UseOrdersDataParams {
   query: string

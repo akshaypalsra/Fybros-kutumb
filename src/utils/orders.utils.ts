@@ -55,49 +55,6 @@ export const STATUS_RAIL: Record<string, string> = buildStyleMap("solid");
 export const STATUS_STYLES: Record<string, string> = buildStyleMap("soft");
 export const HERO_STATUS_STYLES: Record<string, string> = buildStyleMap("hero");
 
-
-export const cn = (...classes: (string | false | null | undefined)[]) =>
-  classes.filter(Boolean).join(" ");
-
-export const formatCurrency = (value: number | null | undefined) =>
-  value != null
-    ? value.toLocaleString("en-IN", {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 0,
-    })
-    : "—";
-
-export const formatCompactCurrency = (value: number | null | undefined) => {
-  if (value == null) return "—";
-  if (value >= 100000) return `₹${(value / 100000).toFixed(2)}L`;
-  if (value >= 1000) return `₹${(value / 1000).toFixed(1)}K`;
-  return `₹${value}`;
-};
-
-
-
-export const formatDate = (value: string | null | undefined) =>
-  value
-    ? new Date(value).toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    })
-    : "—";
-
-export const formatDateShort = (value: string | null | undefined) =>
-  value
-    ? new Date(value).toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "2-digit",
-    })
-    : "—";
-
-export const formatMonth = (value: string | null | undefined) =>
-  value ? new Date(value).toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "Undated";
-
 export const getDaysToDue = (dueDate: string | null | undefined): number | null => {
   if (!dueDate) return null;
   const msPerDay = 1000 * 60 * 60 * 24;
@@ -107,3 +64,4 @@ export const getDaysToDue = (dueDate: string | null | undefined): number | null 
   today.setHours(0, 0, 0, 0);
   return Math.round((due.getTime() - today.getTime()) / msPerDay);
 };
+

@@ -1,42 +1,10 @@
 import { AGEING_COLOR_BY_LABEL } from "@/constants/Constants"
 import type { DatePreset, Invoice } from "@/types/invoice.types"
 
-
-export const cn = (...classes: (string | false | null | undefined)[]) =>
-  classes.filter(Boolean).join(" ")
-
 export const getAgeingColor = (label: string) => {
   const normalized = label.replace(/\s*days?$/i, "").trim()
   return AGEING_COLOR_BY_LABEL[normalized] ?? "bg-slate-400"
 }
-
-export const formatCurrency = (value: number | null | undefined) =>
-  value != null
-    ? value.toLocaleString("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 })
-    : "—"
-
-export const formatCompactCurrency = (value: number | null | undefined) => {
-  if (value == null) return "—"
-  if (value >= 100000) return `₹ ${(value / 100000).toFixed(1)}L`
-  if (value >= 1000) return `₹ ${(value / 1000).toFixed(0)}K`
-  return formatCurrency(value)
-}
-
-
-export const formatSignedCurrency = (value: number | null | undefined) => {
-  if (value == null) return "—"
-  const formatted = formatCurrency(Math.abs(value))
-  return value < 0 ? `−${formatted}` : formatted
-}
-
-
-export const formatDate = (value: string | null | undefined) =>
-  value
-    ? new Date(value).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "2-digit" })
-    : "—"
-
-export const formatMonthYear = (value: string | null | undefined) =>
-  value ? new Date(value).toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "Undated"
 
 export const getInvoiceDueLabel = (invoice: Invoice) => {
   if (invoice.status === "PAID") return "Paid"

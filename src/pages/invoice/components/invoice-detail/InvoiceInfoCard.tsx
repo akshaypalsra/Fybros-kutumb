@@ -1,0 +1,18 @@
+import type { Invoice } from "@/types/invoice.types"
+
+import { DetailField } from "../../../../common/components/DetailField"
+import { formatDate } from "@/utils/common.utils"
+
+export const InvoiceInfoCard = ({ invoice }: { invoice: Invoice }) => (
+  <div className="rounded-xl border border-border bg-card p-5">
+    <h2 className="mb-4 text-sm font-semibold text-foreground">Invoice Details</h2>
+    <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
+      <DetailField label="Buyer" value={invoice.cardName ?? invoice.cardCode} />
+      <DetailField label="Shipped To" value={invoice.shipToCode} />
+      <DetailField label="Vertical" value={invoice.vertical} />
+      <DetailField label="Invoice Date" value={formatDate(invoice.docDate)} />
+      <DetailField label="Due Date" value={formatDate(invoice.docDueDate)} />
+      <DetailField label="Card Code" value={invoice.cardCode} />
+    </div>
+  </div>
+)

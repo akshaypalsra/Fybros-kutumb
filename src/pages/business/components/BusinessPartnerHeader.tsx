@@ -1,7 +1,7 @@
 import type { BusinessPartner } from "@/types/businessPartner.types";
 import { Badge } from "@/common/components/ui/badge";
 import { Building2, Mail, Phone } from "lucide-react";
-import { initials } from "@/utils/business.utils";
+import { getInitials } from "@/utils/common.utils";
 
 
 interface BusinessPartnerHeaderProps {
@@ -23,7 +23,7 @@ export const BusinessPartnerHeader = ({ partner }: BusinessPartnerHeaderProps) =
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4">
           <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/15 text-lg font-semibold ring-2 ring-white/25">
-            {initials(partner.cardName) || <Building2 className="h-6 w-6" />}
+            {getInitials(partner.cardName) || <Building2 className="h-6 w-6" />}
           </div>
 
           <div>

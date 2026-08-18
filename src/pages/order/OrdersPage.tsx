@@ -1,17 +1,21 @@
-import { tabToOrderStatus, useOrdersData } from "./hooks/useOrdersData"
-import { useOrderFilterState } from "./hooks/useOrderFilterState"
-import { useOrderFilters } from "./hooks/useOrderFilters"
-import { OrdersHeader } from "./components/OrdersHeader"
-import { OrderFiltersBar } from "./components/OrderFiltersBar"
-import { OrderStatsCards } from "./components/OrderStatsCards"
-import { OrderTabs } from "./components/OrderTabs"
-import { OrderList } from "./components/OrderList"
-import { OrdersListSkeleton } from "./components/OrdersListSkeleton"
-import { useVerticals } from "@/hooks/useVerticals"
-import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger"
-import { useOrderApi } from "@/api/order/useOrderApi"
-import { useQuery } from "@tanstack/react-query"
-import type { OrderValue } from "@/types/order.types"
+import { tabToOrderStatus, useOrdersData } from "./hooks/useOrdersData";
+import { useOrderFilterState } from "./hooks/useOrderFilterState";
+import { useOrderFilters } from "./hooks/useOrderFilters";
+import { OrdersHeader } from "./components/order/OrdersHeader";
+import { OrderFiltersBar } from "./components/order/OrderFilters";
+import { OrderStatsCards } from "./components/order/OrderStatsCards";
+import { OrderTabs } from "./components/order/OrderTabs";
+import { OrderList } from "./components/order/OrderList";
+import { OrdersListSkeleton } from "./components/order/OrdersListSkeleton";
+
+import { useVerticals } from "@/hooks/useVerticals";
+import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
+import { useOrderApi } from "@/api/order/useOrderApi";
+import { useQuery } from "@tanstack/react-query";
+import type { Order, OrderValue } from "@/types/order.types";
+import { ListStateWrapper } from "@/wrapper/ListStateWrapper";
+import { OrdersListError } from "./components/order/OrdersListError";
+
 
 const OrdersPage = () => {
   const {
@@ -27,7 +31,7 @@ const OrdersPage = () => {
     toDateIso,
     selectedVerticals,
     setSelectedVerticals,
-  } = useOrderFilterState()
+  } = useOrderFilterState();
 
   const {
     partner,
@@ -37,9 +41,12 @@ const OrdersPage = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useOrdersData({ query, dateFrom, dateTo, selectedVerticals, tab })
+  } = useOrdersData({ query, dateFrom, dateTo, selectedVerticals, tab });
 
-  const { getOrderValue } = useOrderApi()
+  const { getOrderValue } = useOrderApi();
+  const { verticals } = useVerticals();
+  const { groupedByMonth } = useOrderFilters(orders);
+
   const { data: orderValue, isLoading: isOrderValueLoading } = useQuery<OrderValue>({
     queryKey: ["order-value", partner?.cardCode, dateFrom, dateTo, query, selectedVerticals, tab],
     queryFn: () =>
@@ -51,17 +58,12 @@ const OrdersPage = () => {
         orderStatus: tabToOrderStatus(tab),
       }),
     enabled: !!partner?.cardCode,
-  })
-
-  const { verticals } = useVerticals()
-  const { groupedByMonth } = useOrderFilters(orders)
+  });
 
   const sentinelRef = useInfiniteScrollTrigger(
     fetchNextPage,
     !!hasNextPage && !isFetchingNextPage && !isLoading,
-  )
-
-  const showContent = !isLoading && !isError && orders
+  );
 
   return (
     <div className="mx-auto max-w-295">
@@ -79,32 +81,32 @@ const OrdersPage = () => {
         onVerticalsChange={setSelectedVerticals}
       />
 
-      {showContent && <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />}
+      <ListStateWrapper<Order>
+        isLoading={isLoading}
+        isError={isError}
+        data={orders}
+        skeleton={<OrdersListSkeleton rows={5} />}
+        error={<OrdersListError />}
+      >
+        {(orders) => (
+          <>
+            <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
+            <OrderTabs value={tab} onChange={setTab} />
 
-      {showContent && (
-        <OrderTabs
-          value={tab}
-          onChange={setTab}
-        />
-      )}
-
-      {isLoading && <OrdersListSkeleton rows={5} />}
-
-      {isError && <p className="text-sm text-destructive">Failed to load orders. Please try again.</p>}
-
-      {showContent && orders.length === 0 && (
-        <p className="py-16 text-center text-sm text-muted-foreground">No orders match this view.</p>
-      )}
-
-      {showContent && orders.length > 0 && (
-        <>
-          <OrderList groupedByMonth={groupedByMonth} />
-          <div ref={sentinelRef} className="h-1" />
-          {isFetchingNextPage && <OrdersListSkeleton rows={2} />}
-        </>
-      )}
+            {orders.length === 0 ? (
+              <p className="py-16 text-center text-sm text-muted-foreground">No orders match this view.</p>
+            ) : (
+              <>
+                <OrderList groupedByMonth={groupedByMonth} />
+                <div ref={sentinelRef} className="h-1" />
+                {isFetchingNextPage && <OrdersListSkeleton rows={2} />}
+              </>
+            )}
+          </>
+        )}
+      </ListStateWrapper>
     </div>
-  )
-}
+  );
+};
 
 export default OrdersPage;

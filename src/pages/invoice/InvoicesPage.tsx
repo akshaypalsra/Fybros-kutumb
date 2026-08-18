@@ -1,44 +1,25 @@
-import { useState } from "react"
-import { useQuery } from "@tanstack/react-query"
+import { useState } from "react";
+import type { Tab } from "@/types/invoice.types";
+import { FinanceHeader } from "./components/invoice/FinanceHeader";
+import { ListFilters } from "./components/invoice/ListFilters";
+import { FinanceTabContent } from "./components/invoice/FinanceTabContent";
+import { useVerticals } from "@/hooks/useVerticals";
+import { useActiveBusinessPartner } from "./hooks/useActiveBusinessPartner";
+import { useListFiltersState } from "./hooks/useListFiltersState";
 
-import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi"
-import type { Tab } from "@/types/invoice.types"
-
-import { FinanceHeader } from "./components/FinanceHeader"
-import { ListFilters } from "./components/ListFilters"
-import { OverviewTab } from "./components/OverviewTab"
-import { InvoicesTab } from "./components/InvoicesTab"
-import { TransactionsTab } from "./components/TransactionsTab"
-import { useVerticals } from "@/hooks/useVerticals"
-import { ScrollToTopButton } from "@/common/components/ScrollToTopButton"
+import { ScrollToTopButton } from "@/common/components/ScrollToTopButton";
+import { getSearchPlaceholder, shouldShowListFilters } from "@/utils/financeTabs.utils";
 
 const FinanceOverviewPage = () => {
-  const { getBusinessPartners } = useBusinessPartnerApi()
-  const [activeTab, setActiveTab] = useState<Tab>("overview")
-  const [search, setSearch] = useState("")
-  const [dateFrom, setDateFrom] = useState("")
-  const [dateTo, setDateTo] = useState("")
-  const [selectedVerticals, setSelectedVerticals] = useState<string[]>([])
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const { partner, businessPartnerId, enabled } = useActiveBusinessPartner();
+  const { verticals } = useVerticals();
+  const filters = useListFiltersState();
 
-  const { data: partner } = useQuery({
-    queryKey: ["business-partner"],
-    queryFn: () => getBusinessPartners(),
-  })
-
-  const businessPartnerId = partner?.cardCode ?? ""
-  const enabled = !!businessPartnerId
-  const { verticals } = useVerticals()
   const handleTabChange = (tab: Tab) => {
-    setActiveTab(tab)
-    setSearch("")
-    setDateFrom("")
-    setDateTo("")
-    setSelectedVerticals([])
-  }
-
-  const showListFilters = activeTab === "invoices" || activeTab === "transactions"
-  const searchPlaceholder =
-    activeTab === "invoices" ? "Search by invoice number..." : "Search by reference or order no."
+    setActiveTab(tab);
+    filters.reset();
+  };
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -49,50 +30,35 @@ const FinanceOverviewPage = () => {
         onTabChange={handleTabChange}
       />
 
-      {showListFilters && (
+      {shouldShowListFilters(activeTab) && (
         <ListFilters
-          search={search}
-          onSearchChange={setSearch}
-          searchPlaceholder={searchPlaceholder}
-          dateFrom={dateFrom}
-          dateTo={dateTo}
-          onDateFromChange={setDateFrom}
-          onDateToChange={setDateTo}
+          search={filters.search}
+          onSearchChange={filters.setSearch}
+          searchPlaceholder={getSearchPlaceholder(activeTab)}
+          dateFrom={filters.dateFrom}
+          dateTo={filters.dateTo}
+          onDateFromChange={filters.setDateFrom}
+          onDateToChange={filters.setDateTo}
           verticals={verticals}
-          selectedVerticals={selectedVerticals}
-          onVerticalsChange={setSelectedVerticals}
+          selectedVerticals={filters.selectedVerticals}
+          onVerticalsChange={filters.setSelectedVerticals}
         />
       )}
 
-      {activeTab === "overview" && (
-        <OverviewTab
-          businessPartnerId={businessPartnerId}
-          enabled={enabled}
-          onViewAllInvoices={() => handleTabChange("invoices")}
-        />
-      )}
-
-      {activeTab === "invoices" && (
-        <InvoicesTab
-          businessPartnerId={businessPartnerId}
-          enabled={enabled}
-          search={search}
-          dateFrom={dateFrom}
-          dateTo={dateTo}
-          selectedVerticals={selectedVerticals}
-        />
-      )}
-
-      {activeTab === "transactions" && (
-        <TransactionsTab
-          businessPartnerId={businessPartnerId}
-          enabled={enabled}
-        />
-      )}
+      <FinanceTabContent
+        activeTab={activeTab}
+        businessPartnerId={businessPartnerId}
+        enabled={enabled}
+        search={filters.search}
+        dateFrom={filters.dateFrom}
+        dateTo={filters.dateTo}
+        selectedVerticals={filters.selectedVerticals}
+        onViewAllInvoices={() => handleTabChange("invoices")}
+      />
 
       <ScrollToTopButton />
     </div>
-  )
-}
+  );
+};
 
-export default FinanceOverviewPage
+export default FinanceOverviewPage;

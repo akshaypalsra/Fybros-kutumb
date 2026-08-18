@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { AppLoading } from "@/common/components/AppLoading";
-import { useSingleUser } from "@/hooks/useSingleUser";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import {
     SidebarInset,
     SidebarProvider,
@@ -10,7 +10,7 @@ import { AppSidebar } from "@/sidebar/AppSidebar";
 
 
 const EffectRunner = () => {
-    const { isPending, isError } = useSingleUser();
+    const { isPending, isError } = useCurrentUser();
 
     if (isPending) {
         return <AppLoading className="h-screen" />;
