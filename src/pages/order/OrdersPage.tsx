@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useOrdersData } from "./hooks/useOrdersData";
 import { useOrderFilterState } from "./hooks/useOrderFilterState";
 import { useOrderFilters } from "./hooks/useOrderFilters";
@@ -12,8 +13,17 @@ import { OrdersListSkeleton } from "./components/order/OrdersListSkeleton";
 import { useVerticals } from "@/hooks/useVerticals";
 import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
 import type { Order } from "@/types/order.types";
-import { ListStateWrapper } from "@/wrapper/ListStateWrapper";
-import { OrdersListError } from "./components/order/OrdersListError";
+import { QueryState } from "@/wrapper/QueryState";
+import { ErrorState } from "@/common/components/ErrorState";
+import { EmptyState } from "@/common/components/EmptyState";
+import { Dropdown } from "@/common/components/Dropdown";
+
+type OrderViewMode = "ORDER" | "ITEM";
+
+const VIEW_MODE_OPTIONS: { label: string; value: OrderViewMode }[] = [
+  { label: "Order Wise", value: "ORDER" },
+  { label: "Item Wise", value: "ITEM" },
+];
 
 const OrdersPage = () => {
   const {
@@ -31,6 +41,8 @@ const OrdersPage = () => {
     setSelectedVerticals,
   } = useOrderFilterState();
 
+  const [viewMode, setViewMode] = useState<OrderViewMode>("ORDER");
+
   const {
     partner,
     orders,
@@ -43,7 +55,6 @@ const OrdersPage = () => {
 
   const { verticals } = useVerticals();
   const { groupedByMonth } = useOrderFilters(orders);
-
   const { orderValue, isOrderValueLoading } = useOrderValue({
     cardCode: partner?.cardCode,
     dateFrom,
@@ -63,6 +74,7 @@ const OrdersPage = () => {
   return (
     <div className="mx-auto max-w-295">
       <OrdersHeader partnerName={partner?.cardName} partnerCode={partner?.cardCode} />
+      <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
       <OrderFiltersBar
         query={query}
         onQueryChange={setQuery}
@@ -74,30 +86,35 @@ const OrdersPage = () => {
         selectedVerticals={selectedVerticals}
         onVerticalsChange={setSelectedVerticals}
       />
-      <ListStateWrapper<Order>
+      <div className="mb-4 flex  gap-3">
+
+        <Dropdown<OrderViewMode>
+          options={VIEW_MODE_OPTIONS}
+          value={viewMode}
+          onValueChange={setViewMode}
+          className="rounded-full"
+          variant="secondary"
+        />
+        <OrderTabs value={tab} onChange={setTab} />
+      </div>
+
+      <QueryState<Order[]>
         isLoading={isLoading}
         isError={isError}
         data={orders}
-        skeleton={<OrdersListSkeleton rows={5} />}
-        error={<OrdersListError />}
+        loading={<OrdersListSkeleton rows={5} />}
+        error={<ErrorState message="Failed to load orders. Please try again." />}
+        isEmpty={(data) => data.length === 0}
+        empty={<EmptyState message="No orders match with filters." />}
       >
-        {(orders) => (
+        {() => (
           <>
-            <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
-            <OrderTabs value={tab} onChange={setTab} />
-
-            {orders.length === 0 ? (
-              <p className="py-16 text-center text-sm text-muted-foreground">No orders match this view.</p>
-            ) : (
-              <>
-                <OrderList groupedByMonth={groupedByMonth} />
-                <div ref={sentinelRef} className="h-1" />
-                {isFetchingNextPage && <OrdersListSkeleton rows={2} />}
-              </>
-            )}
+            <OrderList groupedByMonth={groupedByMonth} />
+            <div ref={sentinelRef} className="h-1" />
+            {isFetchingNextPage && <OrdersListSkeleton rows={2} />}
           </>
         )}
-      </ListStateWrapper>
+      </QueryState>
     </div>
   );
 };

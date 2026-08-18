@@ -1,15 +1,15 @@
 import { CalendarClock, Receipt } from "lucide-react";
-import { StatCard } from "../invoice/StatCard";
+import { StatSummaryCard } from "@/common/components/StatSummaryCard";
 import { TRANSACTION_STATUS_STYLES, TRANSACTION_SUB_TABS } from "@/constants/Constants";
 import { SegmentedControl } from "@/common/components/SegmentedControl";
 import { formatCompactCurrency, formatCurrency, formatDate } from "@/utils/common.utils";
 import { StatusBadge } from "@/common/components/StatusBadge";
-
 import { useTransactionsTabData } from "../../hooks/useTransactionsTabData";
 import { Skeleton } from "@/common/components/ui/skeleton";
-import { LoadingEmptyContent } from "@/wrapper/LoadingEmptyContent";
+import { QueryState } from "@/wrapper/QueryState";
 import { EmptyState } from "@/common/components/EmptyState";
 import { ErrorState } from "@/common/components/ErrorState";
+import type { Transaction } from "@/hooks/useTransaction";
 
 interface TransactionsTabProps {
   businessPartnerId: string;
@@ -29,16 +29,14 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
 
   return (
     <>
-      {isError && <ErrorState className="mb-4" message="Failed to load transactions. Please try again." />}
-
       <div className="mb-5 grid grid-cols-2 gap-4">
-        <StatCard
+        <StatSummaryCard
           icon={<Receipt className="h-4 w-4" />}
           label="Total Outstanding"
           value={formatCompactCurrency(outstandingSummary?.outstandingAmount)}
           sublabel="As on Today"
         />
-        <StatCard
+        <StatSummaryCard
           icon={<CalendarClock className="h-4 w-4" />}
           label="Overdue"
           value={formatCompactCurrency(outstandingSummary?.overdueAmount)}
@@ -56,38 +54,41 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
         />
       </div>
 
-      <LoadingEmptyContent
+      <QueryState<Transaction[]>
         isLoading={isLoading}
-        isEmpty={filteredTransactions.length === 0}
-        loadingState={
+        isError={isError}
+        data={filteredTransactions}
+        loading={
           <div className="space-y-3">
             {Array.from({ length: 6 }).map((_, i) => (
               <Skeleton key={i} className="h-16 w-full rounded-xl" />
             ))}
           </div>
         }
-        emptyState={
-          <EmptyState message="No invoices match your filters." />
-        }
+        error={<ErrorState message="Failed to load transactions. Please try again." />}
+        isEmpty={(data) => data.length === 0}
+        empty={<EmptyState message="No transactions match your filters." />}
       >
-        <div className="divide-y rounded-2xl border bg-card px-5">
-          {filteredTransactions.map((txn) => (
-            <div key={txn.id} className="flex items-start justify-between gap-4 py-3.5">
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-foreground">{txn.referenceNumber}</p>
-                <p className="text-xs text-muted-foreground">
-                  {formatDate(txn.transactionDate)}
-                  {txn.orderNumber ? ` | ${txn.orderNumber}` : ""}
-                </p>
+        {(transactions) => (
+          <div className="divide-y rounded-2xl border bg-card px-5">
+            {transactions.map((txn) => (
+              <div key={txn.id} className="flex items-start justify-between gap-4 py-3.5">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-foreground">{txn.referenceNumber}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {formatDate(txn.transactionDate)}
+                    {txn.orderNumber ? ` | ${txn.orderNumber}` : ""}
+                  </p>
+                </div>
+                <div className="flex shrink-0 flex-col items-end gap-2">
+                  <p className="text-sm font-semibold text-foreground">{formatCurrency(txn.amount)}</p>
+                  <StatusBadge status={txn.status} styles={TRANSACTION_STATUS_STYLES} />
+                </div>
               </div>
-              <div className="flex shrink-0 flex-col items-end gap-2">
-                <p className="text-sm font-semibold text-foreground">{formatCurrency(txn.amount)}</p>
-                <StatusBadge status={txn.status} styles={TRANSACTION_STATUS_STYLES} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </LoadingEmptyContent>
+            ))}
+          </div>
+        )}
+      </QueryState>
     </>
   );
 };

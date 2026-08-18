@@ -54,7 +54,7 @@ export const OrderItemsCard = ({
     <div className="rounded-xl border border-border bg-card p-5">
         <div className="mb-4 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-foreground">Items {items ? `(${items.length})` : ""}</h2>
-            <SegmentedControl options={FILTERS} value={itemFilter} onChange={onFilterChange} />
+            <SegmentedControl options={FILTERS} value={itemFilter} onChange={onFilterChange} size="sm"/>
         </div>
 
         {isLoading && (

@@ -6,8 +6,8 @@ import type { OrderValue, TabFilter } from "@/types/order.types";
 
 interface UseOrderValueParams {
     cardCode?: string;
-    dateFrom: string;
-    dateTo: string;
+    dateFrom?: string;
+    dateTo?: string;
     fromDateIso?: string;
     toDateIso?: string;
     query: string;

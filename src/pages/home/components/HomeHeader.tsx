@@ -1,52 +1,29 @@
-import { Bell, Search } from "lucide-react";
+// pages/home/components/HomeHeader.tsx
+import { IdentityHeader } from "@/common/components/IdentityHeader";
+import { Button } from "@/common/components/ui/button";
+import { Bell } from "lucide-react";
 
 interface HomeHeaderProps {
   cardName?: string;
   cardCode?: string;
 }
 
-export const HomeHeader = ({
-  cardName,
-  cardCode,
-}: HomeHeaderProps) => {
-  const displayName = cardName || "Account";
-
+export const HomeHeader = ({ cardName, cardCode }: HomeHeaderProps) => {
   return (
-    <header className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-destructive/10 text-lg font-semibold text-destructive">
-          {displayName[0]?.toUpperCase() ?? "A"}
-        </div>
-
-        <div>
-          <p className="text-base font-semibold text-foreground">
-            {cardName}
-          </p>
-
-          <p className="text-xs text-muted-foreground">
-            {cardCode}
-          </p>
-        </div>
-      </div>
+    <header className="flex items-center justify-between mb-6 ">
+      <IdentityHeader name={cardName} subtitle={cardCode} showAvatar={true} />
 
       <div className="flex items-center gap-4">
-        <button
+        <Button
           type="button"
-          aria-label="Search"
-          className="text-foreground"
-        >
-          <Search className="h-5 w-5" />
-        </button>
-
-        <button
-          type="button"
+          variant="ghost"
+          size="icon"
           aria-label="Notifications"
-          className="relative text-foreground"
+          className="relative h-9 w-9 text-foreground"
         >
           <Bell className="h-5 w-5" />
-
-          <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-destructive ring-2 ring-background" />
-        </button>
+          <span className="absolute right-1 top-1 h-2.5 w-2.5 rounded-full bg-destructive ring-2 ring-background" />
+        </Button>
       </div>
     </header>
   );

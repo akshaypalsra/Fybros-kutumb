@@ -2,25 +2,25 @@ import type { ReactNode } from "react";
 
 type QueryStateProps<T> =
   | {
-      isLoading: boolean;
-      isError: boolean;
-      data?: T;
-      loading: ReactNode;
-      error: ReactNode;
-      isEmpty?: (data: T) => boolean;
-      empty?: ReactNode;
-      children: (data: T) => ReactNode;
-    }
+    isLoading: boolean;
+    isError: boolean;
+    data?: T;
+    loading: ReactNode;
+    error: ReactNode;
+    isEmpty?: (data: T) => boolean;
+    empty?: ReactNode;
+    children: (data: T) => ReactNode;
+  }
   | {
-      isLoading: boolean;
-      isError: boolean;
-      data?: never;
-      loading: ReactNode;
-      error: ReactNode;
-      isEmpty?: never;
-      empty?: never;
-      children: ReactNode;
-    };
+    isLoading: boolean;
+    isError: boolean;
+    data?: never;
+    loading: ReactNode;
+    error: ReactNode;
+    isEmpty?: never;
+    empty?: never;
+    children: ReactNode;
+  };
 
 export function QueryState<T>(props: QueryStateProps<T>) {
   const { isLoading, isError, loading, error } = props;

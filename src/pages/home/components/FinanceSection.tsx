@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { CalendarClock, ChevronRight, FileText, Receipt } from "lucide-react";
 
 import { formatCompactCurrency } from "@/utils/common.utils";
-import { StatCard } from "../../invoice/components/invoice/StatCard";
+import { StatSummaryCard } from "@/common/components/StatSummaryCard";
 
 interface FinanceSectionProps {
     outstandingAmount?: number;
@@ -30,26 +30,26 @@ export const FinanceSection = ({
                 </Link>
             </div>
 
-            <StatCard
-                variant="hero"
+            <StatSummaryCard
+                variant="dark"
                 icon={<FileText className="h-4 w-4" />}
                 label="Outstanding Balance"
                 value={formatCompactCurrency(outstandingAmount)}
                 sublabel="As on Today"
-                className="mb-3 text-white"
+                className="mb-3"
             />
 
             <div className="grid grid-cols-2 gap-3">
-                <StatCard
+                <StatSummaryCard
                     icon={<CalendarClock className="h-4 w-4" />}
                     label="Overdue"
                     value={formatCompactCurrency(overdueAmount)}
                     sublabel="Action needed"
                 />
-                <StatCard
+                <StatSummaryCard
                     icon={<Receipt className="h-4 w-4" />}
                     label="Invoices"
-                    value={String(invoices) ?? '0'}
+                    value={invoices != null ? String(invoices) : "0"}
                     sublabel=""
                 />
             </div>

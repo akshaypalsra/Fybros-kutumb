@@ -31,7 +31,7 @@ const HomePage = () => {
       loading={<HomeSkeleton />}
       error={
         <ErrorState
-          className="mx-auto mt-4 max-w-6xl"
+          className="mx-auto  max-w-6xl"
           message="Couldn't load your dashboard. Please try again."
         />
       }
@@ -42,7 +42,7 @@ const HomePage = () => {
           cardCode={partner?.cardCode}
         />
 
-       
+
 
         <FinanceSection
           outstandingAmount={
@@ -51,10 +51,10 @@ const HomePage = () => {
           overdueAmount={
             outstandingSummary?.overdueAmount
           }
-         invoices = {outstandingSummary?.totalInvoices ?? 0}
+          invoices={outstandingSummary?.totalInvoices ?? 0}
         />
 
-        <OrderSection/>
+        <OrderSection cardCode={partner?.cardCode} />
 
         <SalesSnapshotSection
           trend={salesTrend}

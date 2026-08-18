@@ -1,12 +1,6 @@
 import { SalesSnapshotChart } from "./SalesSnapshotChart";
 import { SalesSnapshotSummary } from "./SalesSnapshotSummary";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/common/components/ui/select";
+import { Dropdown } from "@/common/components/Dropdown";
 
 interface SalesTrend {
   points: {
@@ -21,18 +15,23 @@ interface SalesSnapshotSectionProps {
   trend?: SalesTrend;
   range: "MoM" | "QoQ";
   onRangeChange: (range: "MoM" | "QoQ") => void;
+  isLoading?: boolean;
 }
+
+const RANGE_OPTIONS: { label: string; value: "MoM" | "QoQ" }[] = [
+  { label: "MoM", value: "MoM" },
+  { label: "QoQ", value: "QoQ" },
+];
 
 export const SalesSnapshotSection = ({
   trend,
   range,
   onRangeChange,
+  isLoading,
 }: SalesSnapshotSectionProps) => {
   return (
     <section>
-      <h2 className="mb-3 text-md font-heading text-foreground">
-        Sales Snapshot
-      </h2>
+      <h2 className="mb-3 text-md font-heading text-foreground">Sales Snapshot</h2>
 
       <div className="rounded-2xl border bg-card p-4">
         <div className="mb-1 flex items-start justify-between">
@@ -40,19 +39,12 @@ export const SalesSnapshotSection = ({
             bookedLastMonth={trend?.bookedLastMonth}
             growthPercent={trend?.growthPercent}
           />
-
-          <Select value={range} onValueChange={(value) => onRangeChange(value as "MoM" | "QoQ")}>
-            <SelectTrigger className="h-8 w-22.5 text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="MoM">MoM</SelectItem>
-              <SelectItem value="QoQ">QoQ</SelectItem>
-            </SelectContent>
-          </Select>
+          <Dropdown value={range} onValueChange={onRangeChange} options={RANGE_OPTIONS} />
         </div>
 
-        <SalesSnapshotChart points={trend?.points} />
+        <div className={isLoading ? "opacity-50 transition-opacity" : "transition-opacity"}>
+          <SalesSnapshotChart points={trend?.points} />
+        </div>
       </div>
     </section>
   );

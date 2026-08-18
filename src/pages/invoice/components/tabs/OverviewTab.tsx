@@ -1,3 +1,4 @@
+// OverviewTab.tsx
 import { Link } from "react-router-dom";
 import { ChevronRight, FileText } from "lucide-react";
 import { Badge } from "@/common/components/ui/badge";
@@ -9,8 +10,9 @@ import { formatCompactCurrency, formatCurrency, formatDate } from "@/utils/commo
 import { StatusBadge } from "@/common/components/StatusBadge";
 
 import { useOverviewTabData } from "../../hooks/useOverviewTabData";
-import { QueryStateGate } from "@/wrapper/QueryStateGate";
+import { QueryState } from "@/wrapper/QueryState";
 import { ErrorState } from "@/common/components/ErrorState";
+import { EmptyState } from "@/common/components/EmptyState";
 
 interface OverviewTabProps {
   businessPartnerId: string;
@@ -23,10 +25,10 @@ export const OverviewTab = ({ businessPartnerId, enabled, onViewAllInvoices }: O
     useOverviewTabData({ businessPartnerId, enabled });
 
   return (
-    <QueryStateGate
+    <QueryState
       isLoading={isLoading}
       isError={isError}
-      skeleton={
+      loading={
         <div className="grid gap-5 lg:grid-cols-3">
           <Skeleton className="h-48 w-full rounded-2xl lg:col-span-2" />
           <Skeleton className="h-48 w-full rounded-2xl" />
@@ -36,7 +38,6 @@ export const OverviewTab = ({ businessPartnerId, enabled, onViewAllInvoices }: O
       }
       error={<ErrorState className="mb-4" message="Failed to load your finance overview. Please try again." />}
     >
-
       <div className="grid gap-5 lg:grid-cols-3">
         <div className="flex items-center justify-between gap-4 rounded-2xl bg-secondary p-6 text-white shadow-sm lg:col-span-2">
           <div>
@@ -95,7 +96,7 @@ export const OverviewTab = ({ businessPartnerId, enabled, onViewAllInvoices }: O
           </div>
 
           {pendingInvoices.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No pending invoices.</p>
+            <EmptyState message="No pending invoices." />
           ) : (
             <div className="divide-y">
               {pendingInvoices.map((invoice) => (
@@ -130,6 +131,6 @@ export const OverviewTab = ({ businessPartnerId, enabled, onViewAllInvoices }: O
           )}
         </div>
       </div>
-    </QueryStateGate>
+    </QueryState>
   );
 };

@@ -8,8 +8,7 @@ import { InvoiceSummaryCard } from "./components/invoice-detail/InvoiceSummaryCa
 import { InvoiceDetailSkeleton } from "./components/invoice-detail/InvoiceDetailSkeleton";
 import { InvoiceDetailError } from "./components/invoice-detail/InvoiceDetailError";
 import { DetailPageHeader } from "@/common/components/DetailPageHeader";
-import { QueryStateWrapper } from "@/wrapper/QueryStateWrapper";
-
+import { QueryState } from "@/wrapper/QueryState";
 
 const InvoiceDetailPage = () => {
   const navigate = useNavigate();
@@ -27,11 +26,11 @@ const InvoiceDetailPage = () => {
   });
 
   return (
-    <QueryStateWrapper<Invoice>
+    <QueryState<Invoice>
       isLoading={isLoading}
       isError={isError}
       data={invoice}
-      skeleton={<InvoiceDetailSkeleton />}
+      loading={<InvoiceDetailSkeleton />}
       error={<InvoiceDetailError />}
     >
       {(invoice) => (
@@ -52,7 +51,7 @@ const InvoiceDetailPage = () => {
           </div>
         </div>
       )}
-    </QueryStateWrapper>
+    </QueryState>
   );
 };
 

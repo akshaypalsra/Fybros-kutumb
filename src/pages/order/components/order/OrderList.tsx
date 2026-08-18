@@ -1,6 +1,7 @@
 
 import type { Order } from "@/types/order.types"
 import { OrderRow } from "./OrderRow"
+import { ScrollToTopButton } from "@/common/components/ScrollToTopButton"
 
 interface OrderListProps {
   groupedByMonth: [string, Order[]][]
@@ -24,5 +25,7 @@ export const OrderList = ({ groupedByMonth }: OrderListProps) => (
         </div>
       </div>
     ))}
+
+    <ScrollToTopButton/>
   </div>
 )

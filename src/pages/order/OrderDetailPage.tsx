@@ -16,8 +16,7 @@ import { OrderHero } from "./components/order-detail/OrderHero";
 import { OrderDetailSkeleton } from "./components/order-detail/OrderDetailSkeleton";
 import { OrderDetailError } from "./components/order-detail/OrderDetailError";
 import { DetailPageHeader } from "@/common/components/DetailPageHeader";
-import { QueryStateWrapper } from "@/wrapper/QueryStateWrapper";
-
+import { QueryState } from "@/wrapper/QueryState";
 
 const OrderDetailPage = () => {
   const navigate = useNavigate();
@@ -51,11 +50,11 @@ const OrderDetailPage = () => {
   const { counts, filteredItems, overallStatus } = useOrderItemCounts(items, itemFilter);
 
   return (
-    <QueryStateWrapper<OrderWithExtras>
+    <QueryState<OrderWithExtras>
       isLoading={isOrderLoading}
       isError={isOrderError}
       data={order}
-      skeleton={<OrderDetailSkeleton />}
+      loading={<OrderDetailSkeleton />}
       error={<OrderDetailError />}
     >
       {(order) => (
@@ -65,6 +64,8 @@ const OrderDetailPage = () => {
             subtitle={order.orderNumber}
             onBack={() => navigate(-1)}
           />
+
+
           <OrderHero order={order} status={overallStatus} />
 
           <div className="grid gap-4 lg:grid-cols-3">
@@ -89,7 +90,7 @@ const OrderDetailPage = () => {
           </div>
         </div>
       )}
-    </QueryStateWrapper>
+    </QueryState>
   );
 };
 

@@ -7,7 +7,7 @@ import { OrderItemDetailsList } from "./components/order-item-detail/OrderItemDe
 import { DetailPageHeader } from "@/common/components/DetailPageHeader";
 
 import type { OrderItemDetail } from "@/types/order.types";
-import { QueryStateWrapper } from "@/wrapper/QueryStateWrapper";
+import { QueryState } from "@/wrapper/QueryState";
 
 const OrderItemDetailPage = () => {
     const navigate = useNavigate();
@@ -15,11 +15,11 @@ const OrderItemDetailPage = () => {
     const { data: item, isLoading, isError } = useOrderItemDetail(orderItemId);
 
     return (
-        <QueryStateWrapper<OrderItemDetail>
+        <QueryState<OrderItemDetail>
             isLoading={isLoading}
             isError={isError}
             data={item}
-            skeleton={<OrderItemDetailSkeleton />}
+            loading={<OrderItemDetailSkeleton />}
             error={<OrderItemDetailError />}
         >
             {(item) => (
@@ -38,7 +38,7 @@ const OrderItemDetailPage = () => {
                     </div>
                 </div>
             )}
-        </QueryStateWrapper>
+        </QueryState>
     );
 };
 

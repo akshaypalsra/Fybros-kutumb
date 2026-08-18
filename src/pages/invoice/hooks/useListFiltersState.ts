@@ -11,7 +11,6 @@ export function useListFiltersState() {
         setDateTo("");
         setSelectedVerticals([]);
     };
-
     return {
         search,
         setSearch,

@@ -1,6 +1,7 @@
 // src/common/components/DetailPageHeader.tsx
 import { ArrowLeft, Download } from "lucide-react";
 import { Button } from "@/common/components/ui/button";
+import { IdentityHeader } from "./IdentityHeader";
 
 interface DetailPageHeaderProps {
   title: string;
@@ -21,14 +22,8 @@ export const DetailPageHeader = ({ title, subtitle, onBack, onDownload }: Detail
       >
         <ArrowLeft className="h-4 w-4" />
       </Button>
-      <div>
-        <h1 className="text-lg font-heading tracking-tight text-foreground">{title}</h1>
-        {subtitle && (
-          <p className="text-xs text-muted-foreground">{subtitle}</p>
-        )}
-      </div>
+      <IdentityHeader showAvatar={false} name={title} subtitle={subtitle} />
     </div>
-
     <Button
       variant="outline"
       onClick={onDownload}

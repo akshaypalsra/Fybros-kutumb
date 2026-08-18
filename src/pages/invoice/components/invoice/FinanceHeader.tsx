@@ -3,13 +3,10 @@ import type { Tab } from "@/types/invoice.types";
 import { Bell } from "lucide-react";
 import { Button } from "@/common/components/ui/button";
 import { SegmentedControl } from "@/common/components/SegmentedControl";
-import { UserAvatar } from "@/common/components/UserAvatar";
-import { cn } from "@/utils/common.utils";
+import { IdentityHeader } from "@/common/components/IdentityHeader";
 
 
 export const FinanceHeader = ({
-  partnerName,
-  partnerCode,
   activeTab,
   onTabChange,
 }: {
@@ -19,21 +16,7 @@ export const FinanceHeader = ({
   onTabChange: (tab: Tab) => void;
 }) => (
   <div className="mb-6 flex items-center justify-between">
-    <div className="flex items-center gap-3">
-      <UserAvatar
-        name={partnerName}
-        className={cn("h-11 w-11")}
-        fallbackClassName="bg-secondary/10 text-lg font-bold text-secondary"
-        fallbackVariant="first-letter"
-      />
-      <div>
-        <h1 className="text-lg font-normal leading-tight text-foreground">
-          {partnerName || "Loading..."}
-        </h1>
-        <p className="text-xs text-muted-foreground">{partnerCode}</p>
-      </div>
-    </div>
-
+    <IdentityHeader showAvatar={false} name='Invoices' subtitle='View and manage all your invoices' />
     <div className="flex items-center gap-6">
       <SegmentedControl
         variant="underline"

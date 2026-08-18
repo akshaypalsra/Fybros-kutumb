@@ -1,4 +1,3 @@
-// pages/home/components/OrderSection.tsx
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { OrderStatsCards } from "@/pages/order/components/order/OrderStatsCards";
@@ -11,14 +10,12 @@ interface OrderSectionProps {
 export const OrderSection = ({ cardCode }: OrderSectionProps) => {
     const { orderValue, isOrderValueLoading } = useOrderValue({
         cardCode,
-        dateFrom: "",
-        dateTo: "",
-        fromDateIso: undefined,
-        toDateIso: undefined,
         query: "",
         selectedVerticals: [],
         tab: "ALL",
     });
+
+
 
     return (
         <section className="mb-6">

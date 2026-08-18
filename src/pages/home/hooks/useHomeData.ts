@@ -1,5 +1,5 @@
 // pages/home/hooks/useHomeData.ts
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useOrderApi } from "@/api/order/useOrderApi";
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
 
@@ -84,20 +84,23 @@ export function useHomeData({ salesRange }: UseHomeDataParams) {
   });
 
   const {
-    data: salesTrend,
+    data: analyticsPoints,
     isLoading: isSalesTrendLoading,
     isError: isSalesTrendError,
-  } = useQuery<SalesTrend>({
+  } = useQuery({
     queryKey: ["home", "sales-trend", salesRange],
-    queryFn: () => getInvoiceAnalytics(RANGE_TO_ANALYTICS_TYPE[salesRange]).then(toSalesTrend),
+    queryFn: () => getInvoiceAnalytics(RANGE_TO_ANALYTICS_TYPE[salesRange]),
+    placeholderData: keepPreviousData,
   });
 
   return {
     partner,
     outstandingSummary,
     orderValue,
-    salesTrend,
-    isLoading: isPartnerLoading || isOutstandingLoading || isOrderValueLoading || isSalesTrendLoading,
-    isError: isPartnerError || isOutstandingError || isOrderValueError || isSalesTrendError,
+    salesTrend: toSalesTrend(analyticsPoints ?? []),
+    isSalesTrendLoading,
+    isSalesTrendError,
+    isLoading: isPartnerLoading || isOutstandingLoading || isOrderValueLoading,
+    isError: isPartnerError || isOutstandingError || isOrderValueError,
   };
 }
