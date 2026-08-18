@@ -48,6 +48,7 @@ export const InvoicesTab = ({
         <StatSummaryCard
           icon={<Receipt className="h-4 w-4" />}
           label="Total Outstanding"
+           variant = "dark"
           value={formatCompactCurrency(outstandingSummary?.outstandingAmount)}
           sublabel="As on Today"
         />

@@ -31,6 +31,7 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
     <>
       <div className="mb-5 grid grid-cols-2 gap-4">
         <StatSummaryCard
+         variant = "dark"
           icon={<Receipt className="h-4 w-4" />}
           label="Total Outstanding"
           value={formatCompactCurrency(outstandingSummary?.outstandingAmount)}
