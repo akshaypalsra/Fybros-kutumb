@@ -1,6 +1,7 @@
-import { tabToOrderStatus, useOrdersData } from "./hooks/useOrdersData";
+import { useOrdersData } from "./hooks/useOrdersData";
 import { useOrderFilterState } from "./hooks/useOrderFilterState";
 import { useOrderFilters } from "./hooks/useOrderFilters";
+import { useOrderValue } from "./hooks/useOrderValue";
 import { OrdersHeader } from "./components/order/OrdersHeader";
 import { OrderFiltersBar } from "./components/order/OrderFilters";
 import { OrderStatsCards } from "./components/order/OrderStatsCards";
@@ -10,12 +11,9 @@ import { OrdersListSkeleton } from "./components/order/OrdersListSkeleton";
 
 import { useVerticals } from "@/hooks/useVerticals";
 import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
-import { useOrderApi } from "@/api/order/useOrderApi";
-import { useQuery } from "@tanstack/react-query";
-import type { Order, OrderValue } from "@/types/order.types";
+import type { Order } from "@/types/order.types";
 import { ListStateWrapper } from "@/wrapper/ListStateWrapper";
 import { OrdersListError } from "./components/order/OrdersListError";
-
 
 const OrdersPage = () => {
   const {
@@ -43,21 +41,18 @@ const OrdersPage = () => {
     isFetchingNextPage,
   } = useOrdersData({ query, dateFrom, dateTo, selectedVerticals, tab });
 
-  const { getOrderValue } = useOrderApi();
   const { verticals } = useVerticals();
   const { groupedByMonth } = useOrderFilters(orders);
 
-  const { data: orderValue, isLoading: isOrderValueLoading } = useQuery<OrderValue>({
-    queryKey: ["order-value", partner?.cardCode, dateFrom, dateTo, query, selectedVerticals, tab],
-    queryFn: () =>
-      getOrderValue(partner!.cardCode, {
-        fromDate: fromDateIso,
-        toDate: toDateIso,
-        query: query.trim() || undefined,
-        verticals: selectedVerticals.length ? selectedVerticals : undefined,
-        orderStatus: tabToOrderStatus(tab),
-      }),
-    enabled: !!partner?.cardCode,
+  const { orderValue, isOrderValueLoading } = useOrderValue({
+    cardCode: partner?.cardCode,
+    dateFrom,
+    dateTo,
+    fromDateIso,
+    toDateIso,
+    query,
+    selectedVerticals,
+    tab,
   });
 
   const sentinelRef = useInfiniteScrollTrigger(
@@ -68,7 +63,6 @@ const OrdersPage = () => {
   return (
     <div className="mx-auto max-w-295">
       <OrdersHeader partnerName={partner?.cardName} partnerCode={partner?.cardCode} />
-
       <OrderFiltersBar
         query={query}
         onQueryChange={setQuery}
@@ -80,7 +74,6 @@ const OrdersPage = () => {
         selectedVerticals={selectedVerticals}
         onVerticalsChange={setSelectedVerticals}
       />
-
       <ListStateWrapper<Order>
         isLoading={isLoading}
         isError={isError}

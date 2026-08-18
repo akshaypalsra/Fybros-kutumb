@@ -4,6 +4,8 @@ import {
   getOrderInvoices,
   getInvoice,
   getInvoiceStatistics,
+  type InvoiceAnalyticsType,
+  getInvoiceAnalytics,
 } from "./invoiceApi";
 import type { SearchInvoicesParams } from "@/types/invoice.types";
 
@@ -18,5 +20,7 @@ export const useInvoiceApi = () => {
     getInvoice: (invoiceId: string) => getInvoice(axiosInstance, invoiceId),
     getInvoiceStatistics: (businessPartnerId: string) =>
       getInvoiceStatistics(axiosInstance, businessPartnerId),
+   getInvoiceAnalytics: (analyticsType: InvoiceAnalyticsType) =>
+  getInvoiceAnalytics(axiosInstance, analyticsType),
   };
 };

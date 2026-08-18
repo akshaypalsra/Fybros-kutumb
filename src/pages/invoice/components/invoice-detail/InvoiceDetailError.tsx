@@ -1,7 +1,10 @@
+import { ErrorState } from "@/common/components/ErrorState";
+
 export function InvoiceDetailError() {
   return (
-    <div className="mx-auto max-w-6xl">
-      <p className="text-sm text-destructive">Couldn&apos;t load this invoice. Please try again.</p>
-    </div>
+    <ErrorState
+      className="mx-auto max-w-6xl"
+      message="Couldn't load this invoice. Please try again."
+    />
   );
 }

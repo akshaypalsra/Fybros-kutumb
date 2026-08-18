@@ -8,6 +8,8 @@ import { StatusBadge } from "@/common/components/StatusBadge";
 import { useTransactionsTabData } from "../../hooks/useTransactionsTabData";
 import { Skeleton } from "@/common/components/ui/skeleton";
 import { LoadingEmptyContent } from "@/wrapper/LoadingEmptyContent";
+import { EmptyState } from "@/common/components/EmptyState";
+import { ErrorState } from "@/common/components/ErrorState";
 
 interface TransactionsTabProps {
   businessPartnerId: string;
@@ -27,7 +29,7 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
 
   return (
     <>
-      {isError && <p className="mb-4 text-sm text-destructive">Failed to load transactions. Please try again.</p>}
+      {isError && <ErrorState className="mb-4" message="Failed to load transactions. Please try again." />}
 
       <div className="mb-5 grid grid-cols-2 gap-4">
         <StatCard
@@ -65,9 +67,7 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
           </div>
         }
         emptyState={
-          <div className="rounded-2xl border bg-card p-10 text-center">
-            <p className="text-sm text-muted-foreground">No transactions match your filters.</p>
-          </div>
+          <EmptyState message="No invoices match your filters." />
         }
       >
         <div className="divide-y rounded-2xl border bg-card px-5">

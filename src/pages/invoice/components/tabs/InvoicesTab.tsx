@@ -9,6 +9,8 @@ import { getInvoiceDueLabel } from "@/utils/invoice.utils";
 import { StatusBadge } from "@/common/components/StatusBadge";
 import { useInvoicesTabData } from "../../hooks/useInvoicesTabData";
 import { LoadingEmptyContent } from "@/wrapper/LoadingEmptyContent";
+import { ErrorState } from "@/common/components/ErrorState";
+import { EmptyState } from "@/common/components/EmptyState";
 
 interface InvoicesTabProps {
   businessPartnerId: string;
@@ -40,7 +42,9 @@ export const InvoicesTab = ({
 
   return (
     <>
-      {isError && <p className="mb-4 text-sm text-destructive">Failed to load invoices. Please try again.</p>}
+      {isError && (
+        <ErrorState className="mb-4" message="Failed to load invoices." />
+      )}
 
       <div className="mb-5 grid grid-cols-2 gap-4">
         <StatCard
@@ -78,9 +82,7 @@ export const InvoicesTab = ({
           </div>
         }
         emptyState={
-          <div className="rounded-2xl border bg-card p-10 text-center">
-            <p className="text-sm text-muted-foreground">No invoices match your filters.</p>
-          </div>
+          <EmptyState message="No invoices match your filters." />
         }
       >
         <div className="space-y-6">

@@ -10,6 +10,7 @@ import { StatusBadge } from "@/common/components/StatusBadge";
 
 import { useOverviewTabData } from "../../hooks/useOverviewTabData";
 import { QueryStateGate } from "@/wrapper/QueryStateGate";
+import { ErrorState } from "@/common/components/ErrorState";
 
 interface OverviewTabProps {
   businessPartnerId: string;
@@ -33,8 +34,9 @@ export const OverviewTab = ({ businessPartnerId, enabled, onViewAllInvoices }: O
           <Skeleton className="h-64 w-full rounded-2xl lg:col-span-3" />
         </div>
       }
-      error={<p className="mb-4 text-sm text-destructive">Failed to load your finance overview. Please try again.</p>}
+      error={<ErrorState className="mb-4" message="Failed to load your finance overview. Please try again." />}
     >
+
       <div className="grid gap-5 lg:grid-cols-3">
         <div className="flex items-center justify-between gap-4 rounded-2xl bg-secondary p-6 text-white shadow-sm lg:col-span-2">
           <div>

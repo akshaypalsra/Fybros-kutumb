@@ -1,7 +1,10 @@
+import { ErrorState } from "@/common/components/ErrorState";
+
 export function OrderItemDetailError() {
-    return (
-        <div className="mx-auto max-w-6xl">
-            <p className="text-sm text-destructive">Couldn&apos;t load this item. Please try again.</p>
-        </div>
-    );
+  return (
+    <ErrorState
+      className="mx-auto max-w-6xl"
+      message="Couldn't load this item. Please try again."
+    />
+  );
 }

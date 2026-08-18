@@ -66,3 +66,25 @@ export const getInvoiceStatistics = async (
 
     return response.data;
 };
+
+
+
+export type InvoiceAnalyticsType = "MONTH_OVER_MONTH" | "QUARTER_OVER_QUARTER" | "YEAR_OVER_YEAR";
+
+export interface InvoiceAnalyticsPoint {
+    period: string;
+    label: string;
+    amount: number;
+}
+
+export const getInvoiceAnalytics = async (
+  axiosInstance: AxiosInstance,
+  analyticsType: InvoiceAnalyticsType
+): Promise<InvoiceAnalyticsPoint[]> => {
+  const response = await axiosInstance.get<InvoiceAnalyticsPoint[]>(
+    "/business-partners/invoices/analytics",
+    { params: { analyticsType } }
+  );
+
+  return response.data;
+};

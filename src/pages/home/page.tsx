@@ -1,117 +1,68 @@
-import { useAuth } from "react-oidc-context";
-import {
-  Building2,
-  Users,
-  ShieldCheck,
-  UserCircle2,
-} from "lucide-react";
+import { useState } from "react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/common/components/ui/card";
-import { Badge } from "@/common/components/ui/badge";
+import { ErrorState } from "@/common/components/ErrorState";
+import { QueryState } from "@/wrapper/QueryState";
+
+import { HomeSkeleton } from "./components/HomeSkeleton";
+import { HomeHeader } from "./components/HomeHeader";
+import { FinanceSection } from "./components/FinanceSection";
+import { SalesSnapshotSection } from "./components/SalesSnapshotSection";
+import { useHomeData } from "./hooks/useHomeData";
+import { OrderSection } from "./components/OrderSection";
 
 const HomePage = () => {
-  const auth = useAuth();
-  const name = auth.user?.profile.name ?? "User";
-  const email = auth.user?.profile.email ?? "-";
+  const [salesRange, setSalesRange] =
+    useState<"MoM" | "QoQ">("QoQ");
+
+  const {
+    partner,
+    outstandingSummary,
+    salesTrend,
+    isLoading,
+    isError,
+  } = useHomeData({
+    salesRange,
+  });
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6">
-      <div className="rounded-xl bg-secondary p-8 text-white shadow-sm">
-        <h1 className="text-3xl font-bold">Welcome back, {name} 👋</h1>
-        <p className="mt-1 text-sm text-white/80">
-          You're successfully signed in to <strong>Kutumb</strong>.
-        </p>
-      </div>
+    <QueryState
+      isLoading={isLoading}
+      isError={isError}
+      loading={<HomeSkeleton />}
+      error={
+        <ErrorState
+          className="mx-auto mt-4 max-w-6xl"
+          message="Couldn't load your dashboard. Please try again."
+        />
+      }
+    >
+      <main className="mx-auto max-w-6xl pb-6">
+        <HomeHeader
+          cardName={partner?.cardName}
+          cardCode={partner?.cardCode}
+        />
 
-     
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <Card className="rounded-xl border-border">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">User</CardTitle>
-            <UserCircle2 className="h-5 w-5 text-secondary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl font-semibold text-foreground">{name}</div>
-            <CardDescription>{email}</CardDescription>
-          </CardContent>
-        </Card>
+       
 
-        <Card className="rounded-xl border-border">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Business Partners</CardTitle>
-            <Building2 className="h-5 w-5 text-secondary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-foreground">1</div>
-            <CardDescription>Connected business partner</CardDescription>
-          </CardContent>
-        </Card>
+        <FinanceSection
+          outstandingAmount={
+            outstandingSummary?.outstandingAmount
+          }
+          overdueAmount={
+            outstandingSummary?.overdueAmount
+          }
+         invoices = {outstandingSummary?.totalInvoices ?? 0}
+        />
 
-        <Card className="rounded-xl border-border">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Status</CardTitle>
-            <ShieldCheck className="h-5 w-5 text-emerald-600" />
-          </CardHeader>
-          <CardContent>
-            <Badge
-              variant="outline"
-              className="rounded-full border-emerald-200 bg-emerald-100 px-3 py-0.5 text-xs font-semibold text-emerald-700"
-            >
-              Active
-            </Badge>
-            <CardDescription className="mt-2">Authentication successful</CardDescription>
-          </CardContent>
-        </Card>
+        <OrderSection/>
 
-        <Card className="rounded-xl border-border">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Account</CardTitle>
-            <Users className="h-5 w-5 text-secondary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl font-semibold text-foreground">Kutumb</div>
-            <CardDescription>SAP Business Portal</CardDescription>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Quick Overview */}
-      <Card className="rounded-xl border-border">
-        <CardHeader>
-          <CardTitle>Quick Overview</CardTitle>
-          <CardDescription>
-            Use the sidebar to navigate through the available modules.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex items-center justify-between rounded-lg border border-border p-4 text-sm">
-            <span className="text-muted-foreground">🏠 Home Dashboard</span>
-            <Badge
-              variant="outline"
-              className="rounded-full border-emerald-200 bg-emerald-100 px-3 py-0.5 text-xs font-semibold text-emerald-700"
-            >
-              Available
-            </Badge>
-          </div>
-
-          <div className="flex items-center justify-between rounded-lg border border-border p-4 text-sm">
-            <span className="text-muted-foreground">👥 Business Partners</span>
-            <Badge
-              variant="outline"
-              className="rounded-full border-emerald-200 bg-emerald-100 px-3 py-0.5 text-xs font-semibold text-emerald-700"
-            >
-              Available
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+        <SalesSnapshotSection
+          trend={salesTrend}
+          range={salesRange}
+          onRangeChange={setSalesRange}
+        />
+      </main>
+    </QueryState>
   );
 };
 
