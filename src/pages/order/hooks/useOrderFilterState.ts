@@ -1,8 +1,18 @@
 import { useMemo, useState } from "react"
 import type { TabFilter } from "@/types/order.types"
+import { TAB_FILTERS } from "@/constants/Constants"
+import { useLocalStorageState } from "@/hooks/useLocalStorageState"
+
+const isTabFilter = (v: string): v is TabFilter =>
+  TAB_FILTERS.includes(v as TabFilter)
+
 
 export const useOrderFilterState = () => {
-  const [tab, setTab] = useState<TabFilter>("ALL")
+  const [tab, setTab] = useLocalStorageState<TabFilter>(
+    "orders.tab",
+    "ALL",
+    isTabFilter
+  )
   const [query, setQuery] = useState("")
   const [dateFrom, setDateFrom] = useState("")
   const [dateTo, setDateTo] = useState("")

@@ -14,7 +14,7 @@ interface OrderStatsCardsProps {
 export const OrderStatsCards = ({ orderValue, isOrderValueLoading }: OrderStatsCardsProps) => (
   <div className="mb-6 grid grid-cols-4 gap-3.5">
     <StatSummaryCard
-      variant="dark"
+      variant="accent"
       icon={<img src={TotalImage} alt="" className="h-4 w-4" />}
       label="Total Order Value"
       value={formatCompactCurrency(orderValue?.orderValue ?? 0)}

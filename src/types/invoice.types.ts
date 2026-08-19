@@ -55,7 +55,7 @@ export interface Invoice {
 }
 
 
-export type Tab = "overview" | "invoices" | "transactions"
+export type Tab = "overview" | "invoices" | "ledger"
 
 export type InvoiceSubTab = "ALL" | "OPEN" | "CLOSED" | "OVERDUE"
 

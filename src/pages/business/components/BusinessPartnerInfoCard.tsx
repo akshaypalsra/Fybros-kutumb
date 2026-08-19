@@ -16,7 +16,6 @@ export const BusinessPartnerInfoCard = ({ partner }: BusinessPartnerInfoCardProp
       <CardContent className="space-y-6 p-6">
         <div>
           <div className="flex items-center gap-2">
-            <span className="h-4 w-1 rounded-full bg-secondary" />
             <h2 className="text-lg font-semibold text-foreground">Business Information</h2>
           </div>
           <Separator className="mt-3" />

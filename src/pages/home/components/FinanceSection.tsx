@@ -31,7 +31,7 @@ export const FinanceSection = ({
             </div>
 
             <StatSummaryCard
-                variant="dark"
+                variant="accent"
                 icon={<FileText className="h-4 w-4" />}
                 label="Outstanding Balance"
                 value={formatCompactCurrency(outstandingAmount)}

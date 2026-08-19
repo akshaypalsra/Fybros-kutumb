@@ -1,10 +1,12 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
 import type { OutstandingSummary } from "@/types/businessPartner.types";
 import type { Invoice, InvoiceSubTab } from "@/types/invoice.types";
 import { formatMonthYear } from "@/utils/common.utils";
+import { useLocalStorageState } from "@/hooks/useLocalStorageState";
+import { INVOICE_SUB_TABS } from "@/constants/Constants";
 
 interface UseInvoicesTabDataParams {
     businessPartnerId: string;
@@ -14,6 +16,9 @@ interface UseInvoicesTabDataParams {
     dateTo: string;
     selectedVerticals: string[];
 }
+
+const isInvoiceSubTab = (v: string): v is InvoiceSubTab =>
+    INVOICE_SUB_TABS.some((tab) => tab.key === v);
 
 export function useInvoicesTabData({
     businessPartnerId,
@@ -25,7 +30,11 @@ export function useInvoicesTabData({
 }: UseInvoicesTabDataParams) {
     const { getOutstandingSummary } = useBusinessPartnerApi();
     const { searchInvoices } = useInvoiceApi();
-    const [subTab, setSubTab] = useState<InvoiceSubTab>("ALL");
+    const [subTab, setSubTab] = useLocalStorageState<InvoiceSubTab>(
+        "invoices.subTab",
+        "ALL",
+        isInvoiceSubTab
+    );
 
     const trimmedSearch = search.trim();
     const fromDateIso = dateFrom ? new Date(`${dateFrom}T00:00:00.000Z`).toISOString() : undefined;

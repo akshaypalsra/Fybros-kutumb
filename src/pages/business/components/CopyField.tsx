@@ -24,7 +24,7 @@ export const CopyField = ({ value }: CopyFieldProps) => {
       setCopied(true);
       timeoutRef.current = setTimeout(() => setCopied(false), 1500);
     } catch {
-      // clipboard write failed silently — no user-facing error needed here
+
     }
   };
 

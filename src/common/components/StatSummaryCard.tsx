@@ -9,7 +9,7 @@ interface StatSummaryCardProps {
   sublabel?: string;
   icon?: ReactNode;
   isLoading?: boolean;
-  variant?: "light" | "dark";
+  variant?: "light" | "accent";
   className?: string;
 }
 
@@ -22,13 +22,15 @@ export const StatSummaryCard = ({
   variant = "light",
   className,
 }: StatSummaryCardProps) => {
-  const isDark = variant === "dark";
+  const isAccent = variant === "accent";
 
   return (
     <Card
       className={cn(
         "rounded-2xl p-5",
-        isDark ? "border-0 bg-secondary text-white" : "border-border bg-card",
+        isAccent
+          ? "border-0 bg-secondary text-white dark:shadow-lg dark:shadow-black/30"
+          : "border-border bg-card text-card-foreground",
         className,
       )}
     >
@@ -37,7 +39,7 @@ export const StatSummaryCard = ({
           <p
             className={cn(
               "text-sm font-heading",
-              isDark ? "text-white/90" : "text-foreground",
+              isAccent ? "text-white/90" : "text-foreground",
             )}
           >
             {label}
@@ -46,7 +48,9 @@ export const StatSummaryCard = ({
             <div
               className={cn(
                 "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
-                isDark ? "bg-white text-black" : "bg-muted text-muted-foreground",
+                isAccent
+                  ? "bg-white text-black"
+                  : "bg-muted text-muted-foreground",
               )}
             >
               {icon}
@@ -55,16 +59,25 @@ export const StatSummaryCard = ({
         </div>
 
         {isLoading ? (
-          <Skeleton className={cn("mt-3 h-7 w-24", isDark && "bg-white/20")} />
+          <Skeleton
+            className={cn("mt-3 h-7 w-24", isAccent ? "bg-white/20" : "bg-muted")}
+          />
         ) : (
-          <p className="mt-2 text-2xl font-heading leading-none">{value}</p>
+          <p
+            className={cn(
+              "mt-2 text-2xl font-heading leading-none",
+              isAccent ? "text-white" : "text-foreground",
+            )}
+          >
+            {value}
+          </p>
         )}
 
         {sublabel && (
           <p
             className={cn(
               "mt-2 text-xs",
-              isDark ? "text-white/80" : "text-muted-foreground",
+              isAccent ? "text-white/80" : "text-muted-foreground",
             )}
           >
             {sublabel}

@@ -47,7 +47,7 @@ export function FinanceTabContent({
         );
     }
 
-    if (activeTab === "transactions") {
+    if (activeTab === "ledger") {
         return <TransactionsTab businessPartnerId={businessPartnerId} enabled={enabled} />;
     }
 

@@ -1,4 +1,5 @@
 import { SegmentedControl } from "@/common/components/SegmentedControl";
+import { TAB_FILTERS } from "@/constants/Constants";
 import type { TabFilter } from "@/types/order.types";
 
 interface OrderTabsProps {
@@ -6,7 +7,7 @@ interface OrderTabsProps {
   onChange: (value: TabFilter) => void;
 }
 
-const TAB_FILTERS: TabFilter[] = ["ALL", "OPEN", "CLOSED"];
+
 
 export const OrderTabs = ({ value, onChange }: OrderTabsProps) => (
   <div className="mb-4 flex items-center justify-between">

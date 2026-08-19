@@ -1,4 +1,6 @@
 import type { DatePreset, InvoiceSubTab, Tab, TransactionSubTab } from "@/types/invoice.types"
+import type { TabFilter } from "@/types/order.types"
+import type { ItemFilter } from "@/types/orderDetail.types"
 
 export const CONSTANTS = {
     API_BASE_URL: import.meta.env.VITE_APP_API_BASE_URL,
@@ -35,7 +37,7 @@ export const TRANSACTION_STATUS_STYLES: Record<string, string> = {
 export const TABS: { key: Tab; label: string }[] = [
   { key: "overview", label: "Overview" },
   { key: "invoices", label: "Invoices" },
-  { key: "transactions", label: "Transactions" },
+  { key: "ledger", label: "Ledger" },
 ]
 
 export const INVOICE_SUB_TABS: { key: InvoiceSubTab; label: string }[] = [
@@ -57,3 +59,8 @@ export const DATE_PRESETS: { key: DatePreset; label: string }[] = [
   { key: "LAST_30", label: "Last 30 days" },
   { key: "LAST_90", label: "Last 90 days" },
 ]
+
+
+export const ITEM_FILTERS: ItemFilter[] = ["ALL", "DELIVERED", "PENDING"];
+
+export const TAB_FILTERS: TabFilter[] = ["ALL", "OPEN", "CLOSED"];

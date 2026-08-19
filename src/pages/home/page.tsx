@@ -42,8 +42,6 @@ const HomePage = () => {
           cardCode={partner?.cardCode}
         />
 
-
-
         <FinanceSection
           outstandingAmount={
             outstandingSummary?.outstandingAmount

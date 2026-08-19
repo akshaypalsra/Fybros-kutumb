@@ -87,7 +87,6 @@ const OrdersPage = () => {
         onVerticalsChange={setSelectedVerticals}
       />
       <div className="mb-4 flex  gap-3">
-
         <Dropdown<OrderViewMode>
           options={VIEW_MODE_OPTIONS}
           value={viewMode}

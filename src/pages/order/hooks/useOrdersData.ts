@@ -15,7 +15,7 @@ interface UseOrdersDataParams {
 export const tabToOrderStatus = (tab: TabFilter): string | undefined => {
   if (tab === "OPEN") return "OPEN"
   if (tab === "CLOSED") return "CLOSED"
-  return undefined // ALL — no filter
+  return undefined
 }
 
 export const useOrdersData = ({ query, dateFrom, dateTo, selectedVerticals, tab }: UseOrdersDataParams) => {

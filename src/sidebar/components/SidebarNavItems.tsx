@@ -34,15 +34,25 @@ export function SidebarNavItems() {
                 <SidebarMenuButton
                   asChild
                   isActive={isActive}
-                  className="data-[active=true]:bg-secondary/10 data-[active=true]:text-secondary data-[active=true]:font-semibold"
+                  className="bg-surface-muted mb-2 rounded-sm data-[active=true]:bg-secondary/10 data-[active=true]:text-secondary data-[active=true]:font-semibold"
                 >
                   <NavLink
                     to={item.url}
                     end={item.end}
                     aria-current={isActive ? "page" : undefined}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 p-2"
                   >
-                    <HugeiconsIcon icon={item.icon} size={20} />
+                    <div
+                      className={`p-1 rounded-full ${
+                        isActive ? "bg-secondary/80" : "bg-inactive"
+                      }`}
+                    >
+                      <HugeiconsIcon
+                        icon={item.icon}
+                        size={20}
+                        className={isActive ? "text-white" : "text-foreground"}
+                      />
+                    </div>
                     <span>{item.title}</span>
                   </NavLink>
                 </SidebarMenuButton>

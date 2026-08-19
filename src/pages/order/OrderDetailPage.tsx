@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useOrderApi } from "@/api/order/useOrderApi";
@@ -17,12 +16,25 @@ import { OrderDetailSkeleton } from "./components/order-detail/OrderDetailSkelet
 import { OrderDetailError } from "./components/order-detail/OrderDetailError";
 import { DetailPageHeader } from "@/common/components/DetailPageHeader";
 import { QueryState } from "@/wrapper/QueryState";
+import { ITEM_FILTERS } from "@/constants/Constants";
+import { useLocalStorageState } from "@/hooks/useLocalStorageState";
+
+
+const isItemFilter = (v: string): v is ItemFilter =>
+  ITEM_FILTERS.includes(v as ItemFilter);
+
 
 const OrderDetailPage = () => {
   const navigate = useNavigate();
   const { orderId = "" } = useParams<{ orderId: string }>();
   const { getOrder, getOrderItems, getOrderInvoices } = useOrderApi();
-  const [itemFilter, setItemFilter] = useState<ItemFilter>("ALL");
+
+
+  const [itemFilter, setItemFilter] = useLocalStorageState<ItemFilter>(
+    `orders.${orderId}.itemFilter`,
+    "ALL",
+    isItemFilter
+  );
 
   const {
     data: order,
@@ -34,7 +46,7 @@ const OrderDetailPage = () => {
     enabled: !!orderId,
   });
 
-  const { data: items, isLoading: isItemsLoading } = useQuery<OrderItem[]>({
+  const { data: items, isLoading: isItemsLoading, isError: isItemsError } = useQuery<OrderItem[]>({
     queryKey: ["order-items", orderId],
     queryFn: () => getOrderItems(orderId) as unknown as Promise<OrderItem[]>,
     enabled: !!orderId,
@@ -64,8 +76,6 @@ const OrderDetailPage = () => {
             subtitle={order.orderNumber}
             onBack={() => navigate(-1)}
           />
-
-
           <OrderHero order={order} status={overallStatus} />
 
           <div className="grid gap-4 lg:grid-cols-3">
@@ -77,6 +87,7 @@ const OrderDetailPage = () => {
                 items={items}
                 filteredItems={filteredItems}
                 isLoading={isItemsLoading}
+                isError={isItemsError}
                 itemFilter={itemFilter}
                 onFilterChange={setItemFilter}
               />
