@@ -10,14 +10,14 @@ interface OutstandingStatsRowProps {
 export const OutstandingStatsRow = ({ outstandingSummary }: OutstandingStatsRowProps) => (
   <div className="mb-5 grid grid-cols-2 gap-4">
     <StatSummaryCard
-      icon={<Receipt className="h-4 w-4" />}
+      icon={<Receipt className="h-4 w-4 font-light" />}
       label="Total Outstanding"
       variant="accent"
       value={formatCompactCurrency(outstandingSummary?.outstandingAmount)}
       sublabel="As on Today"
     />
     <StatSummaryCard
-      icon={<CalendarClock className="h-4 w-4" />}
+      icon={<CalendarClock className="h-4 w-4 font-light" />}
       label="Overdue"
       value={formatCompactCurrency(outstandingSummary?.overdueAmount)}
       sublabel="Action needed"

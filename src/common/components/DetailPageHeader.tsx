@@ -27,7 +27,6 @@ export const DetailPageHeader = ({ title, subtitle, onBack, onDownload }: Detail
     <Button
       variant="outline"
       onClick={onDownload}
-      disabled={!onDownload}
       className="gap-2"
     >
       <Download className="h-4 w-4" />

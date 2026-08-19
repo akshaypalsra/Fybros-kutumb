@@ -8,6 +8,9 @@ import { DetailPageHeader } from "@/common/components/DetailPageHeader";
 
 import type { OrderItemDetail } from "@/types/order.types";
 import { QueryState } from "@/wrapper/QueryState";
+import { generateOrderItemPdf } from "@/utils/generate-order-item-pdf";
+
+
 
 const OrderItemDetailPage = () => {
     const navigate = useNavigate();
@@ -22,15 +25,18 @@ const OrderItemDetailPage = () => {
             loading={<OrderItemDetailSkeleton />}
             error={<OrderItemDetailError />}
         >
+         
             {(item) => (
                 <div className="mx-auto max-w-6xl">
                     <DetailPageHeader
                         title="Item Detail"
                         onBack={() => navigate(-1)}
+                        onDownload={() => generateOrderItemPdf(item)}
                     />
                     <div className="grid gap-4 lg:grid-cols-3">
                         <div className="lg:col-span-1">
                             <OrderItemHeroCard item={item} />
+                            Hello
                         </div>
                         <div className="lg:col-span-2">
                             <OrderItemDetailsList item={item} />

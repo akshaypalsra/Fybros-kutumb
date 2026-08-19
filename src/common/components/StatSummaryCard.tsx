@@ -30,7 +30,7 @@ export const StatSummaryCard = ({
         "rounded-2xl p-5",
         isAccent
           ? "border-0 bg-secondary text-white dark:shadow-lg dark:shadow-black/30"
-          : "border-border bg-card text-card-foreground",
+          : "border-border  bg-card text-card-foreground",
         className,
       )}
     >
@@ -49,8 +49,8 @@ export const StatSummaryCard = ({
               className={cn(
                 "flex h-8 w-8 shrink-0 items-center justify-center rounded-full",
                 isAccent
-                  ? "bg-white text-black"
-                  : "bg-muted text-muted-foreground",
+                  ? "bg-white text-black "
+                  : "bg-muted dark:bg-muted-foreground text-muted-foreground dark:text-black",
               )}
             >
               {icon}

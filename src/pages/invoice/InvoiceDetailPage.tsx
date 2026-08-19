@@ -1,4 +1,3 @@
-// src/invoices/InvoiceDetailPage.tsx
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
@@ -9,6 +8,7 @@ import { InvoiceDetailSkeleton } from "./components/invoice-detail/InvoiceDetail
 import { InvoiceDetailError } from "./components/invoice-detail/InvoiceDetailError";
 import { DetailPageHeader } from "@/common/components/DetailPageHeader";
 import { QueryState } from "@/wrapper/QueryState";
+import { generateInvoicePdf } from "@/utils/generate-invoice-pdf";
 
 const InvoiceDetailPage = () => {
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ const InvoiceDetailPage = () => {
           <DetailPageHeader
             title={`Invoice ${invoice.invoiceNumber ?? invoice.docEntry}`}
             onBack={() => navigate(-1)}
+            onDownload={() => generateInvoicePdf(invoice)}
           />
 
           <div className="grid gap-4 lg:grid-cols-3">

@@ -18,6 +18,7 @@ import { DetailPageHeader } from "@/common/components/DetailPageHeader";
 import { QueryState } from "@/wrapper/QueryState";
 import { ITEM_FILTERS } from "@/constants/Constants";
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
+import { generateOrderPdf } from "@/utils/generate-order-pdf";
 
 
 const isItemFilter = (v: string): v is ItemFilter =>
@@ -75,6 +76,7 @@ const OrderDetailPage = () => {
             title="Order Detail"
             subtitle={order.orderNumber}
             onBack={() => navigate(-1)}
+            onDownload={() => generateOrderPdf(order, items ?? [], invoices ?? [], computedTotal)}
           />
           <OrderHero order={order} status={overallStatus} />
 
