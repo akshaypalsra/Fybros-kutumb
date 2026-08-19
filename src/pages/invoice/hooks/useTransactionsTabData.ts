@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
-import type { OutstandingSummary } from "@/types/businessPartner.types";
 import { useLedgerApi } from "@/api/transaction/useTransactionApi";
 import type { LedgerEntry } from "@/api/transaction/transactionApi";
+import { useOutstandingSummary } from "@/hooks/useOutstandingSummary";
+
 
 interface UseTransactionsTabDataParams {
   businessPartnerId: string;
@@ -17,18 +17,13 @@ export function useTransactionsTabData({
   fromDate,
   toDate,
 }: UseTransactionsTabDataParams) {
-  const { getOutstandingSummary } = useBusinessPartnerApi();
   const { getBusinessPartnerLedgers } = useLedgerApi();
 
   const {
     data: outstandingSummary,
     isLoading: isOutstandingLoading,
     isError: isOutstandingError,
-  } = useQuery<OutstandingSummary>({
-    queryKey: ["outstanding-summary", businessPartnerId],
-    queryFn: () => getOutstandingSummary(),
-    enabled,
-  });
+  } = useOutstandingSummary(businessPartnerId, enabled);
 
   const {
     data: ledgerEntries,

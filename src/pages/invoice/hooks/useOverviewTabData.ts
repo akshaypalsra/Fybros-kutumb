@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
-import type { AgeingBucketResponse, CreditOverview, OutstandingSummary } from "@/types/businessPartner.types";
+import type { AgeingBucketResponse, CreditOverview } from "@/types/businessPartner.types";
 import type { Invoice } from "@/types/invoice.types";
+import { useOutstandingSummary } from "../../../hooks/useOutstandingSummary";
 
 interface UseOverviewTabDataParams {
   businessPartnerId: string;
@@ -10,7 +11,7 @@ interface UseOverviewTabDataParams {
 }
 
 export function useOverviewTabData({ businessPartnerId, enabled }: UseOverviewTabDataParams) {
-  const { getCreditOverview, getOutstandingSummary, getAgeingDistribution } = useBusinessPartnerApi();
+  const { getCreditOverview, getAgeingDistribution } = useBusinessPartnerApi();
   const { searchInvoices } = useInvoiceApi();
 
   const {
@@ -27,11 +28,7 @@ export function useOverviewTabData({ businessPartnerId, enabled }: UseOverviewTa
     data: outstandingSummary,
     isLoading: isOutstandingLoading,
     isError: isOutstandingError,
-  } = useQuery<OutstandingSummary>({
-    queryKey: ["outstanding-summary", businessPartnerId],
-    queryFn: () => getOutstandingSummary(),
-    enabled,
-  });
+  } = useOutstandingSummary(businessPartnerId, enabled);
 
   const {
     data: ageingDistribution,

@@ -1,8 +1,6 @@
-import { useQuery } from "@tanstack/react-query"
-import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi"
-import type { BusinessPartner } from "@/types/businessPartner.types"
 import type { TabFilter } from "@/types/order.types"
 import { useInfiniteOrders } from "@/pages/order/hooks/useInfiniteOrders"
+import { useActiveBusinessPartner } from "@/hooks/useActiveBusinessPartner"
 
 interface UseOrdersDataParams {
   query: string
@@ -19,11 +17,7 @@ export const tabToOrderStatus = (tab: TabFilter): string | undefined => {
 }
 
 export const useOrdersData = ({ query, dateFrom, dateTo, selectedVerticals, tab }: UseOrdersDataParams) => {
-  const { getBusinessPartners } = useBusinessPartnerApi()
-  const { data: partner, isLoading: isPartnerLoading, isError: isPartnerError } = useQuery<BusinessPartner>({
-    queryKey: ["business-partner"],
-    queryFn: () => getBusinessPartners(),
-  })
+ const { partner, isPartnerLoading, isPartnerError, enabled } = useActiveBusinessPartner()
 
   const {
     orders,
@@ -41,7 +35,7 @@ export const useOrdersData = ({ query, dateFrom, dateTo, selectedVerticals, tab 
       verticals: selectedVerticals.length ? selectedVerticals : undefined,
       orderStatus: tabToOrderStatus(tab),
     },
-    !!partner?.cardCode,
+    enabled
   )
 
   return {

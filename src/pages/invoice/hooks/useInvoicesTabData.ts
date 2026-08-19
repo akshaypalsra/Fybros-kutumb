@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
-import type { OutstandingSummary } from "@/types/businessPartner.types";
 import type { Invoice, InvoiceSubTab } from "@/types/invoice.types";
-import { formatMonthYear } from "@/utils/common.utils";
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { INVOICE_SUB_TABS } from "@/constants/Constants";
+import { useOutstandingSummary } from "../../../hooks/useOutstandingSummary";
+import { groupByMonth } from "@/utils/grouping.utils";
 
 interface UseInvoicesTabDataParams {
     businessPartnerId: string;
@@ -17,8 +16,7 @@ interface UseInvoicesTabDataParams {
     selectedVerticals: string[];
 }
 
-const isInvoiceSubTab = (v: string): v is InvoiceSubTab =>
-    INVOICE_SUB_TABS.some((tab) => tab.key === v);
+const isInvoiceSubTab = (v: string): v is InvoiceSubTab => INVOICE_SUB_TABS.some((tab) => tab.key === v);
 
 export function useInvoicesTabData({
     businessPartnerId,
@@ -28,7 +26,6 @@ export function useInvoicesTabData({
     dateTo,
     selectedVerticals,
 }: UseInvoicesTabDataParams) {
-    const { getOutstandingSummary } = useBusinessPartnerApi();
     const { searchInvoices } = useInvoiceApi();
     const [subTab, setSubTab] = useLocalStorageState<InvoiceSubTab>(
         "invoices.subTab",
@@ -44,11 +41,7 @@ export function useInvoicesTabData({
         data: outstandingSummary,
         isLoading: isOutstandingLoading,
         isError: isOutstandingError,
-    } = useQuery<OutstandingSummary>({
-        queryKey: ["outstanding-summary", businessPartnerId],
-        queryFn: () => getOutstandingSummary(),
-        enabled,
-    });
+    } = useOutstandingSummary(businessPartnerId, enabled);
 
     const {
         data: invoices,
@@ -86,15 +79,7 @@ export function useInvoicesTabData({
         return invoice.status === "OVERDUE";
     });
 
-    const invoicesByMonth = useMemo(() => {
-        const groups = new Map<string, Invoice[]>();
-        for (const invoice of filteredInvoices) {
-            const key = formatMonthYear(invoice.docDate);
-            if (!groups.has(key)) groups.set(key, []);
-            groups.get(key)!.push(invoice);
-        }
-        return Array.from(groups.entries());
-    }, [filteredInvoices]);
+  const invoicesByMonth = useMemo(() => groupByMonth(filteredInvoices, (invoice) => invoice.docDate),[filteredInvoices]);
 
     return {
         outstandingSummary,

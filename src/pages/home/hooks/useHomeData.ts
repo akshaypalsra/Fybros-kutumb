@@ -1,12 +1,9 @@
-// pages/home/hooks/useHomeData.ts
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useOrderApi } from "@/api/order/useOrderApi";
-import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
-
-import type { OrderValue } from "@/types/order.types";
-import type { BusinessPartner, OutstandingSummary } from "@/types/businessPartner.types";
 import type { InvoiceAnalyticsPoint, InvoiceAnalyticsType } from "@/api/invoice/invoiceApi";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
+import { useOutstandingSummary } from "@/hooks/useOutstandingSummary";
+import { useActiveBusinessPartner } from "@/hooks/useActiveBusinessPartner";
+import { useOrderValue } from "@/pages/order/hooks/useOrderValue";
 
 interface SalesTrendPoint {
   month: string;
@@ -41,47 +38,25 @@ function toSalesTrend(points: InvoiceAnalyticsPoint[]): SalesTrend {
 }
 
 export function useHomeData({ salesRange }: UseHomeDataParams) {
-  const { getBusinessPartners, getOutstandingSummary } = useBusinessPartnerApi();
-  const { getOrderValue } = useOrderApi();
   const { getInvoiceAnalytics } = useInvoiceApi();
 
-  const {
-    data: partner,
-    isLoading: isPartnerLoading,
-    isError: isPartnerError,
-  } = useQuery<BusinessPartner>({
-    queryKey: ["business-partner"],
-    queryFn: () => getBusinessPartners(),
-  });
-
-  const cardCode = partner?.cardCode;
+  const { partner, businessPartnerId, isPartnerLoading, isPartnerError, enabled } = useActiveBusinessPartner();
 
   const {
     data: outstandingSummary,
     isLoading: isOutstandingLoading,
     isError: isOutstandingError,
-  } = useQuery<OutstandingSummary>({
-    queryKey: ["outstanding-summary", cardCode],
-    queryFn: () => getOutstandingSummary(),
-    enabled: !!cardCode,
-  });
+  } = useOutstandingSummary(businessPartnerId, enabled);
 
   const {
-    data: orderValue,
-    isLoading: isOrderValueLoading,
-    isError: isOrderValueError,
-  } = useQuery<OrderValue>({
-    queryKey: ["home", "order-value", cardCode],
-    queryFn: () =>
-      getOrderValue(cardCode!, {
-        fromDate: undefined,
-        toDate: undefined,
-        query: undefined,
-        verticals: undefined,
-        orderStatus: undefined,
-      }),
-    enabled: !!cardCode,
+    orderValue,
+    isOrderValueLoading,
+    isOrderValueError,
+  } = useOrderValue({
+    cardCode: businessPartnerId,
+    queryKeyPrefix: ["home", "order-value"],
   });
+
 
   const {
     data: analyticsPoints,

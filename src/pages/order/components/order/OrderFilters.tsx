@@ -15,6 +15,7 @@ interface OrderFiltersBarProps {
     verticals: Vertical[]
     selectedVerticals: string[]
     onVerticalsChange: (value: string[]) => void
+    clearAll: () => void
 }
 
 export const OrderFiltersBar = ({
@@ -27,15 +28,9 @@ export const OrderFiltersBar = ({
     verticals,
     selectedVerticals,
     onVerticalsChange,
+    clearAll
 }: OrderFiltersBarProps) => {
     const hasActiveFilters = !!query || !!dateFrom || !!dateTo || selectedVerticals.length > 0
-
-    const handleClearAll = () => {
-        onQueryChange("")
-        onDateFromChange("")
-        onDateToChange("")
-        onVerticalsChange([])
-    }
 
     return (
         <div className="mb-6 flex flex-wrap items-center gap-3">
@@ -58,7 +53,7 @@ export const OrderFiltersBar = ({
                 variant="ghost"
                 size="sm"
                 disabled={!hasActiveFilters}
-                onClick={handleClearAll}
+                onClick={clearAll}
                 className="gap-1 rounded-lg py-4.5 border border-border text-xs font-medium text-muted-foreground hover:text-foreground"
             >
                 <X className="h-3.5 w-3.5" />

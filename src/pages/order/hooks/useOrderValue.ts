@@ -1,4 +1,3 @@
-// pages/order/hooks/useOrderValue.ts
 import { useQuery } from "@tanstack/react-query";
 import { useOrderApi } from "@/api/order/useOrderApi";
 import { tabToOrderStatus } from "./useOrdersData";
@@ -10,9 +9,10 @@ interface UseOrderValueParams {
     dateTo?: string;
     fromDateIso?: string;
     toDateIso?: string;
-    query: string;
-    selectedVerticals: string[];
-    tab: TabFilter;
+    query?: string;
+    selectedVerticals?: string[];
+    tab?: TabFilter;
+    queryKeyPrefix?: string[];
 }
 
 export function useOrderValue({
@@ -21,24 +21,24 @@ export function useOrderValue({
     dateTo,
     fromDateIso,
     toDateIso,
-    query,
-    selectedVerticals,
+    query = "",
+    selectedVerticals = [],
     tab,
+    queryKeyPrefix = ["order-value"],
 }: UseOrderValueParams) {
     const { getOrderValue } = useOrderApi();
-
-    const { data: orderValue, isLoading: isOrderValueLoading } = useQuery<OrderValue>({
-        queryKey: ["order-value", cardCode, dateFrom, dateTo, query, selectedVerticals, tab],
+    const { data: orderValue, isLoading: isOrderValueLoading, isError: isOrderValueError } = useQuery<OrderValue>({
+        queryKey: [...queryKeyPrefix, cardCode, dateFrom, dateTo, query, selectedVerticals, tab],
         queryFn: () =>
             getOrderValue(cardCode!, {
                 fromDate: fromDateIso,
                 toDate: toDateIso,
                 query: query.trim() || undefined,
                 verticals: selectedVerticals.length ? selectedVerticals : undefined,
-                orderStatus: tabToOrderStatus(tab),
+                orderStatus: tab ? tabToOrderStatus(tab) : undefined,
             }),
         enabled: !!cardCode,
     });
 
-    return { orderValue, isOrderValueLoading };
+    return { orderValue, isOrderValueLoading, isOrderValueError };
 }

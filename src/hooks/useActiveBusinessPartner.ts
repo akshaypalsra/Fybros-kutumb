@@ -4,7 +4,11 @@ import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
 export function useActiveBusinessPartner() {
   const { getBusinessPartners } = useBusinessPartnerApi();
 
-  const { data: partner } = useQuery({
+  const {
+    data: partner,
+    isLoading: isPartnerLoading,
+    isError: isPartnerError,
+  } = useQuery({
     queryKey: ["business-partner"],
     queryFn: () => getBusinessPartners(),
   });
@@ -14,6 +18,8 @@ export function useActiveBusinessPartner() {
   return {
     partner,
     businessPartnerId,
+    isPartnerLoading,
+    isPartnerError,
     enabled: !!businessPartnerId,
   };
 }

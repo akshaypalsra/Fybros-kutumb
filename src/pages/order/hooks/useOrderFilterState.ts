@@ -1,44 +1,51 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
+import { useUrlPersistedFilters } from "@/hooks/useUrlPersistedFilters"
 import type { TabFilter } from "@/types/order.types"
-import { TAB_FILTERS } from "@/constants/Constants"
-import { useLocalStorageState } from "@/hooks/useLocalStorageState"
 
-const isTabFilter = (v: string): v is TabFilter =>
-  TAB_FILTERS.includes(v as TabFilter)
+const stringField = (param: string, defaultValue = "") => ({
+  param,
+  defaultValue,
+  parse: (raw: string) => raw,
+  serialize: (v: string) => v || null,
+})
 
+const arrayField = (param: string) => ({
+  param,
+  defaultValue: [] as string[],
+  parse: (raw: string) => raw.split(",").filter(Boolean),
+  serialize: (v: string[]) => (v.length ? v.join(",") : null),
+})
 
 export const useOrderFilterState = () => {
-  const [tab, setTab] = useLocalStorageState<TabFilter>(
-    "orders.tab",
-    "ALL",
-    isTabFilter
-  )
-  const [query, setQuery] = useState("")
-  const [dateFrom, setDateFrom] = useState("")
-  const [dateTo, setDateTo] = useState("")
-  const [selectedVerticals, setSelectedVerticals] = useState<string[]>([])
+  const { values, setters, clearAll } = useUrlPersistedFilters("orders.filters", {
+    tab: {
+      param: "tab",
+      defaultValue: "ALL" as TabFilter,
+      parse: (raw) => raw as TabFilter,
+      serialize: (v) => (v !== "ALL" ? v : null),
+    },
+    query: stringField("q"),
+    dateFrom: stringField("from"),
+    dateTo: stringField("to"),
+    selectedVerticals: arrayField("verticals"),
+  })
 
   const fromDateIso = useMemo(
-    () => (dateFrom ? new Date(`${dateFrom}T00:00:00.000Z`).toISOString() : undefined),
-    [dateFrom],
+    () => (values.dateFrom ? new Date(`${values.dateFrom}T00:00:00.000Z`).toISOString() : undefined),
+    [values.dateFrom]
   )
   const toDateIso = useMemo(
-    () => (dateTo ? new Date(`${dateTo}T23:59:59.999Z`).toISOString() : undefined),
-    [dateTo],
+    () => (values.dateTo ? new Date(`${values.dateTo}T23:59:59.999Z`).toISOString() : undefined),
+    [values.dateTo]
   )
 
   return {
-    tab,
-    setTab,
-    query,
-    setQuery,
-    dateFrom,
-    setDateFrom,
-    dateTo,
-    setDateTo,
-    fromDateIso,
-    toDateIso,
-    selectedVerticals,
-    setSelectedVerticals,
+    tab: values.tab, setTab: setters.tab,
+    query: values.query, setQuery: setters.query,
+    dateFrom: values.dateFrom, setDateFrom: setters.dateFrom,
+    dateTo: values.dateTo, setDateTo: setters.dateTo,
+    fromDateIso, toDateIso,
+    selectedVerticals: values.selectedVerticals, setSelectedVerticals: setters.selectedVerticals,
+    clearAll,
   }
 }

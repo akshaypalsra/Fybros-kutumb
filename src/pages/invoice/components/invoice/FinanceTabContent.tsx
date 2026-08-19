@@ -1,7 +1,7 @@
 import type { Tab } from "@/types/invoice.types";
-import { OverviewTab } from "../tabs/OverviewTab";
-import { InvoicesTab } from "../tabs/InvoicesTab";
-import { TransactionsTab } from "../tabs/TransactionsTab";
+import { OverviewTab } from "../overview/OverviewTab";
+import { InvoicesTab } from "../invoices/InvoicesTab";
+import { TransactionsTab } from "../ledger/TransactionsTab";
 
 interface FinanceTabContentProps {
     activeTab: Tab;

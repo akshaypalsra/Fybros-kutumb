@@ -3,7 +3,7 @@ import { FinanceHeader } from "./components/invoice/FinanceHeader";
 import { ListFilters } from "./components/invoice/ListFilters";
 import { FinanceTabContent } from "./components/invoice/FinanceTabContent";
 import { useVerticals } from "@/hooks/useVerticals";
-import { useActiveBusinessPartner } from "./hooks/useActiveBusinessPartner";
+import { useActiveBusinessPartner } from "../../hooks/useActiveBusinessPartner";
 import { useListFiltersState } from "./hooks/useListFiltersState";
 import { ScrollToTopButton } from "@/common/components/ScrollToTopButton";
 import { getSearchPlaceholder, shouldShowListFilters } from "@/utils/financeTabs.utils";

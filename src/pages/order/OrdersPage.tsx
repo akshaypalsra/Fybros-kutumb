@@ -39,6 +39,7 @@ const OrdersPage = () => {
     toDateIso,
     selectedVerticals,
     setSelectedVerticals,
+    clearAll
   } = useOrderFilterState();
 
   const [viewMode, setViewMode] = useState<OrderViewMode>("ORDER");
@@ -64,6 +65,7 @@ const OrdersPage = () => {
     query,
     selectedVerticals,
     tab,
+
   });
 
   const sentinelRef = useInfiniteScrollTrigger(
@@ -85,6 +87,7 @@ const OrdersPage = () => {
         verticals={verticals}
         selectedVerticals={selectedVerticals}
         onVerticalsChange={setSelectedVerticals}
+        clearAll={clearAll}
       />
       <div className="mb-4 flex  gap-3">
         <Dropdown<OrderViewMode>
