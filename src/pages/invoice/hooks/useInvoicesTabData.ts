@@ -1,94 +1,105 @@
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
 import type { Invoice, InvoiceSubTab } from "@/types/invoice.types";
-import { useLocalStorageState } from "@/hooks/useLocalStorageState";
-import { INVOICE_SUB_TABS } from "@/constants/Constants";
 import { useOutstandingSummary } from "../../../hooks/useOutstandingSummary";
 import { groupByMonth } from "@/utils/grouping.utils";
-import { toIsoDateRange } from "@/utils/date.utils";
 
 interface UseInvoicesTabDataParams {
-    businessPartnerId: string;
-    enabled: boolean;
-    search: string;
-    dateFrom: string;
-    dateTo: string;
-    selectedVerticals: string[];
+  businessPartnerId: string;
+  enabled: boolean;
+  search: string;
+  fromDateIso?: string;
+  toDateIso?: string;
+  selectedVerticals: string[];
+  subTab: InvoiceSubTab;
 }
 
-const isInvoiceSubTab = (v: string): v is InvoiceSubTab => INVOICE_SUB_TABS.some((tab) => tab.key === v);
+const PAGE_SIZE = 20;
+
+// Maps the UI sub-tab to the backend's invoiceStatus enum.
+// "ALL" omits the param entirely so the backend returns every status.
+const SUB_TAB_TO_INVOICE_STATUS: Partial<Record<InvoiceSubTab, string>> = {
+  OPEN: "OPEN",
+  CLOSED: "CLOSED",
+  OVERDUE: "OVERDUE",
+};
 
 export function useInvoicesTabData({
-    businessPartnerId,
-    enabled,
-    search,
-    dateFrom,
-    dateTo,
-    selectedVerticals,
+  businessPartnerId,
+  enabled,
+  search,
+  fromDateIso,
+  toDateIso,
+  selectedVerticals,
+  subTab,
 }: UseInvoicesTabDataParams) {
-    const { searchInvoices } = useInvoiceApi();
-    const [subTab, setSubTab] = useLocalStorageState<InvoiceSubTab>(
-        "invoices.subTab",
-        "ALL",
-        isInvoiceSubTab
-    );
+  const { searchInvoices } = useInvoiceApi();
 
-    const trimmedSearch = search.trim();
-    const { fromDateIso, toDateIso } = useMemo(() => toIsoDateRange(dateFrom, dateTo), [dateFrom, dateTo],);
+  const trimmedSearch = search.trim();
+  const invoiceStatus = SUB_TAB_TO_INVOICE_STATUS[subTab];
 
-    const {
-        data: outstandingSummary,
-        isLoading: isOutstandingLoading,
-        isError: isOutstandingError,
-    } = useOutstandingSummary(businessPartnerId, enabled);
+  const {
+    data: outstandingSummary,
+    isLoading: isOutstandingLoading,
+    isError: isOutstandingError,
+  } = useOutstandingSummary(businessPartnerId, enabled);
 
-    const {
-        data: invoices,
-        isLoading: isInvoiceLoading,
-        isError: isInvoiceError,
-    } = useQuery<Invoice[]>({
-        queryKey: ["invoices", businessPartnerId, trimmedSearch, fromDateIso, toDateIso, selectedVerticals],
-        queryFn: () =>
-            searchInvoices({
-                businessPartnerId,
-                query: trimmedSearch || undefined,
-                fromDate: fromDateIso,
-                toDate: toDateIso,
-                verticals: selectedVerticals.length ? selectedVerticals : undefined,
-                page: 0,
-                size: 100,
-            }),
-        enabled,
-    });
+  const {
+    data,
+    isLoading: isInvoiceLoading,
+    isError: isInvoiceError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["invoices", businessPartnerId, trimmedSearch, fromDateIso, toDateIso, selectedVerticals, invoiceStatus],
+    queryFn: ({ pageParam = 0 }) =>
+      searchInvoices({
+        businessPartnerId,
+        query: trimmedSearch || undefined,
+        fromDate: fromDateIso,
+        toDate: toDateIso,
+        invoiceStatus,
+        verticals: selectedVerticals.length ? selectedVerticals : undefined,
+        page: pageParam,
+        size: PAGE_SIZE,
+      }),
+    getNextPageParam: (lastPage) => {
+      const isLastPage = lastPage.page.number + 1 >= lastPage.page.totalPages;
+      return isLastPage ? undefined : lastPage.page.number + 1;
+    },
+    initialPageParam: 0,
+    enabled,
+  });
 
-    const isLoading = isInvoiceLoading || isOutstandingLoading;
-    const isError = isInvoiceError || isOutstandingError;
+  const invoices: Invoice[] = useMemo(
+    () => data?.pages.flatMap((page) => page.content) ?? [],
+    [data],
+  );
 
-    const counts: Partial<Record<InvoiceSubTab, number>> = {
-        ALL: (invoices ?? []).length,
-        OPEN: (invoices ?? []).filter((i) => i.status !== "PAID").length,
-        CLOSED: (invoices ?? []).filter((i) => i.status === "PAID").length,
-        OVERDUE: (invoices ?? []).filter((i) => i.status === "OVERDUE").length,
-    };
+  const isLoading = isInvoiceLoading || isOutstandingLoading;
+  const isError = isInvoiceError || isOutstandingError;
 
-    const filteredInvoices = (invoices ?? []).filter((invoice) => {
-        if (subTab === "ALL") return true;
-        if (subTab === "OPEN") return invoice.status !== "PAID";
-        if (subTab === "CLOSED") return invoice.status === "PAID";
-        return invoice.status === "OVERDUE";
-    });
+  const totalCount = data?.pages[0]?.page.totalElements ?? invoices.length;
+  const counts: Partial<Record<InvoiceSubTab, number>> = {
+    [subTab]: totalCount,
+  };
 
-    const invoicesByMonth = useMemo(() => groupByMonth(filteredInvoices, (invoice) => invoice.docDate), [filteredInvoices]);
+  const invoicesByMonth = useMemo(
+    () => groupByMonth(invoices, (invoice) => invoice.docDate),
+    [invoices],
+  );
 
-    return {
-        outstandingSummary,
-        subTab,
-        setSubTab,
-        counts,
-        invoicesByMonth,
-        hasResults: filteredInvoices.length > 0,
-        isLoading,
-        isError,
-    };
+  return {
+    outstandingSummary,
+    counts,
+    invoicesByMonth,
+    hasResults: invoices.length > 0,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  };
 }

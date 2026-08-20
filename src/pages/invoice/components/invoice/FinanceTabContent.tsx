@@ -2,15 +2,13 @@ import type { Tab } from "@/types/invoice.types";
 import { OverviewTab } from "../overview/OverviewTab";
 import { InvoicesTab } from "../invoices/InvoicesTab";
 import { TransactionsTab } from "../ledger/TransactionsTab";
+import { useListFiltersState } from "../../hooks/useListFiltersState";
 
 interface FinanceTabContentProps {
     activeTab: Tab;
     businessPartnerId: string;
     enabled: boolean;
-    search: string;
-    dateFrom: string;
-    dateTo: string;
-    selectedVerticals: string[];
+    filters: ReturnType<typeof useListFiltersState>;
     onViewAllInvoices: () => void;
 }
 
@@ -18,10 +16,7 @@ export function FinanceTabContent({
     activeTab,
     businessPartnerId,
     enabled,
-    search,
-    dateFrom,
-    dateTo,
-    selectedVerticals,
+    filters,
     onViewAllInvoices,
 }: FinanceTabContentProps) {
     if (activeTab === "overview") {
@@ -39,10 +34,7 @@ export function FinanceTabContent({
             <InvoicesTab
                 businessPartnerId={businessPartnerId}
                 enabled={enabled}
-                search={search}
-                dateFrom={dateFrom}
-                dateTo={dateTo}
-                selectedVerticals={selectedVerticals}
+                filters={filters}
             />
         );
     }

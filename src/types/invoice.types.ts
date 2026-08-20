@@ -5,6 +5,22 @@ export interface InvoiceStatistics {
   totalOutstanding?: number;
 }
 
+
+export interface SearchInvoicesFilters {
+  fromDate?: string;
+  toDate?: string;
+  query?: string;
+  invoiceStatus?: string;
+  verticals?: string[];
+}
+
+export interface SearchInvoicesParams extends SearchInvoicesFilters {
+  businessPartnerId: string;
+  page?: number;
+  size?: number;
+}
+
+
 export interface SearchInvoicesParams {
   businessPartnerId: string
   fromDate?: string

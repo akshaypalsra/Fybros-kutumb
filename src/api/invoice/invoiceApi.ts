@@ -1,5 +1,6 @@
 import type { AxiosInstance } from "axios";
 import type { Invoice, InvoiceStatistics, SearchInvoicesParams } from "@/types/invoice.types";
+import type { PagedResponse } from "@/types/common.types";
 
 
 
@@ -15,9 +16,9 @@ export const searchInvoices = async (
         page = 0,
         size = 20,
     }: SearchInvoicesParams
-): Promise<Invoice[]> => {
-    const response = await axiosInstance.post<Invoice[]>(
-        "/business-partners/invoices/search",
+): Promise<PagedResponse<Invoice>> => {
+    const response = await axiosInstance.post<PagedResponse<Invoice>>(
+        "/business-partners/invoices/search/v2",
         {
             businessPartnerId,
             fromDate,

@@ -2,22 +2,20 @@ import type { Tab } from "@/types/invoice.types";
 import { FinanceHeader } from "./components/invoice/FinanceHeader";
 import { FinanceTabContent } from "./components/invoice/FinanceTabContent";
 import { useActiveBusinessPartner } from "../../hooks/useActiveBusinessPartner";
-import { useListFiltersState } from "./hooks/useListFiltersState";
 import { ScrollToTopButton } from "@/common/components/ScrollToTopButton";
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { TABS } from "@/constants/Constants";
+import { useListFiltersState } from "./hooks/useListFiltersState";
 
 const FinanceOverviewPage = () => {
   const { partner, businessPartnerId, enabled } = useActiveBusinessPartner();
   const filters = useListFiltersState();
+  const [activeTab, setActiveTab] = useLocalStorageState<Tab>("invoices.activeTab", TABS[0].key);
 
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
-    filters.reset();
+    filters.clearAll();
   };
-
-
-  const [activeTab, setActiveTab] = useLocalStorageState<Tab>("invoices.activeTab", TABS[0].key);
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -30,12 +28,9 @@ const FinanceOverviewPage = () => {
 
       <FinanceTabContent
         activeTab={activeTab}
+        filters={filters}
         businessPartnerId={businessPartnerId}
         enabled={enabled}
-        search={filters.search}
-        dateFrom={filters.dateFrom}
-        dateTo={filters.dateTo}
-        selectedVerticals={filters.selectedVerticals}
         onViewAllInvoices={() => handleTabChange("invoices")}
       />
 

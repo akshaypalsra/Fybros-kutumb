@@ -18,6 +18,8 @@ interface ListFiltersProps {
     verticals: Vertical[]
     selectedVerticals: string[]
     onVerticalsChange: (value: string[]) => void
+    hasActiveFilters: boolean
+    onClearAll: () => void
 }
 
 export const ListFilters = ({
@@ -31,15 +33,10 @@ export const ListFilters = ({
     verticals,
     selectedVerticals,
     onVerticalsChange,
-}: ListFiltersProps) => {
-    const hasActiveFilters = !!search || !!dateFrom || !!dateTo || selectedVerticals.length > 0
+    hasActiveFilters,
+    onClearAll,
 
-    const handleClearAll = () => {
-        onSearchChange("")
-        onDateFromChange("")
-        onDateToChange("")
-        onVerticalsChange([])
-    }
+}: ListFiltersProps) => {
 
     return (
         <div className="mb-6 flex flex-wrap items-center gap-3">
@@ -53,7 +50,7 @@ export const ListFilters = ({
                 variant="ghost"
                 size="sm"
                 disabled={!hasActiveFilters}
-                onClick={handleClearAll}
+                onClick={onClearAll}
                 className="gap-1 rounded-md py-4.5 border border-border text-xs font-medium text-muted-foreground hover:text-foreground"
             >
                 <X className="h-3.5 w-3.5" />
