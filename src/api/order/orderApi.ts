@@ -1,6 +1,7 @@
 import type { AxiosInstance } from "axios";
-import type { Order, OrderItem, OrderValue, PagedResponse, SearchOrdersParams } from "@/types/order.types";
+import type { Order, OrderItem, OrderValue, SearchOrdersParams } from "@/types/order.types";
 import type { Invoice } from "@/types/invoice.types";
+import type { PagedResponse } from "@/types/common.types";
 
 const toStartOfDayISO = (date?: string) => (date ? `${date}T00:00:00.000Z` : undefined);
 const toEndOfDayISO = (date?: string) => (date ? `${date}T23:59:59.999Z` : undefined);
