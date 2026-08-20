@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
-import type { OutstandingSummary } from "@/types/businessPartner.types";
+import type { OutstandingSummary } from "@/types/business-partner.types";
 
 export function useOutstandingSummary(businessPartnerId: string, enabled: boolean) {
     const { getOutstandingSummary } = useBusinessPartnerApi();

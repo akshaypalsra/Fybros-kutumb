@@ -1,5 +1,5 @@
 
-import type { AgeingBucketResponse } from "@/types/businessPartner.types";
+import type { AgeingBucketResponse } from "@/types/business-partner.types";
 import { AgeingBar } from "../invoice/AgeingBar";
 
 interface AgeingDistributionCardProps {
@@ -7,7 +7,7 @@ interface AgeingDistributionCardProps {
 }
 
 export const AgeingDistributionCard = ({ ageingDistribution }: AgeingDistributionCardProps) => (
-  <div className="rounded-2xl border bg-card p-6 shadow-sm lg:col-span-3">
+  <div className="rounded-md border bg-card p-6 shadow-sm lg:col-span-3">
     <p className="mb-4 text-sm font-medium text-muted-foreground">Ageing distribution (days)</p>
     <AgeingBar buckets={ageingDistribution ?? []} />
   </div>

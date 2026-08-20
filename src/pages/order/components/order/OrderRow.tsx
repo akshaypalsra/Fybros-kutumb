@@ -18,11 +18,11 @@ export const OrderRow = ({ order }: OrderRowProps) => {
   return (
     <Link
       to={`/orders/${order.docEntry}`}
-      className="relative grid grid-cols-[180px_2fr_200px] items-center gap-6 rounded-xl border border-border bg-card px-6 py-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+      className="relative grid grid-cols-[180px_2fr_180px] items-start justify-between gap-6 rounded-md border border-border bg-card px-6 py-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex min-w-0 items-center gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-          <Package className="h-5 w-5" />
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted-gray text-white">
+          <Package className="h-5 w-5 font-light" />
         </div>
         <div className="min-w-0">
           <p className="truncate font-mono text-[13px] font-semibold text-foreground">
@@ -35,6 +35,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
       </div>
 
       <div className="min-w-0">
+        <div className="text-sm mb-2">{order.vertical}</div>
         <FulfillmentBar delivered={delivered} pending={pending} cancelled={cancelled} total={total} />
       </div>
 
@@ -48,8 +49,8 @@ export const OrderRow = ({ order }: OrderRowProps) => {
           </p>
         )}
         <div className="flex flex-col items-end gap-1.5">
-          <StatusBadge status={order.orderDeliveryStatus} variant="rail" />
-          {order.vertical && <StatusBadge status={order.vertical} variant="rail" />}
+          <StatusBadge status={order.orderDeliveryStatus} className="font-light"  />
+
         </div>
       </div>
     </Link>

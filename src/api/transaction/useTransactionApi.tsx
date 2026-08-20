@@ -1,5 +1,6 @@
 import { useAxios } from "@/axios/hooks/useAxios";
-import { getBusinessPartnerLedgers, type GetLedgersParams } from "./transactionApi";
+import { getBusinessPartnerLedgers} from "./transactionApi";
+import type { GetLedgersParams } from "@/types/ledger.types";
 
 
 export const useLedgerApi = () => {

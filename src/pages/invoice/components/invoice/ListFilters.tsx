@@ -54,7 +54,7 @@ export const ListFilters = ({
                 size="sm"
                 disabled={!hasActiveFilters}
                 onClick={handleClearAll}
-                className="gap-1 rounded-lg py-4.5 border border-border text-xs font-medium text-muted-foreground hover:text-foreground"
+                className="gap-1 rounded-md py-4.5 border border-border text-xs font-medium text-muted-foreground hover:text-foreground"
             >
                 <X className="h-3.5 w-3.5" />
                 Clear all

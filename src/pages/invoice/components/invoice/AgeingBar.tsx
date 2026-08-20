@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import type { AgeingBucketResponse } from "@/types/businessPartner.types"
+import type { AgeingBucketResponse } from "@/types/business-partner.types"
 import { formatCompactCurrency } from "@/utils/common.utils"
 import { getAgeingColor } from "@/utils/invoice.utils"
 

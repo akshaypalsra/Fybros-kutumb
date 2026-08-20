@@ -38,7 +38,7 @@ export const SearchBar = ({
           value={localValue}
           onChange={(e) => setLocalValue(e.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-lg border-border bg-card py-2.5 pl-10 pr-3.5 text-sm focus-visible:border-secondary focus-visible:ring-2 focus-visible:ring-[#FDE9EB]"
+          className="w-full rounded-md border-border bg-card py-2.5 pl-10 pr-3.5 text-sm focus-visible:border-secondary focus-visible:ring-2 focus-visible:ring-[#FDE9EB]"
         />
       </div>
     </div>

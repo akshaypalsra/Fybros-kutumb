@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { ChevronsUpDown, LogOutIcon } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -38,20 +38,11 @@ export function SidebarUserMenu() {
                     <Button
                         type="button"
                         variant="ghost"
-                        className="h-auto w-full items-center justify-start gap-3 rounded-md p-2 text-left hover:bg-muted data-[state=open]:bg-muted"
+                        className="h-auto w-auto items-center justify-start gap-3 rounded-md p-2 text-left hover:bg-muted data-[state=open]:bg-muted"
                     >
                         <UserAvatar name={displayName} imageUrl={avatarUrl} />
-                        <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-foreground">
-                                {displayName}
-                            </p>
-                            {email && (
-                                <p className="truncate text-xs text-muted-foreground">
-                                    {email}
-                                </p>
-                            )}
-                        </div>
-                        <ChevronsUpDown className="h-4 w-4 shrink-0 text-muted-foreground" />
+
+
                     </Button>
                 </DropdownMenuTrigger>
 

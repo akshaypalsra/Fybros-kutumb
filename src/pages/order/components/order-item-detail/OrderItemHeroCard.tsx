@@ -8,7 +8,7 @@ interface OrderItemHeroCardProps {
 
 export function OrderItemHeroCard({ item }: OrderItemHeroCardProps) {
   return (
-    <div className="rounded-xl bg-secondary p-5 text-white shadow-sm">
+    <div className="rounded-md bg-secondary p-5 text-white shadow-sm">
       <div className="mb-3 flex items-start justify-between gap-2">
         <p className="text-base font-bold">{item.itemCode}</p>
         <StatusBadge status={item.deliveryStatus} className="shrink-0" />

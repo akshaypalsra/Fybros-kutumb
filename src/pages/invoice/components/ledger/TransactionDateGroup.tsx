@@ -1,5 +1,6 @@
+import type { LedgerEntry } from "@/types/ledger.types";
 import { TransactionRow } from "./TransactionRow";
-import type { LedgerEntry } from "@/api/transaction/transactionApi";
+
 
 interface TransactionDateGroupProps {
   dateKey: string;

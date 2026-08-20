@@ -55,7 +55,7 @@ export const MultiSelectDropdown = ({
         <Button
           type="button"
           variant="outline"
-          className={`h-auto gap-1.5 rounded-lg border-border bg-card px-3.5 py-2 text-sm font-medium text-foreground ${triggerClassName}`}
+          className={`h-auto gap-1.5 rounded-md border-border bg-card px-3.5 py-2 text-sm font-medium text-foreground ${triggerClassName}`}
         >
           {label}
           <ChevronDown

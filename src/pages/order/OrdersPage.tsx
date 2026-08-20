@@ -65,7 +65,6 @@ const OrdersPage = () => {
     query,
     selectedVerticals,
     tab,
-
   });
 
   const sentinelRef = useInfiniteScrollTrigger(

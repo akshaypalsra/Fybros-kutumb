@@ -1,4 +1,4 @@
-import type { BusinessPartner } from "@/types/businessPartner.types";
+import type { BusinessPartner } from "@/types/business-partner.types";
 import { Badge } from "@/common/components/ui/badge";
 import { Building2, Mail, Phone } from "lucide-react";
 import { getInitials } from "@/utils/common.utils";
@@ -10,7 +10,7 @@ interface BusinessPartnerHeaderProps {
 
 export const BusinessPartnerHeader = ({ partner }: BusinessPartnerHeaderProps) => {
   return (
-    <div className="bp-animate relative overflow-hidden rounded-xl bg-secondary p-8 text-white shadow-sm">
+    <div className="bp-animate relative overflow-hidden rounded-md bg-secondary p-8 text-white shadow-sm">
       <div
         aria-hidden
         className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/10 blur-2xl"
@@ -47,7 +47,7 @@ export const BusinessPartnerHeader = ({ partner }: BusinessPartnerHeaderProps) =
           {partner.cellular && (
             <a
               href={`tel:${partner.cellular}`}
-              className="inline-flex items-center gap-2 rounded-lg bg-white/15 px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-white/25"
+              className="inline-flex items-center gap-2 rounded-md bg-white/15 px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-white/25"
             >
               <Phone className="h-4 w-4" />
               Call
@@ -56,7 +56,7 @@ export const BusinessPartnerHeader = ({ partner }: BusinessPartnerHeaderProps) =
           {partner.emailAddress && (
             <a
               href={`mailto:${partner.emailAddress}`}
-              className="inline-flex items-center gap-2 rounded-lg bg-white/15 px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-white/25"
+              className="inline-flex items-center gap-2 rounded-md bg-white/15 px-3.5 py-2 text-sm font-medium text-white transition-colors hover:bg-white/25"
             >
               <Mail className="h-4 w-4" />
               Email

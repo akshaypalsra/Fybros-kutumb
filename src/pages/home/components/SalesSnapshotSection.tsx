@@ -33,7 +33,7 @@ export const SalesSnapshotSection = ({
     <section>
       <h2 className="mb-3 text-md font-heading text-foreground">Sales Snapshot</h2>
 
-      <div className="rounded-2xl border bg-card p-4">
+      <div className="rounded-md border bg-card p-4">
         <div className="mb-1 flex items-start justify-between">
           <SalesSnapshotSummary
             bookedLastMonth={trend?.bookedLastMonth}
@@ -42,9 +42,9 @@ export const SalesSnapshotSection = ({
           <Dropdown value={range} onValueChange={onRangeChange} options={RANGE_OPTIONS} />
         </div>
 
-        <div className={isLoading ? "opacity-50 transition-opacity" : "transition-opacity"}>
+       { isLoading ?'Loading':<div className={isLoading ? "opacity-50 transition-opacity" : "transition-opacity"}>
           <SalesSnapshotChart points={trend?.points} />
-        </div>
+        </div>}
       </div>
     </section>
   );

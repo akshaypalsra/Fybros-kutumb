@@ -5,9 +5,10 @@ import { EmptyState } from "@/common/components/EmptyState";
 import { ErrorState } from "@/common/components/ErrorState";
 import { DateFilter } from "@/common/components/DateFilter";
 import { useTransactionsTabData } from "../../hooks/useTransactionsTabData";
-import type { LedgerEntry } from "@/api/transaction/transactionApi";
-import { OutstandingStatsRow } from "../invoices/OutstandingStatsRow";
+import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
 import { TransactionDateGroup } from "./TransactionDateGroup";
+import type { LedgerEntry } from "@/types/ledger.types";
+import { CreditStatsRow } from "../invoices/CreditStatsRow";
 
 interface TransactionsTabProps {
   businessPartnerId: string;
@@ -28,7 +29,14 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
-  const { outstandingSummary, transactions, isLoading, isError } = useTransactionsTabData({
+  const {
+    transactions,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useTransactionsTabData({
     businessPartnerId,
     enabled,
     fromDate: fromDate || undefined,
@@ -37,14 +45,17 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
 
   const groupedTransactions = useMemo(() => groupByDate(transactions), [transactions]);
 
+  const sentinelRef = useInfiniteScrollTrigger(
+    () => fetchNextPage(),
+    !!hasNextPage && !isFetchingNextPage,
+  );
+
   return (
     <div className="mx-auto w-full">
-      <OutstandingStatsRow outstandingSummary={outstandingSummary} />
-
+      <CreditStatsRow/>
       <div className="mb-4">
         <DateFilter from={fromDate} to={toDate} onFromChange={setFromDate} onToChange={setToDate} />
       </div>
-
       <QueryState<LedgerEntry[]>
         isLoading={isLoading}
         isError={isError}
@@ -52,7 +63,7 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
         loading={
           <div className="space-y-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 w-full rounded-xl" />
+              <Skeleton key={i} className="h-16 w-full rounded-md" />
             ))}
           </div>
         }
@@ -65,6 +76,14 @@ export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabP
             {groupedTransactions.map(([dateKey, entries]) => (
               <TransactionDateGroup key={dateKey} dateKey={dateKey} entries={entries} />
             ))}
+            {hasNextPage && <div ref={sentinelRef} style={{ height: 1 }} />}
+            {isFetchingNextPage && (
+              <div className="space-y-3">
+                {Array.from({ length: 2 }).map((_, i) => (
+                  <Skeleton key={i} className="h-16 w-full rounded-md" />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </QueryState>

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
-import type { BusinessPartner } from "@/types/businessPartner.types";
+import type { BusinessPartner } from "@/types/business-partner.types";
 import BusinessPartnerSkeleton from "./components/BusinessPartnerSkeleton";
 import BusinessPartnerEmpty from "./components/BusinessPartnerEmpty";
 import BusinessPartnerHeader from "./components/BusinessPartnerHeader";

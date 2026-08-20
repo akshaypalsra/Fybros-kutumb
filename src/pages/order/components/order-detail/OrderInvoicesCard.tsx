@@ -18,7 +18,7 @@ const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
   return (
     <Link
       to={`/invoices/${invoice.docEntry}`}
-      className="flex items-start justify-between gap-3 rounded-lg border border-border p-3"
+      className="flex items-start justify-between gap-3 rounded-md border border-border p-3"
     >
       <div className="flex items-start gap-3">
         <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-muted text-muted-foreground">
@@ -51,7 +51,7 @@ export const OrderInvoicesCard = ({ invoices, isLoading }: OrderInvoicesCardProp
   if (!isLoading && (!invoices || invoices.length === 0)) return null;
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5">
+    <div className="rounded-md border border-border bg-card p-5">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">Invoices</h2>
         {invoices && <span className="text-xs text-muted-foreground">({invoices.length} Invoices)</span>}

@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { useLedgerApi } from "@/api/transaction/useTransactionApi";
-import type { LedgerEntry } from "@/api/transaction/transactionApi";
 import { useOutstandingSummary } from "@/hooks/useOutstandingSummary";
-
+import { useLedgers } from "./useLedgers";
+import { useMemo } from "react";
+import { toIsoDateRange } from "@/utils/date.utils";
 
 interface UseTransactionsTabDataParams {
   businessPartnerId: string;
@@ -17,7 +16,8 @@ export function useTransactionsTabData({
   fromDate,
   toDate,
 }: UseTransactionsTabDataParams) {
-  const { getBusinessPartnerLedgers } = useLedgerApi();
+
+  const { fromDateIso, toDateIso } = useMemo(() => toIsoDateRange(fromDate, toDate),[fromDate, toDate]);
 
   const {
     data: outstandingSummary,
@@ -26,19 +26,21 @@ export function useTransactionsTabData({
   } = useOutstandingSummary(businessPartnerId, enabled);
 
   const {
-    data: ledgerEntries,
-    isLoading: isTransactionLoading,
-    isError: isTransactionError,
-  } = useQuery<LedgerEntry[]>({
-    queryKey: ["transactions", businessPartnerId, fromDate, toDate],
-    queryFn: () => getBusinessPartnerLedgers({ businessPartnerId, fromDate, toDate }),
-    enabled,
-  });
+    ledgers: transactions,
+    isLoading: isLedgersLoading,
+    isError: isLedgersError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useLedgers({ businessPartnerId, fromDateIso, toDateIso, enabled });
 
   return {
     outstandingSummary,
-    transactions: ledgerEntries ?? [],
-    isLoading: isTransactionLoading || isOutstandingLoading,
-    isError: isTransactionError || isOutstandingError,
+    transactions,
+    isLoading: isOutstandingLoading || isLedgersLoading,
+    isError: isOutstandingError || isLedgersError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   };
 }

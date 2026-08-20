@@ -1,7 +1,6 @@
 import { Badge } from "@/common/components/ui/badge";
 import { cn } from "@/utils/common.utils";
 
-
 interface StatusChipProps {
   status: string | null | undefined;
   styleMap: Record<string, string>;

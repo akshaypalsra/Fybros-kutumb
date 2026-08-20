@@ -12,7 +12,7 @@ interface InvoiceRowProps {
 export const InvoiceRow = ({ invoice }: InvoiceRowProps) => (
   <Link
     to={`/invoices/${invoice.docEntry}`}
-    className="flex items-start justify-between gap-4 py-3.5 hover:bg-muted/40"
+    className="flex mb-2 items-start justify-between gap-4 p-4 rounded-md border border-border bg-card hover:bg-accent/50 transition-colors"
   >
     <div className="flex min-w-0 items-start gap-3">
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
@@ -20,16 +20,22 @@ export const InvoiceRow = ({ invoice }: InvoiceRowProps) => (
       </div>
       <div className="min-w-0">
         <p className="truncate text-sm font-semibold text-foreground">{invoice.invoiceNumber}</p>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground mt-3">
           {formatDate(invoice.docDate)} &middot; Due {formatDate(invoice.docDueDate)}
         </p>
         <p className="text-xs text-muted-foreground">{getInvoiceDueLabel(invoice)}</p>
-        {invoice.vertical && <p className="mt-1 text-xs text-muted-foreground">{invoice.vertical}</p>}
       </div>
     </div>
-    <div className="flex shrink-0 flex-col items-end gap-2">
-      <p className="text-sm font-semibold text-foreground">{formatCurrency(invoice.docTotal)}</p>
-      <StatusBadge status={invoice.status} variant="hero" />
+    <div className="flex flex-col">
+      <div className="flex shrink-0 items-end gap-2">
+        <p className="text-sm font-semibold text-foreground">{formatCurrency(invoice.docTotal)}</p>
+        <StatusBadge status={invoice.status} className="font-light" />
+        <StatusBadge status={invoice.cardCode} className="font-light uppercase" />
+      </div>
+
+      <div className="mt-4">
+        {invoice.vertical && <div className="text-xs text-end text-muted-foreground">{invoice.vertical}</div>}
+      </div>
     </div>
   </Link>
 );

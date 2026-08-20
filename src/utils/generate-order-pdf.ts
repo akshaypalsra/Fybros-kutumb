@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 import type { OrderItem, OrderItemDetail } from "@/types/order.types";
-import type { OrderWithExtras } from "@/types/orderDetail.types";
+import type { OrderWithExtras } from "@/types/order-detail.types";
 import type { Invoice } from "@/types/invoice.types";
 import { formatDate } from "./common.utils";
 

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { ItemFilter } from "@/types/orderDetail.types";
+import type { ItemFilter } from "@/types/order-detail.types";
 import type { OrderItem } from "@/types/order.types";
 
 export const useOrderItemCounts = (items: OrderItem[] | undefined, itemFilter: ItemFilter) => {

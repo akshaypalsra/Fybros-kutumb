@@ -1,7 +1,7 @@
 import { CalendarClock, Receipt } from "lucide-react";
 import { StatSummaryCard } from "@/common/components/StatSummaryCard";
 import { formatCompactCurrency } from "@/utils/common.utils";
-import type { OutstandingSummary } from "@/types/businessPartner.types";
+import type { OutstandingSummary } from "@/types/business-partner.types";
 
 interface OutstandingStatsRowProps {
   outstandingSummary?: OutstandingSummary;

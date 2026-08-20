@@ -22,10 +22,10 @@ export function HomeSkeleton() {
  
       <div className="mb-6">
         <Skeleton className="mb-3 h-5 w-20" />
-        <Skeleton className="mb-3 h-32 w-full rounded-2xl" />
+        <Skeleton className="mb-3 h-32 w-full rounded-md" />
         <div className="grid grid-cols-2 gap-3">
-          <Skeleton className="h-28 w-full rounded-2xl" />
-          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-md" />
+          <Skeleton className="h-28 w-full rounded-md" />
         </div>
       </div>
 
@@ -33,15 +33,15 @@ export function HomeSkeleton() {
       <div className="mb-6">
         <Skeleton className="mb-3 h-5 w-24" />
         <div className="grid grid-cols-2 gap-3">
-          <Skeleton className="h-28 w-full rounded-2xl" />
-          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-md" />
+          <Skeleton className="h-28 w-full rounded-md" />
         </div>
       </div>
 
 
       <div>
         <Skeleton className="mb-3 h-5 w-32" />
-        <Skeleton className="h-72 w-full rounded-2xl" />
+        <Skeleton className="h-72 w-full rounded-md" />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ interface OrderItemDetailsListProps {
 
 export function OrderItemDetailsList({ item }: OrderItemDetailsListProps) {
     return (
-        <div className="rounded-xl border border-border bg-card p-5">
+        <div className="rounded-md border border-border bg-card p-5">
             <h2 className="mb-4 text-sm font-semibold text-foreground">Details</h2>
             <div className="space-y-0 divide-y divide-border">
                 <DetailField label="Item Code" value={item.itemCode} layout="row" isFirst />

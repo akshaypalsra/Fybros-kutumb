@@ -1,6 +1,6 @@
 
 import { StatusBadge } from "@/common/components/StatusBadge";
-import type { OrderWithExtras } from "@/types/orderDetail.types";
+import type { OrderWithExtras } from "@/types/order-detail.types";
 import { formatDate } from "@/utils/common.utils";
 
 interface OrderHeroProps {
@@ -9,7 +9,7 @@ interface OrderHeroProps {
 }
 
 export const OrderHero = ({ order, status }: OrderHeroProps) => (
-  <div className="mb-6 flex flex-col justify-between gap-4 rounded-xl bg-secondary p-6 text-white shadow-sm sm:flex-row sm:items-center">
+  <div className="mb-6 flex flex-col justify-between gap-4 rounded-md bg-secondary p-6 text-white shadow-sm sm:flex-row sm:items-center">
     <div>
       <p className="text-lg font-heading">{order?.orderNumber ?? order?.docEntry}</p>
       <p className="mt-1 text-sm text-white/80">

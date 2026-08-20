@@ -24,10 +24,10 @@ export const OverviewTab = ({ businessPartnerId, enabled, onViewAllInvoices }: O
       isError={isError}
       loading={
         <div className="grid gap-5 lg:grid-cols-3">
-          <Skeleton className="h-48 w-full rounded-2xl lg:col-span-2" />
-          <Skeleton className="h-48 w-full rounded-2xl" />
-          <Skeleton className="h-40 w-full rounded-2xl lg:col-span-3" />
-          <Skeleton className="h-64 w-full rounded-2xl lg:col-span-3" />
+          <Skeleton className="h-48 w-full rounded-md lg:col-span-2" />
+          <Skeleton className="h-48 w-full rounded-md" />
+          <Skeleton className="h-40 w-full rounded-md lg:col-span-3" />
+          <Skeleton className="h-64 w-full rounded-md lg:col-span-3" />
         </div>
       }
       error={<ErrorState className="mb-4" message="Failed to load your finance overview. Please try again." />}

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
-import type { AgeingBucketResponse, CreditOverview } from "@/types/businessPartner.types";
+import type { AgeingBucketResponse, CreditOverview } from "@/types/business-partner.types";
 import type { Invoice } from "@/types/invoice.types";
 import { useOutstandingSummary } from "../../../hooks/useOutstandingSummary";
 

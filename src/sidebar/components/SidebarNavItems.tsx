@@ -34,7 +34,7 @@ export function SidebarNavItems() {
                 <SidebarMenuButton
                   asChild
                   isActive={isActive}
-                  className="bg-surface-muted mb-2 rounded-sm data-[active=true]:bg-secondary/10 data-[active=true]:text-secondary data-[active=true]:font-semibold"
+                  className="bg-surface-muted mb-2 rounded-md data-[active=true]:bg-secondary/10 data-[active=true]:text-secondary data-[active=true]:font-semibold"
                 >
                   <NavLink
                     to={item.url}

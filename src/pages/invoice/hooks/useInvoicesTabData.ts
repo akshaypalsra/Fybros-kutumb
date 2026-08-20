@@ -6,6 +6,7 @@ import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { INVOICE_SUB_TABS } from "@/constants/Constants";
 import { useOutstandingSummary } from "../../../hooks/useOutstandingSummary";
 import { groupByMonth } from "@/utils/grouping.utils";
+import { toIsoDateRange } from "@/utils/date.utils";
 
 interface UseInvoicesTabDataParams {
     businessPartnerId: string;
@@ -34,8 +35,7 @@ export function useInvoicesTabData({
     );
 
     const trimmedSearch = search.trim();
-    const fromDateIso = dateFrom ? new Date(`${dateFrom}T00:00:00.000Z`).toISOString() : undefined;
-    const toDateIso = dateTo ? new Date(`${dateTo}T23:59:59.999Z`).toISOString() : undefined;
+    const { fromDateIso, toDateIso } = useMemo(() => toIsoDateRange(dateFrom, dateTo), [dateFrom, dateTo],);
 
     const {
         data: outstandingSummary,
@@ -79,7 +79,7 @@ export function useInvoicesTabData({
         return invoice.status === "OVERDUE";
     });
 
-  const invoicesByMonth = useMemo(() => groupByMonth(filteredInvoices, (invoice) => invoice.docDate),[filteredInvoices]);
+    const invoicesByMonth = useMemo(() => groupByMonth(filteredInvoices, (invoice) => invoice.docDate), [filteredInvoices]);
 
     return {
         outstandingSummary,

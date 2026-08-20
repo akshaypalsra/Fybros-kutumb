@@ -27,7 +27,7 @@ export const StatSummaryCard = ({
   return (
     <Card
       className={cn(
-        "rounded-2xl p-5",
+        "rounded-md p-5",
         isAccent
           ? "border-0 bg-secondary text-white dark:shadow-lg dark:shadow-black/30"
           : "border-border  bg-card text-card-foreground",

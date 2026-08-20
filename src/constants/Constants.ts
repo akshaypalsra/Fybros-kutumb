@@ -1,15 +1,15 @@
 import type { DatePreset, InvoiceSubTab, Tab, TransactionSubTab } from "@/types/invoice.types"
 import type { TabFilter } from "@/types/order.types"
-import type { ItemFilter } from "@/types/orderDetail.types"
+import type { ItemFilter } from "@/types/order-detail.types"
 
 export const CONSTANTS = {
-    API_BASE_URL: import.meta.env.VITE_APP_API_BASE_URL,
-    SSO_WEB_URL: import.meta.env.VITE_SSO_WEB_URL,
-    SSO_WEB_CLIENT_ID: import.meta.env.VITE_SSO_WEB_CLIENT_ID,
-    SSO_WEB_CLIENT_SECRET: import.meta.env.VITE_SSO_WEB_CLIENT_SECRET,
-    API_MIN_DELAY_MS: 200,
-    USER_QUERY_KEY: "user",
-    ME_QUERY_KEY: "me",
+  API_BASE_URL: import.meta.env.VITE_APP_API_BASE_URL,
+  SSO_WEB_URL: import.meta.env.VITE_SSO_WEB_URL,
+  SSO_WEB_CLIENT_ID: import.meta.env.VITE_SSO_WEB_CLIENT_ID,
+  SSO_WEB_CLIENT_SECRET: import.meta.env.VITE_SSO_WEB_CLIENT_SECRET,
+  API_MIN_DELAY_MS: 200,
+  USER_QUERY_KEY: "user",
+  ME_QUERY_KEY: "me",
 }
 
 export const AGEING_COLOR_BY_LABEL: Record<string, string> = {
@@ -34,11 +34,11 @@ export const TRANSACTION_STATUS_STYLES: Record<string, string> = {
   PENDING: "bg-amber-100 text-amber-700 border-amber-200",
 }
 
-export const TABS: { key: Tab; label: string }[] = [
-  { key: "overview", label: "Overview" },
-  { key: "invoices", label: "Invoices" },
-  { key: "ledger", label: "Ledger" },
-]
+export const TABS: { key: Tab; label: string; subtitle: string }[] = [
+  { key: "overview", label: "Overview", subtitle: "A snapshot of your account activity" },
+  { key: "invoices", label: "Invoices", subtitle: "View and manage all your invoices" },
+  { key: "ledger", label: "Ledger", subtitle: "Track all transactions and balances" },
+];
 
 export const INVOICE_SUB_TABS: { key: InvoiceSubTab; label: string }[] = [
   { key: "ALL", label: "All" },

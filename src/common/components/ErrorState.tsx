@@ -19,7 +19,7 @@ export function ErrorState({
     <div
       role="alert"
       className={cn(
-        "mx-auto flex max-w-6xl flex-col items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/5 p-4",
+        "mx-auto flex max-w-6xl flex-col items-start gap-2 rounded-md border border-destructive/20 bg-destructive/5 p-4",
         className
       )}
     >

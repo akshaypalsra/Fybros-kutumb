@@ -4,7 +4,7 @@ import { DetailField } from "../../../../common/components/DetailField"
 import { formatDate } from "@/utils/common.utils"
 
 export const InvoiceInfoCard = ({ invoice }: { invoice: Invoice }) => (
-  <div className="rounded-xl border border-border bg-card p-5">
+  <div className="rounded-md border border-border bg-card p-5">
     <h2 className="mb-4 text-sm font-semibold text-foreground">Invoice Details</h2>
     <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
       <DetailField label="Buyer" value={invoice.cardName ?? invoice.cardCode} />

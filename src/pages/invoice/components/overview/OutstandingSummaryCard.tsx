@@ -1,12 +1,12 @@
 import { formatCompactCurrency } from "@/utils/common.utils";
-import type { OutstandingSummary } from "@/types/businessPartner.types";
+import type { OutstandingSummary } from "@/types/business-partner.types";
 
 interface OutstandingSummaryCardProps {
   outstandingSummary?: OutstandingSummary;
 }
 
 const SummaryRow = ({ label, sublabel, value }: { label: string; sublabel?: string; value: React.ReactNode }) => (
-  <div className="flex items-center justify-between rounded-xl bg-muted p-3">
+  <div className="flex items-center justify-between rounded-md bg-muted p-3">
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
       {sublabel && <p className="text-[11px] text-muted-foreground">{sublabel}</p>}

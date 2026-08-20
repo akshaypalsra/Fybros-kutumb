@@ -1,10 +1,10 @@
 import type { AxiosInstance } from "axios";
-import type { BusinessPartner } from "@/types/businessPartner.types";
+import type { BusinessPartner } from "@/types/business-partner.types";
 import type {
   OutstandingSummary,
   CreditOverview,
   AgeingBucketResponse,
-} from "@/types/businessPartner.types";
+} from "@/types/business-partner.types";
 
 export const getBusinessPartners = async (
   axiosInstance: AxiosInstance

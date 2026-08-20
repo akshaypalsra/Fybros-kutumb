@@ -4,7 +4,7 @@ import type { Invoice } from "@/types/invoice.types"
 import { formatCurrency, formatDate } from "@/utils/common.utils"
 
 export const InvoiceSummaryCard = ({ invoice }: { invoice: Invoice }) => (
-  <div className="rounded-xl bg-secondary p-5 text-white shadow-sm">
+  <div className="rounded-md bg-secondary p-5 text-white shadow-sm">
     <div className="mb-3 flex items-start justify-between">
       <div>
         <p className="text-sm font-medium text-white/90">{invoice.invoiceNumber}</p>

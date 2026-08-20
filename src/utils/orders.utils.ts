@@ -1,29 +1,33 @@
-
 const SEMANTIC_TONE = {
   success: {
-    solid: "bg-emerald-400/80",
-    soft: "bg-emerald-50 text-emerald-600 border-emerald-100",
-    hero: "bg-white/90 text-emerald-600 border-transparent",
+    solid: "bg-[#C9FFBC]",
+    soft: "bg-[#C9FFBC] text-[#13823B] border-[#C9FFBC]",
+    hero: "bg-white/90 text-[#13823B] border-transparent",
   },
   warning: {
-    solid: "bg-amber-400/80",
-    soft: "bg-amber-50 text-amber-600 border-amber-100",
-    hero: "bg-white/90 text-amber-600 border-transparent",
+    solid: "bg-[#FFF2BA]",
+    soft: "bg-[#FFF2BA] text-[#E29400] border-[#FFF2BA]",
+    hero: "bg-white/90 text-[#E29400] border-transparent",
   },
   danger: {
-    solid: "bg-rose-300/80",
-    soft: "bg-rose-50 text-secondary border-rose-100",
-    hero: "bg-white/90 text-secondary border-transparent",
+    solid: "bg-[#FEE2E5]/80",
+    soft: "bg-[#FEE2E5] text-[#FA394B] border-[#FEE2E5]",
+    hero: "bg-white/90 text-[#FA394B] border-transparent",
   },
   info: {
-    solid: "bg-sky-300/80",
-    soft: "bg-sky-50 text-sky-600 border-sky-100",
-    hero: "bg-white/90 text-sky-600 border-transparent",
+    solid: "bg-[#CEDEFF]/80",
+    soft: "bg-[#CEDEFF] text-[#0007D3] border-[#CEDEFF]",
+    hero: "bg-white/90 text-[#0007D3] border-transparent",
+  },
+  purple: {
+    solid: "bg-[#E8D8F6]/80",
+    soft: "bg-[#E8D8F6] text-[#000989] border-[#E8D8F6]",
+    hero: "bg-white/90 text-[#000989] border-transparent",
   },
   neutral: {
-    solid: "bg-muted",
-    soft: "bg-muted text-muted-foreground border-border",
-    hero: "bg-white/90 text-foreground border-transparent",
+    solid: "bg-[#E5E5E6]/80",
+    soft: "bg-[#E5E5E6] text-[#58595B] border-[#E5E5E6]",
+    hero: "bg-white/90 text-[#58595B] border-transparent",
   },
 } as const;
 
@@ -34,15 +38,26 @@ const STATUS_TONE: Record<string, Tone> = {
   DELIVERED: "success",
   FULLY_DELIVERED: "success",
   CLOSED: "success",
+
   PENDING: "warning",
-  PARTIAL: "warning",
-  "PARTIALLY PAID": "warning",
-  "PARTIAL DELIVERY": "warning",
-  PARTIALLY_DELIVERED: "warning",
-  OPEN: "warning",
-  UNPAID: "danger",
+  UNPAID: "warning",
+
+  PARTIAL: "info",
+  "PARTIALLY PAID": "info",
+  "PARTIAL DELIVERY": "info",
+  PARTIALLY_DELIVERED: "info",
+  OPEN: "info",
+  "DUE_SOON": "info",
+  
+
   OVERDUE: "danger",
-  "DUE SOON": "info",
+
+
+  CT: "purple",
+  CP: "purple",
+  CR: "purple",
+  CPT: "purple",
+
   CANCELLED: "neutral",
 };
 

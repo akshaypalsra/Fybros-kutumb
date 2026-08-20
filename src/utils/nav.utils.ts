@@ -8,8 +8,8 @@ import {
 } from "@hugeicons/core-free-icons";
 
 export const NAV_ITEMS: NavItem[] = [
-  { title: "Home", url: "/", icon: Home01Icon, end: true },
-  { title: "Business Partners", url: "/business-partners", icon: UserGroupIcon },
+  { title: "Dashboard", url: "/", icon: Home01Icon, end: true },
   { title: "Orders", url: "/orders", icon: ShoppingCart01Icon },
-  { title: "Invoices", url: "/invoices", icon: InvoiceIcon },
+  { title: "Finance", url: "/invoices", icon: InvoiceIcon },
+  { title: "Business Partners", url: "/business-partners", icon: UserGroupIcon },
 ];

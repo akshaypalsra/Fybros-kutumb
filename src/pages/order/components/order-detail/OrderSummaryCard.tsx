@@ -1,6 +1,6 @@
 import { Badge } from "@/common/components/ui/badge";
 
-import type { OrderWithExtras } from "@/types/orderDetail.types";
+import type { OrderWithExtras } from "@/types/order-detail.types";
 import type { OrderItem } from "@/types/order.types";
 import { formatCurrency, formatDate } from "@/utils/common.utils";
 
@@ -24,18 +24,18 @@ export const OrderSummaryCard = ({ order, items, counts, computedTotal }: OrderS
     if (items.length === 0) return null;
 
     return (
-        <div className="rounded-xl border border-border bg-card p-5">
+        <div className="rounded-md border border-border bg-card p-5">
             <h2 className="mb-4 text-sm font-semibold text-foreground">Summary</h2>
             <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="rounded-lg bg-muted/50 p-3">
+                <div className="rounded-md bg-muted/50 p-3">
                     <p className="text-xs text-muted-foreground">Delivered</p>
                     <p className="text-lg font-bold text-foreground">{counts.delivered}</p>
                 </div>
-                <div className="rounded-lg bg-muted/50 p-3">
+                <div className="rounded-md bg-muted/50 p-3">
                     <p className="text-xs text-muted-foreground">Pending</p>
                     <p className="text-lg font-bold text-foreground">{counts.pending}</p>
                 </div>
-                <div className="rounded-lg bg-muted/50 p-3">
+                <div className="rounded-md bg-muted/50 p-3">
                     <p className="text-xs text-muted-foreground">Cancelled</p>
                     <p className="text-lg font-bold text-foreground">{counts.cancelled}</p>
                 </div>

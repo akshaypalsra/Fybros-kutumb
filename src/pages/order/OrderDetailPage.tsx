@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useOrderApi } from "@/api/order/useOrderApi";
 import type { OrderItem } from "@/types/order.types";
 import type { Invoice } from "@/types/invoice.types";
-import type { ItemFilter, OrderWithExtras } from "@/types/orderDetail.types";
+import type { ItemFilter, OrderWithExtras } from "@/types/order-detail.types";
 import { useOrderItemCounts } from "./hooks/useOrderItemCounts";
 import { OrderTotalBanner } from "./components/order-detail/OrderTotalBanner";
 import { OrderSummaryCard } from "./components/order-detail/OrderSummaryCard";

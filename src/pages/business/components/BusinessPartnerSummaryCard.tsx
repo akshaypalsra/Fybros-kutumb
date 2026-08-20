@@ -1,4 +1,4 @@
-import type { BusinessPartner } from "@/types/businessPartner.types";
+import type { BusinessPartner } from "@/types/business-partner.types";
 import { Card, CardContent } from "@/common/components/ui/card";
 import { Building2, Calendar, CreditCard, Phone, type LucideIcon } from "lucide-react";
 import { relativeTime } from "@/utils/business.utils";
@@ -44,11 +44,11 @@ export const BusinessPartnerSummaryCards = ({ partner }: BusinessPartnerSummaryC
       {items.map((item, i) => (
         <Card
           key={item.label}
-          className="bp-animate rounded-xl border-border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+          className="bp-animate rounded-md border-border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           style={{ animationDelay: `${i * 60}ms` }}
         >
           <CardContent className="flex items-center gap-4 p-5">
-            <div className="rounded-lg bg-secondary/10 p-3 transition-colors duration-200">
+            <div className="rounded-md bg-secondary/10 p-3 transition-colors duration-200">
               <item.icon className="h-5 w-5 text-secondary" />
             </div>
 

@@ -4,7 +4,7 @@ import { StatusBadge } from "@/common/components/StatusBadge";
 import { SegmentedControl } from "@/common/components/SegmentedControl";
 import { EmptyState } from "@/common/components/EmptyState";
 
-import type { ItemFilter } from "@/types/orderDetail.types";
+import type { ItemFilter } from "@/types/order-detail.types";
 import type { OrderItem } from "@/types/order.types";
 import { formatCurrency } from "@/utils/common.utils";
 import { QueryState } from "@/wrapper/QueryState";
@@ -31,7 +31,7 @@ const OrderItemCard = ({
 }) => (
     <Link
         to={`/orders/${orderId}/items/${item.id}`}
-        className="relative block rounded-lg border border-border p-4 transition-colors hover:bg-muted/50"
+        className="relative block rounded-md border border-border p-4 transition-colors hover:bg-muted/50"
     >
         <StatusBadge
             status={item.deliveryStatus}
@@ -75,7 +75,7 @@ export const OrderItemsCard = ({
     itemFilter,
     onFilterChange,
 }: OrderItemsCardProps) => (
-    <div className="rounded-xl border border-border bg-card p-5">
+    <div className="rounded-md border border-border bg-card p-5">
         <div className="mb-4 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-foreground">
                 Items {items ? `(${items.length})` : ""}

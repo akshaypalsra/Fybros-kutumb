@@ -14,7 +14,7 @@ export const OrdersHeader = ({ onNewOrder }: OrdersHeaderProps) => (
     <Button
       type="button"
       onClick={onNewOrder}
-      className="whitespace-nowrap rounded-lg bg-secondary px-4 py-2.5 text-sm font-normal text-white hover:bg-secondary"
+      className="whitespace-nowrap rounded-md bg-secondary px-4 py-2.5 text-sm font-normal text-white hover:bg-secondary"
     >
       + Create Order
     </Button>

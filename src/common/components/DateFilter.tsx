@@ -9,7 +9,7 @@ interface DateFilterProps {
 }
 
 export const DateFilter = ({ from, to, onFromChange, onToChange }: DateFilterProps) => (
-  <div className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2">
+  <div className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2">
     <Input
       type="date"
       value={from}

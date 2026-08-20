@@ -1,4 +1,4 @@
-import type { BusinessPartner } from "@/types/businessPartner.types";
+import type { BusinessPartner } from "@/types/business-partner.types";
 import { Badge } from "@/common/components/ui/badge";
 import { Card, CardContent } from "@/common/components/ui/card";
 import { Separator } from "@/common/components/ui/separator";
@@ -12,7 +12,7 @@ interface BusinessPartnerInfoCardProps {
 
 export const BusinessPartnerInfoCard = ({ partner }: BusinessPartnerInfoCardProps) => {
   return (
-    <Card className="bp-animate rounded-xl border-border" style={{ animationDelay: "240ms" }}>
+    <Card className="bp-animate rounded-md border-border" style={{ animationDelay: "240ms" }}>
       <CardContent className="space-y-6 p-6">
         <div>
           <div className="flex items-center gap-2">

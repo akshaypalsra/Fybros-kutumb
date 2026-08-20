@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { useUrlPersistedFilters } from "@/hooks/useUrlPersistedFilters"
 import type { TabFilter } from "@/types/order.types"
+import { toIsoDateRange } from "@/utils/date.utils"
 
 const stringField = (param: string, defaultValue = "") => ({
   param,
@@ -30,14 +31,11 @@ export const useOrderFilterState = () => {
     selectedVerticals: arrayField("verticals"),
   })
 
-  const fromDateIso = useMemo(
-    () => (values.dateFrom ? new Date(`${values.dateFrom}T00:00:00.000Z`).toISOString() : undefined),
-    [values.dateFrom]
-  )
-  const toDateIso = useMemo(
-    () => (values.dateTo ? new Date(`${values.dateTo}T23:59:59.999Z`).toISOString() : undefined),
-    [values.dateTo]
-  )
+  const { fromDateIso, toDateIso } = useMemo(
+    () => toIsoDateRange(values.dateFrom, values.dateTo),
+    [values.dateFrom, values.dateTo],
+  );
+
 
   return {
     tab: values.tab, setTab: setters.tab,
