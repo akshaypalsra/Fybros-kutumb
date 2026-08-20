@@ -26,6 +26,7 @@ export function useCurrentUser() {
     error,
     displayName: me?.name ?? auth.user?.profile.name ?? "User",
     email: me?.email ?? auth.user?.profile.email,
+    code: me?.crCode ?? '-',
     avatarUrl: auth.user?.profile.picture,
     logout,
   };

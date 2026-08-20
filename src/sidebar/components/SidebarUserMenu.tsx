@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { LogOutIcon } from "lucide-react";
+import { ChevronDown, LogOutIcon } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -17,7 +17,7 @@ import { SidebarUserMenuSkeleton } from "./SidebarUserMenuSkeleton";
 
 export function SidebarUserMenu() {
     const auth = useAuth();
-    const { me, isPending, displayName, email, avatarUrl } = useCurrentUser();
+    const { me, isPending, displayName, email, code, avatarUrl } = useCurrentUser();
     const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
     const handleLogout = useCallback(async () => {
@@ -30,7 +30,7 @@ export function SidebarUserMenu() {
             <SidebarUserMenuSkeleton />
         );
     }
-
+    
     return (
         <>
             <DropdownMenu>
@@ -41,8 +41,17 @@ export function SidebarUserMenu() {
                         className="h-auto w-auto items-center justify-start gap-3 rounded-md p-2 text-left hover:bg-muted data-[state=open]:bg-muted"
                     >
                         <UserAvatar name={displayName} imageUrl={avatarUrl} />
-
-
+                        <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium text-foreground">
+                                {displayName}
+                            </p>
+                            {code && (
+                                <p className="truncate text-xs text-muted-foreground">
+                                    {code}
+                                </p>
+                            )}
+                        </div>
+                        <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
                     </Button>
                 </DropdownMenuTrigger>
 
