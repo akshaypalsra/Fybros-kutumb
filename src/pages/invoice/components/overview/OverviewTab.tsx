@@ -32,7 +32,7 @@ export const OverviewTab = ({ businessPartnerId, enabled, onViewAllInvoices }: O
       }
       error={<ErrorState className="mb-4" message="Failed to load your finance overview. Please try again." />}
     >
-      <div className="grid gap-5 lg:grid-cols-3">
+      <div className="grid gap-5 lg:grid-cols-4">
         <CreditOverviewCard creditOverview={creditOverview} />
         <OutstandingSummaryCard outstandingSummary={outstandingSummary} />
         <AgeingDistributionCard ageingDistribution={ageingDistribution} />

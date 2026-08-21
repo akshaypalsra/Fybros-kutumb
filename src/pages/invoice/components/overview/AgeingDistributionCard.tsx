@@ -7,7 +7,7 @@ interface AgeingDistributionCardProps {
 }
 
 export const AgeingDistributionCard = ({ ageingDistribution }: AgeingDistributionCardProps) => (
-  <div className="rounded-md border bg-card p-6 shadow-sm lg:col-span-3">
+  <div className="rounded-md border bg-card p-6 shadow-sm lg:col-span-4">
     <p className="mb-4 text-sm font-medium text-muted-foreground">Ageing distribution (days)</p>
     <AgeingBar buckets={ageingDistribution ?? []} />
   </div>

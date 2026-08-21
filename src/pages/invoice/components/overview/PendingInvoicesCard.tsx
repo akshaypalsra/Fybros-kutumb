@@ -10,7 +10,7 @@ interface PendingInvoicesCardProps {
 }
 
 export const PendingInvoicesCard = ({ invoices, onViewAll }: PendingInvoicesCardProps) => (
-  <div className="lg:col-span-3">
+  <div className="lg:col-span-4">
     <div className="mb-4 flex items-center justify-between">
       <p className="text-sm font-medium text-muted-foreground">Pending invoices ({invoices.length})</p>
       <Button

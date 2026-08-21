@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useBusinessPartnerApi } from "@/api/business/useBusinessPartnerApi";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
@@ -46,17 +47,22 @@ export function useOverviewTabData({ businessPartnerId, enabled }: UseOverviewTa
     isError: isInvoiceError,
   } = useQuery<Invoice[]>({
     queryKey: ["invoices", businessPartnerId, "overview"],
-    queryFn: () =>
-      searchInvoices({
+    queryFn: async () => {
+      const response = await searchInvoices({
         businessPartnerId,
         invoiceStatus: "PENDING",
         page: 0,
         size: 100,
-      }),
+      });
+      return response.content;
+    },
     enabled,
   });
 
-  const pendingInvoices = (overviewInvoices ?? []).filter((inv) => inv.status !== "PAID");
+  const pendingInvoices = useMemo(
+    () => (overviewInvoices ?? []).filter((inv) => inv.status !== "PAID"),
+    [overviewInvoices],
+  );
 
   return {
     creditOverview,
