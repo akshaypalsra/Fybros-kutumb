@@ -8,6 +8,7 @@ import { formatCurrency, formatDate } from "@/utils/common.utils";
 import { QueryState } from "@/wrapper/QueryState";
 import { EmptyState } from "@/common/components/EmptyState";
 import { ErrorState } from "@/common/components/ErrorState";
+import { Heading } from "@/common/components/Heading";
 
 interface OrderInvoicesCardProps {
   invoices?: Invoice[];
@@ -21,7 +22,7 @@ const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
   return (
     <Link
       to={`/invoices/${invoice.docEntry}`}
-      className="flex items-start justify-between gap-3 rounded-md border border-border p-3 bg-muted"
+      className="flex items-start justify-between gap-3 rounded-md  p-3 bg-muted"
     >
       <div className="flex items-start gap-3">
         <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-muted text-muted-foreground">
@@ -45,6 +46,7 @@ const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
       <div className="flex flex-col items-end gap-2">
         <p className="text-sm font-semibold text-foreground">{formatCurrency(invoice.docTotal)}</p>
         <StatusBadge status={invoice.status} />
+        <StatusBadge status={invoice.cardCode} />
       </div>
     </Link>
   );
@@ -63,9 +65,11 @@ export const OrderInvoicesCard = ({ invoices, isLoading, isError = false }: Orde
   return (
     <div className="rounded-md border col-span-2 border-border bg-card p-5">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-foreground">Invoices</h2>
+        <Heading title={'Invoices'} className="mb-0" />
         {!isLoading && !isError && data.length > 0 && (
-          <span className="text-xs text-muted-foreground">({data.length} Invoices)</span>
+          <span className="text-xs text-muted-foreground">
+            ({data.length} Invoice{data.length !== 1 ? "s" : ""})
+          </span>
         )}
       </div>
 

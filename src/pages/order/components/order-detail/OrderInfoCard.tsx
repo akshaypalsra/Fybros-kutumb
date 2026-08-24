@@ -1,8 +1,9 @@
-import { Badge } from "@/common/components/ui/badge";
 import { DetailField } from "@/common/components/DetailField";
 import type { OrderWithExtras } from "@/types/order-detail.types";
 import type { OrderItem } from "@/types/order.types";
 import { formatCurrency, formatDate } from "@/utils/common.utils";
+import { Heading } from "@/common/components/Heading";
+import { StatusBadge } from "@/common/components/StatusBadge";
 
 interface OrderInfoCardProps {
   order?: OrderWithExtras;
@@ -15,7 +16,7 @@ export const OrderInfoCard = ({ order, items, computedTotal }: OrderInfoCardProp
 
   return (
     <div className="rounded-md border col-span-2 border-border bg-card p-5">
-      <h1 className="text-sm font-semibold text-foreground">Order Details</h1>
+      <Heading title={'Order Detail'}/>
       <div className="grid grid-cols-3 mt-2 bg-muted rounded-md p-3 space-x-3 space-y-3">
         <DetailField
           label="Order Date"
@@ -28,12 +29,7 @@ export const OrderInfoCard = ({ order, items, computedTotal }: OrderInfoCardProp
         {order.orderType && (
           <DetailField
             label="Order Type"
-            value={<Badge
-              variant="outline"
-              className="rounded-full border-purple-200 bg-purple-100 px-2.5 py-0 text-xs font-semibold text-purple-700"
-            >
-              {order.orderType}
-            </Badge>}
+            value={<StatusBadge status={order.orderType}/>}
           />
         )}
         <DetailField

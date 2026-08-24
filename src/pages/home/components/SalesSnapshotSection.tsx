@@ -1,3 +1,4 @@
+import { Heading } from "@/common/components/Heading";
 import { SalesSnapshotChart } from "./SalesSnapshotChart";
 import { SalesSnapshotSummary } from "./SalesSnapshotSummary";
 import { Dropdown } from "@/common/components/Dropdown";
@@ -31,21 +32,21 @@ export const SalesSnapshotSection = ({
 }: SalesSnapshotSectionProps) => {
   return (
     <section>
-      <h2 className="mb-3 text-md font-heading text-foreground">Sales Snapshot</h2>
+      <Heading title={'Sales Snapshot'} className="text-md"/>
 
-      <div className="rounded-md border bg-card p-4">
-        <div className="mb-1 flex items-start justify-between">
-          <SalesSnapshotSummary
-            bookedLastMonth={trend?.bookedLastMonth}
-            growthPercent={trend?.growthPercent}
-          />
-          <Dropdown value={range} onValueChange={onRangeChange} options={RANGE_OPTIONS} />
+        <div className="rounded-md border bg-card p-4">
+          <div className="mb-1 flex items-start justify-between">
+            <SalesSnapshotSummary
+              bookedLastMonth={trend?.bookedLastMonth}
+              growthPercent={trend?.growthPercent}
+            />
+            <Dropdown value={range} onValueChange={onRangeChange} options={RANGE_OPTIONS} />
+          </div>
+
+          {isLoading ? 'Loading' : <div className={isLoading ? "opacity-50 transition-opacity" : "transition-opacity"}>
+            <SalesSnapshotChart points={trend?.points} />
+          </div>}
         </div>
-
-       { isLoading ?'Loading':<div className={isLoading ? "opacity-50 transition-opacity" : "transition-opacity"}>
-          <SalesSnapshotChart points={trend?.points} />
-        </div>}
-      </div>
     </section>
   );
 };

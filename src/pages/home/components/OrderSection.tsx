@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { OrderStatsCards } from "@/pages/order/components/order/OrderStatsCards";
 import { useOrderValue } from "@/pages/order/hooks/useOrderValue";
+import { Heading } from "@/common/components/Heading";
 
 interface OrderSectionProps {
     cardCode?: string;
@@ -20,9 +21,7 @@ export const OrderSection = ({ cardCode }: OrderSectionProps) => {
     return (
         <section className="mb-6">
             <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-md font-heading text-foreground">
-                    Orders
-                </h2>
+                <Heading title="Orders" className="mb-0 text-md"/>
 
                 <Link
                     to="/Orders"

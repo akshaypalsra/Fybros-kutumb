@@ -1,9 +1,8 @@
 import { useMemo } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
 import type { Invoice, InvoiceSubTab } from "@/types/invoice.types";
 import { useOutstandingSummary } from "../../../hooks/useOutstandingSummary";
 import { groupByMonth } from "@/utils/grouping.utils";
+import { useInvoices } from "./useInvoices";
 
 interface UseInvoicesTabDataParams {
   businessPartnerId: string;
@@ -15,13 +14,9 @@ interface UseInvoicesTabDataParams {
   subTab: InvoiceSubTab;
 }
 
-const PAGE_SIZE = 20;
-
-// Maps the UI sub-tab to the backend's invoiceStatus enum.
-// "ALL" omits the param entirely so the backend returns every status.
 const SUB_TAB_TO_INVOICE_STATUS: Partial<Record<InvoiceSubTab, string>> = {
-  OPEN: "OPEN",
-  CLOSED: "CLOSED",
+  UNPAID: "UNPAID",
+  PAID: "PAID",
   OVERDUE: "OVERDUE",
 };
 
@@ -34,8 +29,6 @@ export function useInvoicesTabData({
   selectedVerticals,
   subTab,
 }: UseInvoicesTabDataParams) {
-  const { searchInvoices } = useInvoiceApi();
-
   const trimmedSearch = search.trim();
   const invoiceStatus = SUB_TAB_TO_INVOICE_STATUS[subTab];
 
@@ -47,47 +40,32 @@ export function useInvoicesTabData({
 
   const {
     data,
+    invoices,
     isLoading: isInvoiceLoading,
     isError: isInvoiceError,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ["invoices", businessPartnerId, trimmedSearch, fromDateIso, toDateIso, selectedVerticals, invoiceStatus],
-    queryFn: ({ pageParam = 0 }) =>
-      searchInvoices({
-        businessPartnerId,
-        query: trimmedSearch || undefined,
-        fromDate: fromDateIso,
-        toDate: toDateIso,
-        invoiceStatus,
-        verticals: selectedVerticals.length ? selectedVerticals : undefined,
-        page: pageParam,
-        size: PAGE_SIZE,
-      }),
-    getNextPageParam: (lastPage) => {
-      const isLastPage = lastPage.page.number + 1 >= lastPage.page.totalPages;
-      return isLastPage ? undefined : lastPage.page.number + 1;
-    },
-    initialPageParam: 0,
+  } = useInvoices({
+    businessPartnerId,
+    query: trimmedSearch || undefined,
+    fromDate: fromDateIso,
+    toDate: toDateIso,
+    invoiceStatus,
+    verticals: selectedVerticals.length ? selectedVerticals : undefined,
     enabled,
   });
-
-  const invoices: Invoice[] = useMemo(
-    () => data?.pages.flatMap((page) => page.content) ?? [],
-    [data],
-  );
 
   const isLoading = isInvoiceLoading || isOutstandingLoading;
   const isError = isInvoiceError || isOutstandingError;
 
-  const totalCount = data?.pages[0]?.page.totalElements ?? invoices.length;
+  const totalCount = data?.pages[0]?.page?.totalElements ?? invoices.length;
   const counts: Partial<Record<InvoiceSubTab, number>> = {
     [subTab]: totalCount,
   };
 
   const invoicesByMonth = useMemo(
-    () => groupByMonth(invoices, (invoice) => invoice.docDate),
+    () => groupByMonth(invoices as Invoice[], (invoice) => invoice.docDate),
     [invoices],
   );
 

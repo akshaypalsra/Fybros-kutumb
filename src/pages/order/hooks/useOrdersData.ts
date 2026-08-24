@@ -17,9 +17,10 @@ export const tabToOrderStatus = (tab: TabFilter): string | undefined => {
 }
 
 export const useOrdersData = ({ query, dateFrom, dateTo, selectedVerticals, tab }: UseOrdersDataParams) => {
- const { partner, isPartnerLoading, isPartnerError, enabled } = useActiveBusinessPartner()
+  const { partner, isPartnerLoading, isPartnerError, enabled } = useActiveBusinessPartner()
 
   const {
+    data,
     orders,
     isLoading: isOrdersLoading,
     isError: isOrdersError,
@@ -38,9 +39,16 @@ export const useOrdersData = ({ query, dateFrom, dateTo, selectedVerticals, tab 
     enabled
   )
 
+  const totalCount = data?.pages[0]?.page?.totalElements ?? orders.length;
+  const counts: Partial<Record<TabFilter, number>> = {
+    [tab]: totalCount,
+  };
+
+
   return {
     partner,
     orders,
+    counts,
     isLoading: isPartnerLoading || isOrdersLoading,
     isError: isPartnerError || isOrdersError,
     fetchNextPage,

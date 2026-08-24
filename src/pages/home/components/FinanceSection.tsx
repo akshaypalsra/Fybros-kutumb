@@ -3,6 +3,7 @@ import { CalendarClock, ChevronRight, FileText, Receipt } from "lucide-react";
 
 import { formatCompactCurrency } from "@/utils/common.utils";
 import { StatSummaryCard } from "@/common/components/StatSummaryCard";
+import { Heading } from "@/common/components/Heading";
 
 interface FinanceSectionProps {
     outstandingAmount?: number;
@@ -18,9 +19,7 @@ export const FinanceSection = ({
     return (
         <section className="mb-6">
             <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-md font-heading text-foreground">
-                    Finance
-                </h2>
+               <Heading title="Finance" className="mb-0 text-md"/>
 
                 <Link
                     to="/invoices"

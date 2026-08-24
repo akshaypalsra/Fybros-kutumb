@@ -3,21 +3,26 @@ import type { Order, OrderItem, OrderValue, SearchOrdersParams } from "@/types/o
 import type { Invoice } from "@/types/invoice.types";
 import type { PagedResponse } from "@/types/common.types";
 
-const toStartOfDayISO = (date?: string) => (date ? `${date}T00:00:00.000Z` : undefined);
-const toEndOfDayISO = (date?: string) => (date ? `${date}T23:59:59.999Z` : undefined);
+import { toIsoStart, toIsoEnd } from "@/utils/date.utils";
 
 export const searchOrders = async (
     axiosInstance: AxiosInstance,
     params: SearchOrdersParams,
 ): Promise<PagedResponse<Order>> => {
+    const { page, size, ...rest } = params;
+
     const response = await axiosInstance.post<PagedResponse<Order>>(
         "/business-partners/orders/search",
         {
-            ...params,
-            fromDate: toStartOfDayISO(params.fromDate),
-            toDate: toEndOfDayISO(params.toDate),
+            ...rest,
+            fromDate: params.fromDate ? toIsoStart(params.fromDate) : undefined,
+            toDate: params.toDate ? toIsoEnd(params.toDate) : undefined,
+        },
+        {
+            params: { page, size },
         },
     );
+
     return response.data;
 };
 

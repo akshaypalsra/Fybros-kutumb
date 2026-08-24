@@ -2,8 +2,6 @@ import type { AxiosInstance } from "axios";
 import type { Invoice, InvoiceItem, InvoiceStatistics, SearchInvoicesParams } from "@/types/invoice.types";
 import type { PagedResponse } from "@/types/common.types";
 
-
-
 export const searchInvoices = async (
     axiosInstance: AxiosInstance,
     {
@@ -26,8 +24,9 @@ export const searchInvoices = async (
             query,
             invoiceStatus,
             verticals,
-            page,
-            size,
+        },
+        {
+            params: { page, size },
         }
     );
 
@@ -71,14 +70,14 @@ export const getInvoiceStatistics = async (
 
 
 export const getInvoiceItems = async (
-  axiosInstance: AxiosInstance,
-  invoiceId: string,
+    axiosInstance: AxiosInstance,
+    invoiceId: string,
 ): Promise<InvoiceItem[]> => {
-  const response = await axiosInstance.get<InvoiceItem[]>(
-    `/invoice/${invoiceId}/items`,
-  );
+    const response = await axiosInstance.get<InvoiceItem[]>(
+        `/invoice/${invoiceId}/items`,
+    );
 
-  return response.data;
+    return response.data;
 };
 
 export type InvoiceAnalyticsType = "MONTH_OVER_MONTH" | "QUARTER_OVER_QUARTER" | "YEAR_OVER_YEAR";
@@ -90,13 +89,13 @@ export interface InvoiceAnalyticsPoint {
 }
 
 export const getInvoiceAnalytics = async (
-  axiosInstance: AxiosInstance,
-  analyticsType: InvoiceAnalyticsType
+    axiosInstance: AxiosInstance,
+    analyticsType: InvoiceAnalyticsType
 ): Promise<InvoiceAnalyticsPoint[]> => {
-  const response = await axiosInstance.get<InvoiceAnalyticsPoint[]>(
-    "/business-partners/invoices/analytics",
-    { params: { analyticsType } }
-  );
+    const response = await axiosInstance.get<InvoiceAnalyticsPoint[]>(
+        "/business-partners/invoices/analytics",
+        { params: { analyticsType } }
+    );
 
-  return response.data;
+    return response.data;
 };

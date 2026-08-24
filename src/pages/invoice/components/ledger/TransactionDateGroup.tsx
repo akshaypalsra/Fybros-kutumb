@@ -1,5 +1,6 @@
 import type { LedgerEntry } from "@/types/ledger.types";
 import { TransactionRow } from "./TransactionRow";
+import { Heading } from "@/common/components/Heading";
 
 
 interface TransactionDateGroupProps {
@@ -16,12 +17,17 @@ const formatGroupDate = (dateKey: string) =>
 
 export const TransactionDateGroup = ({ dateKey, entries }: TransactionDateGroupProps) => (
   <div>
-    <div className="mb-2 flex items-baseline gap-2">
-      <h3 className="text-sm font-semibold text-foreground">{formatGroupDate(dateKey)}</h3>
-      <span className="text-xs text-muted-foreground">
-        ({entries.length} Transaction{entries.length !== 1 ? "s" : ""})
-      </span>
-    </div>
+    <Heading
+      title={
+        <>
+          {formatGroupDate(dateKey)}{" "}
+          <span className="font-normal text-muted-foreground">
+            ({entries.length} Transaction{entries.length !== 1 ? "s" : ""})
+          </span>
+        </>
+      }
+      className="mb-2"
+    />
 
     <div className="space-y-3">
       {entries.map((entry, index) => (

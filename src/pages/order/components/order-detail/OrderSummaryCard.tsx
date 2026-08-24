@@ -1,5 +1,6 @@
 
 
+import { Heading } from "@/common/components/Heading";
 import type { OrderItem } from "@/types/order.types";
 
 interface ItemCounts {
@@ -23,7 +24,7 @@ export const OrderSummaryCard = ({ items, counts }: OrderSummaryCardProps) => {
 
     return (
         <div className="rounded-md border border-border bg-card p-5 col-span-2">
-            <h2 className="mb-4 text-sm font-semibold text-foreground">Summary</h2>
+            <Heading title="Summary" />
             <div className="grid grid-cols-3 gap-2 text-center">
                 <div className="rounded-md bg-muted/50 p-3">
                     <p className="text-xs text-muted-foreground">Delivered</p>

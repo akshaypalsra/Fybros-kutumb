@@ -42,8 +42,8 @@ export const TABS: { key: Tab; label: string; subtitle: string }[] = [
 
 export const INVOICE_SUB_TABS: { key: InvoiceSubTab; label: string }[] = [
   { key: "ALL", label: "All" },
-  { key: "OPEN", label: "Open" },
-  { key: "CLOSED", label: "Closed" },
+  { key: "UNPAID", label: "Unpaid" },
+  { key: "PAID", label: "Paid" },
   { key: "OVERDUE", label: "Overdue" },
 ]
 

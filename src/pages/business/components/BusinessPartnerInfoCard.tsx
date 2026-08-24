@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/common/components/ui/card";
 import { Separator } from "@/common/components/ui/separator";
 import { Building2, Mail, MapPin, Phone } from "lucide-react";
 import CopyField from "./CopyField";
+import { Heading } from "@/common/components/Heading";
 
 
 interface BusinessPartnerInfoCardProps {
@@ -16,7 +17,7 @@ export const BusinessPartnerInfoCard = ({ partner }: BusinessPartnerInfoCardProp
       <CardContent className="space-y-6 p-6">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-semibold text-foreground">Business Information</h2>
+            <Heading title="Business Information" />
           </div>
           <Separator className="mt-3" />
         </div>

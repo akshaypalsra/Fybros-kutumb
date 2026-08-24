@@ -1,3 +1,5 @@
+import { Heading } from "@/common/components/Heading";
+
 interface Payment {
     id: string;
     date: string;
@@ -16,10 +18,7 @@ export default function PaymentTimeline({
 }: PaymentTimelineProps) {
     return (
         <section className="rounded-md bg-card p-5 text-card-foreground">
-            <h2 className="mb-4 text-sm font-semibold text-foreground">
-                Payment Timeline
-            </h2>
-
+            <Heading title={'Payment Timeline'} />
             <div className="space-y-3">
                 {payments.map((payment) => (
                     <div

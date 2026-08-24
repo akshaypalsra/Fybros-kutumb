@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
 import { formatCurrency } from "@/utils/common.utils";
 import type { InvoiceItem } from "@/types/invoice.types";
+import { Heading } from "@/common/components/Heading";
 
 interface InvoiceItemsTableProps {
     invoiceId: string;
@@ -40,7 +41,7 @@ export const InvoiceItemsTable = ({ invoiceId }: InvoiceItemsTableProps) => {
 
     return (
         <div className="bg-card p-5 rounded-md">
-            <h2 className="mb-4 text-sm font-semibold text-foreground">Item Details</h2>
+            <Heading title={'Item Details'} />
 
             {isLoading && <p className="text-sm text-muted-foreground">Loading items…</p>}
 

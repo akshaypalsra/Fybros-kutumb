@@ -6,7 +6,6 @@ import { QueryState } from "@/wrapper/QueryState";
 import { ErrorState } from "@/common/components/ErrorState";
 import { EmptyState } from "@/common/components/EmptyState";
 import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
-
 import type { Invoice } from "@/types/invoice.types";
 import { InvoiceMonthGroup } from "./InvoiceMonthGroup";
 import { useOrderValue } from "@/pages/order/hooks/useOrderValue";

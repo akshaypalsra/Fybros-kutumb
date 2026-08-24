@@ -83,7 +83,7 @@ export interface Invoice {
 
 export type Tab = "overview" | "invoices" | "ledger"
 
-export type InvoiceSubTab = "ALL" | "OPEN" | "CLOSED" | "OVERDUE"
+export type InvoiceSubTab = "ALL" | "UNPAID" | "PAID" | "OVERDUE"
 
 export type TransactionSubTab = "ALL" | "CREDIT_NOTE" | "DEBIT_NOTE"
 

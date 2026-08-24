@@ -9,6 +9,7 @@ import type { OrderItem } from "@/types/order.types";
 import { formatCurrency } from "@/utils/common.utils";
 import { QueryState } from "@/wrapper/QueryState";
 import { ErrorState } from "@/common/components/ErrorState";
+import { Heading } from "@/common/components/Heading";
 
 interface OrderItemsCardProps {
     orderId: string;
@@ -31,7 +32,7 @@ const OrderItemCard = ({
 }) => (
     <Link
         to={`/orders/${orderId}/items/${item.id}`}
-        className="relative block rounded-md border border-border p-4 transition-colors hover:bg-muted/50"
+        className="relative block rounded-md bg-muted p-4 transition-colors hover:bg-muted"
     >
         <StatusBadge
             status={item.deliveryStatus}
@@ -76,10 +77,8 @@ export const OrderItemsCard = ({
     onFilterChange,
 }: OrderItemsCardProps) => (
     <div className="rounded-md col-span-4 border border-border bg-card p-5">
-        <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-foreground">
-                Items {items ? `(${items.length})` : ""}
-            </h2>
+        <div className="mb-4 flex items-center justify-start space-x-3">
+            <Heading className="mb-0" title={`Items${items ? ` (${items.length})` : ""}`} />
 
             <SegmentedControl
                 options={FILTERS}

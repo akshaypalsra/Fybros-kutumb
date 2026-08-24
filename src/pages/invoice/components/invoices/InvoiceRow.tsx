@@ -12,7 +12,7 @@ interface InvoiceRowProps {
 export const InvoiceRow = ({ invoice }: InvoiceRowProps) => (
   <Link
     to={`/invoices/${invoice.docEntry}`}
-    className="flex mb-2 items-start justify-between gap-4 p-4 rounded-md border border-border bg-card hover:bg-accent/50 transition-colors"
+    className="flex mb-2 items-start justify-between gap-4 p-4 rounded-md border border-border bg-card px-6 py-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
   >
     <div className="flex min-w-0 items-start gap-3">
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">

@@ -1,6 +1,7 @@
 import { DetailField } from "@/common/components/DetailField";
 import { formatCurrency } from "@/utils/common.utils";
 import type { OrderItemDetail } from "@/types/order.types";
+import { Heading } from "@/common/components/Heading";
 
 interface OrderItemDetailsListProps {
     item: OrderItemDetail;
@@ -9,7 +10,7 @@ interface OrderItemDetailsListProps {
 export function OrderItemDetailsList({ item }: OrderItemDetailsListProps) {
     return (
         <div className="rounded-md border border-border bg-card p-5">
-            <h2 className="mb-4 text-sm font-semibold text-foreground">Details</h2>
+            <Heading title="Details" />
             <div className="space-y-0 divide-y divide-border">
                 <DetailField label="Item Code" value={item.itemCode} layout="row" isFirst />
                 <DetailField label="HSN Code" value={item.hsnCode} layout="row" />

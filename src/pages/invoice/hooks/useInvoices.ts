@@ -21,7 +21,7 @@ export function useInvoices({
     const { searchInvoices } = useInvoiceApi();
 
     const result = useInfiniteQuery({
-        queryKey: ["invoices", businessPartnerId, fromDate, toDate, query, invoiceStatus, verticals],
+        queryKey: ["invoices", businessPartnerId, fromDate, toDate, query, invoiceStatus, verticals, pageSize],
         queryFn: ({ pageParam = 0 }) =>
             searchInvoices({
                 businessPartnerId,
@@ -34,8 +34,15 @@ export function useInvoices({
                 size: pageSize,
             }),
         getNextPageParam: (lastPage) => {
-            const isLastPage = lastPage.page.number + 1 >= lastPage.page.totalPages;
-            return isLastPage ? undefined : lastPage.page.number + 1;
+            const pageInfo = lastPage?.page;
+            if (!pageInfo) {
+                console.warn("[useInvoices] lastPage.page is missing — check searchInvoices' response shape.", lastPage);
+            }
+
+            const { number, totalPages } = pageInfo ?? {};
+            if (number == null || totalPages == null) return undefined;
+
+            return number + 1 >= totalPages ? undefined : number + 1;
         },
         initialPageParam: 0,
         enabled,
@@ -44,11 +51,7 @@ export function useInvoices({
     const invoices = result.data?.pages.flatMap((page) => page.content) ?? [];
 
     return {
+        ...result,
         invoices,
-        isLoading: result.isLoading,
-        isError: result.isError,
-        fetchNextPage: result.fetchNextPage,
-        hasNextPage: result.hasNextPage,
-        isFetchingNextPage: result.isFetchingNextPage,
     };
 }

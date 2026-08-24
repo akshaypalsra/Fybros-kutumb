@@ -47,6 +47,7 @@ const OrdersPage = () => {
 
   const {
     partner,
+    counts,
     orders,
     isLoading,
     isError,
@@ -98,7 +99,7 @@ const OrdersPage = () => {
           className="rounded-full"
           variant="secondary"
         />
-        <OrderTabs value={tab} onChange={setTab} />
+        <OrderTabs counts={counts} value={tab} onChange={setTab} />
       </div>
 
       <QueryState<Order[]>
