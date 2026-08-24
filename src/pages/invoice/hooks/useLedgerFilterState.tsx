@@ -19,7 +19,7 @@ const sortDirectionField = (param: string, defaultValue: SortDirection = "ASC") 
 })
 
 export const useLedgerFilterState = () => {
-  const { values, setters, clearAll } = useUrlPersistedFilters("ledgers.filters", {
+  const { values, setters, clearAll,clearFields } = useUrlPersistedFilters("ledgers.filters", {
     query: stringField("q"),
     dateFrom: stringField("from"),
     dateTo: stringField("to"),
@@ -38,5 +38,6 @@ export const useLedgerFilterState = () => {
     fromDateIso, toDateIso,
     sortDirection: values.sortDirection, setSortDirection: setters.sortDirection,
     clearAll,
+    clearFields
   }
 }

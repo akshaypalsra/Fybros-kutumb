@@ -31,7 +31,7 @@ const INVOICE_FILTER_FIELDS = {
 };
 
 export const useListFiltersState = () => {
-  const { values, setters, clearAll } = useUrlPersistedFilters(
+  const { values, setters, clearAll, clearFields } = useUrlPersistedFilters(
     "invoices.filters",
     INVOICE_FILTER_FIELDS,
   );
@@ -49,5 +49,6 @@ export const useListFiltersState = () => {
     fromDateIso, toDateIso,
     selectedVerticals: values.selectedVerticals, setSelectedVerticals: setters.selectedVerticals,
     clearAll,
+    clearFields
   };
 };

@@ -16,6 +16,7 @@ interface TransactionFiltersProps {
     onSortDirectionChange: (value: "ASC" | "DESC") => void;
     hasActiveFilters: boolean
     onClearAll: () => void
+    onClearDates: () => void
 }
 
 export const TransactionFilters = ({
@@ -30,6 +31,7 @@ export const TransactionFilters = ({
     onSortDirectionChange,
     hasActiveFilters,
     onClearAll,
+    onClearDates
 }: TransactionFiltersProps) => {
     return (
         <div className="mb-6 flex flex-col flex-wrap items-center gap-3 md:flex-row">
@@ -47,6 +49,7 @@ export const TransactionFilters = ({
                     to={toDate}
                     onFromChange={onFromDateChange}
                     onToChange={onToDateChange}
+                    onClearDates={() => onClearDates()}
                 />
             </div>
 

@@ -16,9 +16,11 @@ interface OrderFiltersBarProps {
     selectedVerticals: string[]
     onVerticalsChange: (value: string[]) => void
     clearAll: () => void
+    onClearDates: () => void
+
 }
 
-export const OrderFiltersBar = ({
+export const OrderFilters = ({
     query,
     onQueryChange,
     dateFrom,
@@ -28,7 +30,10 @@ export const OrderFiltersBar = ({
     verticals,
     selectedVerticals,
     onVerticalsChange,
-    clearAll
+    clearAll,
+    onClearDates,
+
+
 }: OrderFiltersBarProps) => {
     const hasActiveFilters = !!query || !!dateFrom || !!dateTo || selectedVerticals.length > 0
 
@@ -42,6 +47,7 @@ export const OrderFiltersBar = ({
                 to={dateTo}
                 onFromChange={onDateFromChange}
                 onToChange={onDateToChange}
+                onClearDates={onClearDates}
             />
             <VerticalFilter
                 verticals={verticals}

@@ -4,7 +4,7 @@ import { useOrderFilterState } from "./hooks/useOrderFilterState";
 import { useOrderFilters } from "./hooks/useOrderFilters";
 import { useOrderValue } from "./hooks/useOrderValue";
 import { OrdersHeader } from "./components/order/OrdersHeader";
-import { OrderFiltersBar } from "./components/order/OrderFilters";
+import { OrderFilters } from "./components/order/OrderFilters";
 import { OrderStatsCards } from "./components/order/OrderStatsCards";
 import { OrderTabs } from "./components/order/OrderTabs";
 import { OrderList } from "./components/order/OrderList";
@@ -39,7 +39,8 @@ const OrdersPage = () => {
     toDateIso,
     selectedVerticals,
     setSelectedVerticals,
-    clearAll
+    clearAll,
+    clearFields
   } = useOrderFilterState();
 
   const [viewMode, setViewMode] = useState<OrderViewMode>("ORDER");
@@ -76,7 +77,7 @@ const OrdersPage = () => {
     <div className="mx-auto max-w-295">
       <OrdersHeader partnerName={partner?.cardName} partnerCode={partner?.cardCode} />
       <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
-      <OrderFiltersBar
+      <OrderFilters
         query={query}
         onQueryChange={setQuery}
         dateFrom={dateFrom}
@@ -87,6 +88,7 @@ const OrdersPage = () => {
         selectedVerticals={selectedVerticals}
         onVerticalsChange={setSelectedVerticals}
         clearAll={clearAll}
+        onClearDates={() => clearFields(["dateFrom", "dateTo"])}
       />
       <div className="mb-4 flex  gap-3">
         <Dropdown<OrderViewMode>

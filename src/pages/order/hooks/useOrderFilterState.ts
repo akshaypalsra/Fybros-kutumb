@@ -18,7 +18,7 @@ const arrayField = (param: string) => ({
 })
 
 export const useOrderFilterState = () => {
-  const { values, setters, clearAll } = useUrlPersistedFilters("orders.filters", {
+  const { values, setters, clearAll, clearFields } = useUrlPersistedFilters("orders.filters", {
     tab: {
       param: "tab",
       defaultValue: "ALL" as TabFilter,
@@ -45,5 +45,6 @@ export const useOrderFilterState = () => {
     fromDateIso, toDateIso,
     selectedVerticals: values.selectedVerticals, setSelectedVerticals: setters.selectedVerticals,
     clearAll,
+    clearFields
   }
 }

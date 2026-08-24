@@ -78,6 +78,19 @@ export function useUrlPersistedFilters<C extends FieldsConfig>(
     setSearchParams(new URLSearchParams())
   }, [setSearchParams])
 
+
+  const clearFields = useCallback((keys: (keyof C)[]) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      for (const key of keys) {
+        const config = fieldsRef.current[key as string]
+        next.delete(config.param)
+      }
+      return next
+    })
+  }, [setSearchParams])
+
+
   useEffect(() => {
     const toStore: Record<string, string> = {}
     for (const key of Object.keys(fields)) {
@@ -94,5 +107,5 @@ export function useUrlPersistedFilters<C extends FieldsConfig>(
     } catch { }
   }, [JSON.stringify(values)])
 
-  return { values, setters, clearAll }
+  return { values, setters, clearAll, clearFields }
 }

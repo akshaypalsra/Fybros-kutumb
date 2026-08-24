@@ -73,7 +73,7 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
   return (
     <>
       <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
-      
+
       <ListFilters
         search={filters.search}
         onSearchChange={filters.setSearch}
@@ -87,6 +87,7 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
         hasActiveFilters={!!filters.search || !!filters.dateFrom || !!filters.dateTo || filters.selectedVerticals.length > 0 || filters.subTab !== "ALL"}
         onVerticalsChange={filters.setSelectedVerticals}
         onClearAll={filters.clearAll}
+        onClearDates={() => filters.clearFields(["dateFrom", "dateTo"])}
       />
 
       <div className="mb-4">

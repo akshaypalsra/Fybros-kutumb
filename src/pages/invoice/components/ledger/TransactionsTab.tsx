@@ -14,7 +14,7 @@ import type { useLedgerFilterState } from "../../hooks/useLedgerFilterState";
 interface TransactionsTabProps {
   businessPartnerId: string;
   enabled: boolean;
-  filters: ReturnType<typeof useLedgerFilterState>;  // ← correct type
+  filters: ReturnType<typeof useLedgerFilterState>;
 }
 
 const groupByDate = (entries: LedgerEntry[], sortDirection: "ASC" | "DESC") => {
@@ -77,6 +77,7 @@ export const TransactionsTab = ({ businessPartnerId, enabled, filters }: Transac
         onSortDirectionChange={setSortDirection}
         hasActiveFilters={hasActiveFilters}
         onClearAll={clearAll}
+        onClearDates={() => filters.clearFields(["dateFrom", "dateTo"])}
       />
 
       <QueryState<LedgerEntry[]>
