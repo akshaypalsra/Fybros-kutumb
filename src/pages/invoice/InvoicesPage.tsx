@@ -6,15 +6,17 @@ import { ScrollToTopButton } from "@/common/components/ScrollToTopButton";
 import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { TABS } from "@/constants/Constants";
 import { useListFiltersState } from "./hooks/useListFiltersState";
+import { useLedgerFilterState } from "./hooks/useLedgerFilterState";
 
 const FinanceOverviewPage = () => {
   const { partner, businessPartnerId, enabled } = useActiveBusinessPartner();
-  const filters = useListFiltersState();
+  const invoicefilters = useListFiltersState();
+  const ledgerfilters = useLedgerFilterState();
   const [activeTab, setActiveTab] = useLocalStorageState<Tab>("invoices.activeTab", TABS[0].key);
 
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
-    filters.clearAll();
+    invoicefilters.clearAll();
   };
 
   return (
@@ -28,7 +30,8 @@ const FinanceOverviewPage = () => {
 
       <FinanceTabContent
         activeTab={activeTab}
-        filters={filters}
+        invoicefilters={invoicefilters}
+        ledgerfilters={ledgerfilters}
         businessPartnerId={businessPartnerId}
         enabled={enabled}
         onViewAllInvoices={() => handleTabChange("invoices")}

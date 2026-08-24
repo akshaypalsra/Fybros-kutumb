@@ -1,5 +1,5 @@
 import type { AxiosInstance } from "axios";
-import type { Invoice, InvoiceStatistics, SearchInvoicesParams } from "@/types/invoice.types";
+import type { Invoice, InvoiceItem, InvoiceStatistics, SearchInvoicesParams } from "@/types/invoice.types";
 import type { PagedResponse } from "@/types/common.types";
 
 
@@ -69,6 +69,17 @@ export const getInvoiceStatistics = async (
 };
 
 
+
+export const getInvoiceItems = async (
+  axiosInstance: AxiosInstance,
+  invoiceId: string,
+): Promise<InvoiceItem[]> => {
+  const response = await axiosInstance.get<InvoiceItem[]>(
+    `/invoice/${invoiceId}/items`,
+  );
+
+  return response.data;
+};
 
 export type InvoiceAnalyticsType = "MONTH_OVER_MONTH" | "QUARTER_OVER_QUARTER" | "YEAR_OVER_YEAR";
 

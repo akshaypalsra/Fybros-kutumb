@@ -50,7 +50,7 @@ const OrderItemCard = ({
 
         <div className="mt-2 flex items-baseline justify-between">
             <p className="text-xs text-muted-foreground">
-                {item.quantity} {item.measureUnit} @ {formatCurrency(item.price)} each
+                {item.quantity} {item.measureUnit} | {formatCurrency(item.price)} each
             </p>
 
             <p className="text-sm font-semibold text-foreground">
@@ -75,7 +75,7 @@ export const OrderItemsCard = ({
     itemFilter,
     onFilterChange,
 }: OrderItemsCardProps) => (
-    <div className="rounded-md border border-border bg-card p-5">
+    <div className="rounded-md col-span-4 border border-border bg-card p-5">
         <div className="mb-4 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-foreground">
                 Items {items ? `(${items.length})` : ""}

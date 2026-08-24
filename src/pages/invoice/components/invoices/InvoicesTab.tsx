@@ -73,7 +73,7 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
   return (
     <>
       <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
-
+      
       <ListFilters
         search={filters.search}
         onSearchChange={filters.setSearch}

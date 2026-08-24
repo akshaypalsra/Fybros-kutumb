@@ -1,61 +1,84 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { QueryState } from "@/wrapper/QueryState";
 import { Skeleton } from "@/common/components/ui/skeleton";
 import { EmptyState } from "@/common/components/EmptyState";
 import { ErrorState } from "@/common/components/ErrorState";
-import { DateFilter } from "@/common/components/DateFilter";
 import { useTransactionsTabData } from "../../hooks/useTransactionsTabData";
 import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
 import { TransactionDateGroup } from "./TransactionDateGroup";
 import type { LedgerEntry } from "@/types/ledger.types";
 import { CreditStatsRow } from "../invoices/CreditStatsRow";
+import { TransactionFilters } from "./TransactionFilters";
+import type { useLedgerFilterState } from "../../hooks/useLedgerFilterState";
 
 interface TransactionsTabProps {
   businessPartnerId: string;
   enabled: boolean;
+  filters: ReturnType<typeof useLedgerFilterState>;  // ← correct type
 }
 
-const groupByDate = (entries: LedgerEntry[]) => {
+const groupByDate = (entries: LedgerEntry[], sortDirection: "ASC" | "DESC") => {
   const groups = new Map<string, LedgerEntry[]>();
   for (const entry of entries) {
     const dateKey = entry.referenceDate.slice(0, 10);
     if (!groups.has(dateKey)) groups.set(dateKey, []);
     groups.get(dateKey)!.push(entry);
   }
-  return Array.from(groups.entries()).sort((a, b) => (a[0] < b[0] ? 1 : -1));
+  return Array.from(groups.entries()).sort((a, b) => {
+    if (sortDirection === "ASC") return a[0] > b[0] ? 1 : -1;
+    return a[0] < b[0] ? 1 : -1;
+  });
 };
 
-export const TransactionsTab = ({ businessPartnerId, enabled }: TransactionsTabProps) => {
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-
+export const TransactionsTab = ({ businessPartnerId, enabled, filters }: TransactionsTabProps) => {
   const {
-    transactions,
-    isLoading,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useTransactionsTabData({
-    businessPartnerId,
-    enabled,
-    fromDate: fromDate || undefined,
-    toDate: toDate || undefined,
-  });
+    query, setQuery,
+    dateFrom, setDateFrom,
+    dateTo, setDateTo,
+    fromDateIso, toDateIso,
+    sortDirection, setSortDirection,
+    clearAll,
+  } = filters;
 
-  const groupedTransactions = useMemo(() => groupByDate(transactions), [transactions]);
+  const { transactions, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useTransactionsTabData({
+      businessPartnerId,
+      enabled,
+      query: query || undefined,
+      fromDateIso,
+      toDateIso,
+      sortDirection,
+    });
+
+  const groupedTransactions = useMemo(
+    () => groupByDate(transactions, sortDirection),
+    [transactions, sortDirection],
+  );
 
   const sentinelRef = useInfiniteScrollTrigger(
     () => fetchNextPage(),
     !!hasNextPage && !isFetchingNextPage,
   );
 
+  const hasActiveFilters = !!query || !!dateFrom || !!dateTo;
+
   return (
     <div className="mx-auto w-full">
-      <CreditStatsRow/>
-      <div className="mb-4">
-        <DateFilter from={fromDate} to={toDate} onFromChange={setFromDate} onToChange={setToDate} />
-      </div>
+      <CreditStatsRow businessPartnerId={businessPartnerId} />
+      <TransactionFilters
+        query={query}
+        onQueryChange={setQuery}
+        queryPlaceholder="Search transactions..."
+        fromDate={dateFrom}
+        toDate={dateTo}
+        onFromDateChange={setDateFrom}
+        onToDateChange={setDateTo}
+        sortDirection={sortDirection}
+        onSortDirectionChange={setSortDirection}
+        hasActiveFilters={hasActiveFilters}
+        onClearAll={clearAll}
+      />
+
       <QueryState<LedgerEntry[]>
         isLoading={isLoading}
         isError={isError}

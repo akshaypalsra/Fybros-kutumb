@@ -1,7 +1,6 @@
 import type { AxiosInstance } from "axios";
 import type { PagedResponse } from "@/types/common.types";
-import type { GetLedgersParams, LedgerEntry } from "@/types/ledger.types";
-import { toIsoStart, toIsoEnd } from "@/utils/date.utils";
+import type { GetLedgersParams, GetLedgerStatsParams, LedgerEntry, LedgerStats } from "@/types/ledger.types";
 
 export const getBusinessPartnerLedgers = async (
   axiosInstance: AxiosInstance,
@@ -12,10 +11,28 @@ export const getBusinessPartnerLedgers = async (
     {
       params: {
         businessPartnerId: params.businessPartnerId,
-        fromDate: params.fromDate ? toIsoStart(params.fromDate) : undefined,
-        toDate: params.toDate ? toIsoEnd(params.toDate) : undefined,
-        page: params.page,
+        query: params.query || undefined,
+        fromDate: params.fromDate || undefined,
+        toDate: params.toDate || undefined,
+        sortDirection: params.sortDirection ?? "ASC",
+        page: params.page ?? 0,
         size: params.size,
+      },
+    },
+  );
+
+  return response.data;
+};
+
+export const getBusinessPartnerLedgerStats = async (
+  axiosInstance: AxiosInstance,
+  params: GetLedgerStatsParams,
+): Promise<LedgerStats> => {
+  const response = await axiosInstance.get<LedgerStats>(
+    "/business-partners/ledgers/stats",
+    {
+      params: {
+        businessPartnerId: params.businessPartnerId,
       },
     },
   );

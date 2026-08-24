@@ -1,8 +1,6 @@
-import { Badge } from "@/common/components/ui/badge";
 
-import type { OrderWithExtras } from "@/types/order-detail.types";
+
 import type { OrderItem } from "@/types/order.types";
-import { formatCurrency, formatDate } from "@/utils/common.utils";
 
 interface ItemCounts {
     delivered: number;
@@ -14,17 +12,17 @@ interface ItemCounts {
 }
 
 interface OrderSummaryCardProps {
-    order?: OrderWithExtras;
+
     items: OrderItem[];
     counts: ItemCounts;
-    computedTotal: number | undefined;
+
 }
 
-export const OrderSummaryCard = ({ order, items, counts, computedTotal }: OrderSummaryCardProps) => {
+export const OrderSummaryCard = ({ items, counts }: OrderSummaryCardProps) => {
     if (items.length === 0) return null;
 
     return (
-        <div className="rounded-md border border-border bg-card p-5">
+        <div className="rounded-md border border-border bg-card p-5 col-span-2">
             <h2 className="mb-4 text-sm font-semibold text-foreground">Summary</h2>
             <div className="grid grid-cols-3 gap-2 text-center">
                 <div className="rounded-md bg-muted/50 p-3">
@@ -52,37 +50,7 @@ export const OrderSummaryCard = ({ order, items, counts, computedTotal }: OrderS
                 <span className="text-secondary">{counts.cancelledPct}% Cancelled</span>
             </div>
 
-            <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
-                <div className="flex justify-between">
-                    <span className="text-muted-foreground">Order Date</span>
-                    <span className="font-medium text-foreground">{formatDate(order?.docDate)}</span>
-                </div>
-                <div className="flex justify-between">
-                    <span className="text-muted-foreground">Total Items</span>
-                    <span className="font-medium text-foreground">{items.length}</span>
-                </div>
-                {order?.orderType && (
-                    <div className="flex justify-between">
-                        <span className="text-muted-foreground">Order Type</span>
-                        <Badge
-                            variant="outline"
-                            className="rounded-full border-purple-200 bg-purple-100 px-2.5 py-0 text-xs font-semibold text-purple-700"
-                        >
-                            {order.orderType}
-                        </Badge>
-                    </div>
-                )}
-                <div className="flex justify-between border-t border-border pt-2">
-                    <span className="font-semibold text-foreground">Order Value</span>
-                    <span className="font-semibold text-secondary">{formatCurrency(computedTotal)}</span>
-                </div>
-                {order?.deliveredValue != null && (
-                    <div className="flex justify-between">
-                        <span className="text-muted-foreground">Delivered Order</span>
-                        <span className="font-medium text-foreground">{formatCurrency(order.deliveredValue)}</span>
-                    </div>
-                )}
-            </div>
+
         </div>
     );
 };

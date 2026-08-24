@@ -27,7 +27,7 @@ export const DetailPageHeader = ({ title, subtitle, onBack, onDownload }: Detail
     <Button
       variant="outline"
       onClick={onDownload}
-      className="gap-2"
+      className="gap-2 rounded-md bg-secondary text-white dark:bg-secondary dark:text-white"
     >
       <Download className="h-4 w-4" />
       Download

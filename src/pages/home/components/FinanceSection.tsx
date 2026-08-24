@@ -30,16 +30,18 @@ export const FinanceSection = ({
                 </Link>
             </div>
 
-            <StatSummaryCard
-                variant="accent"
-                icon={<FileText className="h-4 w-4 font-light" />}
-                label="Outstanding Balance"
-                value={formatCompactCurrency(outstandingAmount)}
-                sublabel="As on Today"
-                className="mb-3"
-            />
 
-            <div className="grid grid-cols-2 gap-3">
+
+            <div className="grid grid-cols-3 gap-3">
+                <StatSummaryCard
+                    variant="accent"
+                    icon={<FileText className="h-4 w-4 font-light" />}
+                    label="Outstanding Balance"
+                    value={formatCompactCurrency(outstandingAmount)}
+                    sublabel="As on Today"
+
+                />
+
                 <StatSummaryCard
                     icon={<CalendarClock className="h-4 w-4 font-light" />}
                     label="Overdue"

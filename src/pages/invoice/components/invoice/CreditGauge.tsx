@@ -15,14 +15,14 @@ export const CreditGauge = ({ pct }: { pct: number }) => {
           stroke="currentColor"
           strokeOpacity={1}
           strokeWidth="8"
-          className="text-green-500"
+          className="text-[#4AC776]"
         />
         <circle
           cx="50"
           cy="50"
           r={radius}
           fill="none"
-          stroke="#ffffff"
+          stroke="#AFAFAF"
           strokeWidth="8"
           strokeLinecap="butt"
           strokeDasharray={circumference}
@@ -31,10 +31,10 @@ export const CreditGauge = ({ pct }: { pct: number }) => {
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span className="text-xl font-bold text-white">
+        <span className="text-xl font-bold text-black dark:text-white">
           {Math.round(clamped)}%
         </span>
-        <span className="text-[11px] text-white">Utilized</span>
+        <span className="text-[11px] text-black dark:text-white">Utilized</span>
       </div>
     </div>
   );

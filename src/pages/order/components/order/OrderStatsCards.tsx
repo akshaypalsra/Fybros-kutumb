@@ -17,7 +17,7 @@ export const OrderStatsCards = ({ orderValue, isOrderValueLoading }: OrderStatsC
   const pending = orderValue?.pendingOrderValue ?? 0;
   const partialDelivered = Math.max(total - delivered - pending, 0);
   return (
-    <div className="mb-6 grid grid-cols-4 gap-3.5">
+    <div className="mb-6 grid grid-cols-4 gap-3">
       <StatSummaryCard
         variant="accent"
         icon={<img src={TotalImage} alt="" className="h-4 w-4" />}

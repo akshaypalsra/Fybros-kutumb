@@ -3,12 +3,14 @@ import { OverviewTab } from "../overview/OverviewTab";
 import { InvoicesTab } from "../invoices/InvoicesTab";
 import { TransactionsTab } from "../ledger/TransactionsTab";
 import { useListFiltersState } from "../../hooks/useListFiltersState";
+import type { useLedgerFilterState } from "../../hooks/useLedgerFilterState";
 
 interface FinanceTabContentProps {
     activeTab: Tab;
     businessPartnerId: string;
     enabled: boolean;
-    filters: ReturnType<typeof useListFiltersState>;
+    invoicefilters: ReturnType<typeof useListFiltersState>;
+    ledgerfilters: ReturnType<typeof useLedgerFilterState>;
     onViewAllInvoices: () => void;
 }
 
@@ -16,7 +18,8 @@ export function FinanceTabContent({
     activeTab,
     businessPartnerId,
     enabled,
-    filters,
+    invoicefilters,
+    ledgerfilters,
     onViewAllInvoices,
 }: FinanceTabContentProps) {
     if (activeTab === "overview") {
@@ -34,13 +37,13 @@ export function FinanceTabContent({
             <InvoicesTab
                 businessPartnerId={businessPartnerId}
                 enabled={enabled}
-                filters={filters}
+                filters={invoicefilters}
             />
         );
     }
 
     if (activeTab === "ledger") {
-        return <TransactionsTab businessPartnerId={businessPartnerId} enabled={enabled} />;
+        return <TransactionsTab filters={ledgerfilters}  businessPartnerId={businessPartnerId} enabled={enabled} />;
     }
 
     return null;

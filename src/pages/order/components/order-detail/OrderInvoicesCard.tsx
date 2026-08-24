@@ -1,15 +1,18 @@
-// src/orders/components/OrderInvoicesCard.tsx
 import { Link } from "react-router-dom";
 import { FileText } from "lucide-react";
 import { Skeleton } from "@/common/components/ui/skeleton";
 import { StatusBadge } from "@/common/components/StatusBadge";
-import {  getDaysToDue } from "@/utils/orders.utils";
+import { getDaysToDue } from "@/utils/orders.utils";
 import type { Invoice } from "@/types/invoice.types";
 import { formatCurrency, formatDate } from "@/utils/common.utils";
+import { QueryState } from "@/wrapper/QueryState";
+import { EmptyState } from "@/common/components/EmptyState";
+import { ErrorState } from "@/common/components/ErrorState";
 
 interface OrderInvoicesCardProps {
   invoices?: Invoice[];
   isLoading: boolean;
+  isError?: boolean;
 }
 
 const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
@@ -18,7 +21,7 @@ const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
   return (
     <Link
       to={`/invoices/${invoice.docEntry}`}
-      className="flex items-start justify-between gap-3 rounded-md border border-border p-3"
+      className="flex items-start justify-between gap-3 rounded-md border border-border p-3 bg-muted"
     >
       <div className="flex items-start gap-3">
         <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-muted text-muted-foreground">
@@ -47,30 +50,51 @@ const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
   );
 };
 
-export const OrderInvoicesCard = ({ invoices, isLoading }: OrderInvoicesCardProps) => {
-  if (!isLoading && (!invoices || invoices.length === 0)) return null;
+const InvoicesLoadingState = () => (
+  <div className="grid gap-3 sm:grid-cols-1">
+    <Skeleton className="h-24 w-full" />
+    <Skeleton className="h-24 w-full" />
+  </div>
+);
+
+export const OrderInvoicesCard = ({ invoices, isLoading, isError = false }: OrderInvoicesCardProps) => {
+  const data = invoices ?? [];
 
   return (
-    <div className="rounded-md border border-border bg-card p-5">
+    <div className="rounded-md border col-span-2 border-border bg-card p-5">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-foreground">Invoices</h2>
-        {invoices && <span className="text-xs text-muted-foreground">({invoices.length} Invoices)</span>}
+        {!isLoading && !isError && data.length > 0 && (
+          <span className="text-xs text-muted-foreground">({data.length} Invoices)</span>
+        )}
       </div>
 
-      {isLoading && (
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-        </div>
-      )}
-
-      {!isLoading && invoices && (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {invoices.map((invoice) => (
-            <InvoiceListItem key={invoice.docEntry} invoice={invoice} />
-          ))}
-        </div>
-      )}
+      <QueryState
+        isLoading={isLoading}
+        isError={isError}
+        data={data}
+        loading={<InvoicesLoadingState />}
+        error={
+          <ErrorState
+            title="Couldn't load invoices"
+            message="Something went wrong while fetching invoices for this order. Please try again."
+            className="mx-0 max-w-none"
+          />
+        }
+        isEmpty={(items) => items.length === 0}
+        empty={<EmptyState
+          title="No items found"
+          message="There are no items associated with this invoice."
+        />}
+      >
+        {(items) => (
+          <div className="grid gap-3 sm:grid-cols-1">
+            {items.map((invoice) => (
+              <InvoiceListItem key={invoice.docEntry} invoice={invoice} />
+            ))}
+          </div>
+        )}
+      </QueryState>
     </div>
   );
 };

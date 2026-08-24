@@ -25,7 +25,7 @@ const OrderItemDetailPage = () => {
             loading={<OrderItemDetailSkeleton />}
             error={<OrderItemDetailError />}
         >
-         
+
             {(item) => (
                 <div className="mx-auto max-w-6xl">
                     <DetailPageHeader
@@ -36,7 +36,6 @@ const OrderItemDetailPage = () => {
                     <div className="grid gap-4 lg:grid-cols-3">
                         <div className="lg:col-span-1">
                             <OrderItemHeroCard item={item} />
-                            Hello
                         </div>
                         <div className="lg:col-span-2">
                             <OrderItemDetailsList item={item} />

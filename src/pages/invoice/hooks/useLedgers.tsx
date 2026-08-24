@@ -3,47 +3,69 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 interface UseLedgersParams {
     businessPartnerId: string;
+    query?: string;
     fromDateIso?: string;
     toDateIso?: string;
+    sortDirection?: "ASC" | "DESC";
     enabled: boolean;
     pageSize?: number;
 }
 
 export function useLedgers({
     businessPartnerId,
+    query,
     fromDateIso,
     toDateIso,
+    sortDirection = "ASC",
     enabled,
     pageSize = 20,
 }: UseLedgersParams) {
     const { getBusinessPartnerLedgers } = useLedgerApi();
 
-    const query = useInfiniteQuery({
-        queryKey: ["ledgers", businessPartnerId, fromDateIso, toDateIso],
+    const queryResult = useInfiniteQuery({
+        queryKey: [
+            "ledgers",
+            businessPartnerId,
+            query,
+            fromDateIso,
+            toDateIso,
+            sortDirection,
+            pageSize,
+        ],
+
         queryFn: ({ pageParam = 0 }) =>
             getBusinessPartnerLedgers({
                 businessPartnerId,
+                query: query?.trim() || undefined,
                 fromDate: fromDateIso,
                 toDate: toDateIso,
+                sortDirection,
                 page: pageParam,
                 size: pageSize,
             }),
+
         getNextPageParam: (lastPage) => {
-            const isLastPage = lastPage.page.number + 1 >= lastPage.page.totalPages;
-            return isLastPage ? undefined : lastPage.page.number + 1;
+            const isLastPage =
+                lastPage.page.number + 1 >= lastPage.page.totalPages;
+
+            return isLastPage
+                ? undefined
+                : lastPage.page.number + 1;
         },
+
         initialPageParam: 0,
         enabled,
     });
 
-    const ledgers = query.data?.pages.flatMap((page) => page.content) ?? [];
+    const ledgers =
+        queryResult.data?.pages.flatMap((page) => page.content) ?? [];
 
     return {
         ledgers,
-        isLoading: query.isLoading,
-        isError: query.isError,
-        isFetchingNextPage: query.isFetchingNextPage,
-        fetchNextPage: query.fetchNextPage,
-        hasNextPage: query.hasNextPage,
+        isLoading: queryResult.isLoading,
+        isError: queryResult.isError,
+        isFetchingNextPage: queryResult.isFetchingNextPage,
+        fetchNextPage: queryResult.fetchNextPage,
+        hasNextPage: queryResult.hasNextPage,
     };
 }

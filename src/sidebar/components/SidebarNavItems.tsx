@@ -24,7 +24,7 @@ export function SidebarNavItems() {
   }, [location.pathname]);
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className="px-4 py-2">
       <SidebarGroupContent>
         <SidebarMenu>
           {NAV_ITEMS.map((item) => {

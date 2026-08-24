@@ -86,9 +86,12 @@ export function useUrlPersistedFilters<C extends FieldsConfig>(
       if (serialized) toStore[config.param] = serialized
     }
     try {
-      window.localStorage.setItem(storageKey, JSON.stringify(toStore))
-    } catch {
-    }
+      if (Object.keys(toStore).length > 0) {
+        window.localStorage.setItem(storageKey, JSON.stringify(toStore))
+      } else {
+        window.localStorage.removeItem(storageKey)
+      }
+    } catch { }
   }, [JSON.stringify(values)])
 
   return { values, setters, clearAll }

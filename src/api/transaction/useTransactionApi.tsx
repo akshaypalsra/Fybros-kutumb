@@ -1,6 +1,6 @@
 import { useAxios } from "@/axios/hooks/useAxios";
-import { getBusinessPartnerLedgers} from "./transactionApi";
-import type { GetLedgersParams } from "@/types/ledger.types";
+import { getBusinessPartnerLedgers, getBusinessPartnerLedgerStats} from "./transactionApi";
+import type { GetLedgersParams, GetLedgerStatsParams } from "@/types/ledger.types";
 
 
 export const useLedgerApi = () => {
@@ -9,5 +9,7 @@ export const useLedgerApi = () => {
   return {
     getBusinessPartnerLedgers: (params: GetLedgersParams) =>
       getBusinessPartnerLedgers(axiosInstance, params),
+     getBusinessPartnerLedgerStats: (params: GetLedgerStatsParams) =>
+      getBusinessPartnerLedgerStats(axiosInstance, params),
   };
 };

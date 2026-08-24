@@ -1,24 +1,23 @@
 import { useOutstandingSummary } from "@/hooks/useOutstandingSummary";
 import { useLedgers } from "./useLedgers";
-import { useMemo } from "react";
-import { toIsoDateRange } from "@/utils/date.utils";
 
 interface UseTransactionsTabDataParams {
   businessPartnerId: string;
   enabled: boolean;
-  fromDate?: string;
-  toDate?: string;
+  query?: string;
+  fromDateIso?: string;
+  toDateIso?: string;
+  sortDirection?: "ASC" | "DESC";
 }
 
 export function useTransactionsTabData({
   businessPartnerId,
   enabled,
-  fromDate,
-  toDate,
+  query,
+  fromDateIso,
+  toDateIso,
+  sortDirection,
 }: UseTransactionsTabDataParams) {
-
-  const { fromDateIso, toDateIso } = useMemo(() => toIsoDateRange(fromDate, toDate),[fromDate, toDate]);
-
   const {
     data: outstandingSummary,
     isLoading: isOutstandingLoading,
@@ -32,7 +31,14 @@ export function useTransactionsTabData({
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useLedgers({ businessPartnerId, fromDateIso, toDateIso, enabled });
+  } = useLedgers({
+    businessPartnerId,
+    query,
+    fromDateIso,
+    toDateIso,
+    sortDirection,
+    enabled,
+  });
 
   return {
     outstandingSummary,

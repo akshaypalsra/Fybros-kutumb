@@ -44,7 +44,7 @@ export const ScrollToTopButton = ({ threshold = 400, containerRef, className }: 
             onClick={handleClick}
             aria-label="Scroll to top"
             className={cn(
-                "fixed bottom-6 right-6 z-50 h-10 w-10 rounded-full bg-background shadow-md hover:bg-muted",
+                "fixed bottom-6 right-8 z-50 h-10 w-10 rounded-full bg-white dark:bg-black/80 shadow-md hover:bg-white dark:hover:bg-black",
                 className,
             )}
         >

@@ -5,6 +5,16 @@ export interface InvoiceStatistics {
   totalOutstanding?: number;
 }
 
+export interface InvoiceItem {
+  id: number;
+  itemCode: string;
+  itemDescription: string;
+  quantity: number;
+  price: number;
+  lineTotal: number;
+  hsnCode: string;
+  measureUnit: string;
+}
 
 export interface SearchInvoicesFilters {
   fromDate?: string;

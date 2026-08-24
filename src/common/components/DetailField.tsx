@@ -16,7 +16,7 @@ export function DetailField({ label, value, layout = "stacked", isFirst, isLast 
           }`}
       >
         <span className="text-sm text-muted-foreground">{label}</span>
-        <span className="text-sm font-medium text-foreground">{value ?? "—"}</span>
+        <span className="text-sm font-normal text-foreground">{value ?? "—"}</span>
       </div>
     );
   }
@@ -24,7 +24,7 @@ export function DetailField({ label, value, layout = "stacked", isFirst, isLast 
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="text-sm font-medium text-foreground">{value ?? "—"}</p>
+      <p className="text-sm font-normal text-foreground">{value ?? "—"}</p>
     </div>
   );
 }

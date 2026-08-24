@@ -5,9 +5,7 @@ import type { OrderItem } from "@/types/order.types";
 import type { Invoice } from "@/types/invoice.types";
 import type { ItemFilter, OrderWithExtras } from "@/types/order-detail.types";
 import { useOrderItemCounts } from "./hooks/useOrderItemCounts";
-import { OrderTotalBanner } from "./components/order-detail/OrderTotalBanner";
 import { OrderSummaryCard } from "./components/order-detail/OrderSummaryCard";
-import { OrderActionButtons } from "./components/order-detail/OrderActionButtons";
 import { OrderItemsCard } from "./components/order-detail/OrderItemsCard";
 import { OrderInvoicesCard } from "./components/order-detail/OrderInvoicesCard";
 import { OrderInfoCard } from "./components/order-detail/OrderInfoCard";
@@ -78,30 +76,28 @@ const OrderDetailPage = () => {
             onBack={() => navigate(-1)}
             onDownload={() => generateOrderPdf(order, items ?? [], invoices ?? [], computedTotal)}
           />
-          <OrderHero order={order} status={overallStatus} />
 
-          <div className="grid gap-4 lg:grid-cols-3">
-            <div className="space-y-4 lg:col-span-2">
-              <OrderInfoCard order={order} />
-              <OrderInvoicesCard invoices={invoices} isLoading={isInvoicesLoading} />
-              <OrderItemsCard
-                orderId={orderId}
-                items={items}
-                filteredItems={filteredItems}
-                isLoading={isItemsLoading}
-                isError={isItemsError}
-                itemFilter={itemFilter}
-                onFilterChange={setItemFilter}
-              />
-            </div>
+          <div className="grid gap-3 lg:grid-cols-4">
+            <OrderHero order={order} status={overallStatus} />
+            <OrderSummaryCard items={items ?? []} counts={counts} />
+            <OrderInfoCard order={order} items={items ?? []} computedTotal={computedTotal} />
+            <OrderInvoicesCard invoices={invoices} isLoading={isInvoicesLoading} />
+            <OrderItemsCard
+              orderId={orderId}
+              items={items}
+              filteredItems={filteredItems}
+              isLoading={isItemsLoading}
+              isError={isItemsError}
+              itemFilter={itemFilter}
+              onFilterChange={setItemFilter}
+            />
 
-            <div className="space-y-4">
-              <OrderTotalBanner order={order} computedTotal={computedTotal} />
-              <OrderSummaryCard order={order} items={items ?? []} counts={counts} computedTotal={computedTotal} />
-              <OrderActionButtons />
-            </div>
           </div>
+
         </div>
+
+
+
       )}
     </QueryState>
   );

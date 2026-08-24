@@ -86,13 +86,13 @@ export const MultiSelectDropdown = ({
           ))}
         </div>
         {selected.length > 0 && (
-          <button
+          <Button
             type="button"
             onClick={() => onChange([])}
-            className="mt-2 w-full rounded-md px-2 py-1.5 text-left text-xs font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="mt-2 cursor-pointer w-full bg-secondary/10 hover:bg-secondary/20 text-black rounded-md px-2 py-1.5 text-left text-xs font-medium "
           >
             Clear selection
-          </button>
+          </Button>
         )}
       </PopoverContent>
     </Popover>

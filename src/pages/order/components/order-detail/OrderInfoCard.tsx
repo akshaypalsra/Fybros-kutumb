@@ -1,28 +1,53 @@
-
+import { Badge } from "@/common/components/ui/badge";
+import { DetailField } from "@/common/components/DetailField";
 import type { OrderWithExtras } from "@/types/order-detail.types";
+import type { OrderItem } from "@/types/order.types";
+import { formatCurrency, formatDate } from "@/utils/common.utils";
 
 interface OrderInfoCardProps {
-  order: OrderWithExtras;
+  order?: OrderWithExtras;
+  items: OrderItem[];
+  computedTotal: number | undefined;
 }
 
-export const OrderInfoCard = ({ order }: OrderInfoCardProps) => {
-  if (!order.cardName) return null;
+export const OrderInfoCard = ({ order, items, computedTotal }: OrderInfoCardProps) => {
+  if (!order?.cardName) return null;
 
   return (
-    <div className="rounded-md border border-border bg-card p-5">
-      <h2 className="mb-4 text-sm font-semibold text-foreground">Order Details</h2>
-      <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
-        <div>
-          <p className="text-xs text-muted-foreground">Buyer</p>
-          <p className="text-sm font-medium text-foreground">{order.cardName}</p>
-        </div>
-        {order.cardCode && (
-          <div>
-            <p className="text-xs text-muted-foreground">Card Code</p>
-            <p className="text-sm font-medium text-foreground">{order.cardCode}</p>
-          </div>
+    <div className="rounded-md border col-span-2 border-border bg-card p-5">
+      <h1 className="text-sm font-semibold text-foreground">Order Details</h1>
+      <div className="grid grid-cols-3 mt-2 bg-muted rounded-md p-3 space-x-3 space-y-3">
+        <DetailField
+          label="Order Date"
+          value={formatDate(order.docDate)}
+        />
+        <DetailField
+          label="Total Items"
+          value={items.length}
+        />
+        {order.orderType && (
+          <DetailField
+            label="Order Type"
+            value={<Badge
+              variant="outline"
+              className="rounded-full border-purple-200 bg-purple-100 px-2.5 py-0 text-xs font-semibold text-purple-700"
+            >
+              {order.orderType}
+            </Badge>}
+          />
+        )}
+        <DetailField
+          label="Order Value"
+          value={<span className="font-semibold text-secondary">{formatCurrency(computedTotal)}</span>}
+        />
+        {order.deliveredValue != null && (
+          <DetailField
+            label="Delivered Order"
+            value={formatCurrency(order.deliveredValue)}
+          />
         )}
       </div>
     </div>
+
   );
 };

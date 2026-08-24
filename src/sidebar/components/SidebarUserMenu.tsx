@@ -55,7 +55,7 @@ export function SidebarUserMenu() {
                     </Button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent side="top" align="start" sideOffset={8} className="w-64">
+                <DropdownMenuContent side="top" align="end" sideOffset={8} className="w-64">
                     <DropdownMenuLabel className="font-normal">
                         <div className="flex items-center gap-3 py-1">
                             <UserAvatar name={displayName} imageUrl={avatarUrl} />
