@@ -1,7 +1,6 @@
 import { Search, X } from "lucide-react"
 import { Input } from "@/common/components/ui/input"
 import { useEffect, useState } from "react"
-import { Button } from "./ui/button"
 
 interface SearchBarProps {
   value: string
