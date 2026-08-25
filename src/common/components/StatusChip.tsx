@@ -16,7 +16,7 @@ export const StatusChip = ({
   styleMap,
   fallbackClassName = "bg-muted text-muted-foreground",
   className,
-  baseClassName = "rounded-full border px-3 py-0.5 text-xs font-semibold capitalize",
+  baseClassName = "rounded-full border px-3 py-0.5 text-xs font-heading capitalize",
 }: StatusChipProps) => (
   <Badge
     variant="outline"

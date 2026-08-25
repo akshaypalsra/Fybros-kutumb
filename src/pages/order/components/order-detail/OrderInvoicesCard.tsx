@@ -29,7 +29,7 @@ const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
           <FileText className="h-4 w-4" />
         </div>
         <div>
-          <p className="text-sm font-semibold text-foreground">{invoice.invoiceNumber}</p>
+          <p className="text-sm font-heading text-foreground">{invoice.invoiceNumber}</p>
           <p className="text-xs text-muted-foreground">
             {formatDate(invoice.docDate)} · Due {formatDate(invoice.docDueDate)}
           </p>
@@ -44,7 +44,7 @@ const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
         </div>
       </div>
       <div className="flex flex-col items-end gap-2">
-        <p className="text-sm font-semibold text-foreground">{formatCurrency(invoice.docTotal)}</p>
+        <p className="text-sm font-heading text-foreground">{formatCurrency(invoice.docTotal)}</p>
         <StatusBadge status={invoice.status} />
         <StatusBadge status={invoice.cardCode} />
       </div>
@@ -88,7 +88,7 @@ export const OrderInvoicesCard = ({ invoices, isLoading, isError = false }: Orde
         isEmpty={(items) => items.length === 0}
         empty={<EmptyState
           title="No items found"
-          message="There are no items associated with this invoice."
+          message="There are no items associated with this order."
         />}
       >
         {(items) => (

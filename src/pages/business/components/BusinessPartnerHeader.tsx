@@ -22,14 +22,14 @@ export const BusinessPartnerHeader = ({ partner }: BusinessPartnerHeaderProps) =
 
       <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/15 text-lg font-semibold ring-2 ring-white/25">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/15 text-lg font-heading ring-2 ring-white/25">
             {getInitials(partner.cardName) || <Building2 className="h-6 w-6" />}
           </div>
 
           <div>
             <Badge
               variant="outline"
-              className="mb-2 rounded-full border-transparent bg-white/20 px-3 py-0.5 text-xs font-semibold text-white"
+              className="mb-2 rounded-full border-transparent bg-white/20 px-3 py-0.5 text-xs font-heading text-white"
             >
               {partner.cardType}
             </Badge>

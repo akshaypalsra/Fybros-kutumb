@@ -54,7 +54,7 @@ export const BusinessPartnerSummaryCards = ({ partner }: BusinessPartnerSummaryC
 
             <div className="min-w-0">
               <p className="text-xs text-muted-foreground">{item.label}</p>
-              <p className="truncate font-semibold text-foreground">{item.value}</p>
+              <p className="truncate font-heading text-foreground">{item.value}</p>
               {item.caption && (
                 <p className="text-xs text-muted-foreground">{item.caption}</p>
               )}

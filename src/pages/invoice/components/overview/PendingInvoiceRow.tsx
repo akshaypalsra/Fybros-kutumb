@@ -19,14 +19,14 @@ export const PendingInvoiceRow = ({ invoice }: PendingInvoiceRowProps) => (
         <FileText className="h-4 w-4" />
       </div>
       <div className="min-w-0">
-        <p className="truncate text-sm font-semibold text-foreground">{invoice.invoiceNumber}</p>
+        <p className="truncate text-sm font-heading text-foreground">{invoice.invoiceNumber}</p>
         <p className="text-xs text-muted-foreground">
           {formatDate(invoice.docDate)} &middot; Due {formatDate(invoice.docDueDate)}
         </p>
       </div>
     </div>
     <div className="flex shrink-0 items-center gap-4">
-      <p className="text-sm font-semibold text-foreground">{formatCurrency(invoice.docTotal)}</p>
+      <p className="text-sm font-heading text-foreground">{formatCurrency(invoice.docTotal)}</p>
       <StatusBadge status={invoice.status} variant="hero" />
       {invoice.vertical && (
         <Badge variant="outline" className="rounded-full border-purple-200 bg-purple-100 text-purple-700">

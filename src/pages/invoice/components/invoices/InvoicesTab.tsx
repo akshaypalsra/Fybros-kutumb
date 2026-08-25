@@ -1,4 +1,4 @@
-import { Skeleton } from "@/common/components/ui/skeleton";
+import { useEffect, useState } from "react";
 import { INVOICE_SUB_TABS } from "@/constants/Constants";
 import { SegmentedControl } from "@/common/components/SegmentedControl";
 import { useInvoicesTabData } from "../../hooks/useInvoicesTabData";
@@ -8,6 +8,7 @@ import { EmptyState } from "@/common/components/EmptyState";
 import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
 import type { Invoice } from "@/types/invoice.types";
 import { InvoiceMonthGroup } from "./InvoiceMonthGroup";
+import { InvoiceDetailPanel } from "./InvoiceDetailPanel";
 import { useOrderValue } from "@/pages/order/hooks/useOrderValue";
 import { OrderStatsCards } from "@/pages/order/components/order/OrderStatsCards";
 import { useOrdersData } from "@/pages/order/hooks/useOrdersData";
@@ -16,6 +17,9 @@ import { useVerticals } from "@/hooks/useVerticals";
 
 import { getSearchPlaceholder } from "@/utils/financeTabs.utils";
 import { useListFiltersState } from "../../hooks/useListFiltersState";
+import InvoiceRowSkeleton from "./InvoiceRowSkeleton";
+import InvoiceDetailPanelSkeleton from "./InvoiceDetailPanelSkeleton";
+import { Skeleton } from "@/common/components/ui/skeleton";
 
 interface InvoicesTabProps {
   businessPartnerId: string;
@@ -25,6 +29,7 @@ interface InvoicesTabProps {
 
 export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTabProps) => {
   const { verticals } = useVerticals();
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 
   const {
     counts,
@@ -69,6 +74,26 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
     !!hasNextPage && !isFetchingNextPage,
   );
 
+  const handleInvoiceContextMenu = (event: React.MouseEvent, invoice: Invoice) => {
+    event.preventDefault();
+    setSelectedInvoice(invoice);
+  };
+
+  useEffect(() => {
+    if (isLoading || !hasResults) return;
+
+    const firstInvoice = invoicesByMonth[0]?.[1]?.[0];
+    if (!firstInvoice) return;
+
+    const selectionStillValid = invoicesByMonth.some(([, monthInvoices]) =>
+      monthInvoices.some((inv) => inv.docEntry === selectedInvoice?.docEntry),
+    );
+
+    if (!selectedInvoice || !selectionStillValid) {
+      setSelectedInvoice(firstInvoice);
+    }
+  }, [invoicesByMonth, isLoading, hasResults]);
+
   return (
     <>
       <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
@@ -99,39 +124,61 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
         />
       </div>
 
-      <QueryState<[string, Invoice[]][]>
-        isLoading={isLoading}
-        isError={isError}
-        data={invoicesByMonth}
-        loading={
-          <div className="space-y-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 w-full rounded-md" />
-            ))}
-          </div>
-        }
-        error={<ErrorState message="Failed to load invoices." />}
-        isEmpty={() => !hasResults}
-        empty={<EmptyState message="No invoices match your filters." />}
-      >
-        {(invoicesByMonth) => (
-          <div className="space-y-6">
-            {invoicesByMonth.map(([month, monthInvoices]) => (
-              <InvoiceMonthGroup key={month} month={month} invoices={monthInvoices} />
-            ))}
-
-            {hasNextPage && <div ref={sentinelRef} style={{ height: 1 }} />}
-
-            {isFetchingNextPage && (
+      <div className="flex gap-6">
+        <div className="w-[60%]">
+          <QueryState<[string, Invoice[]][]>
+            isLoading={isLoading}
+            isError={isError}
+            data={invoicesByMonth}
+            loading={
               <div className="space-y-3">
-                {Array.from({ length: 2 }).map((_, i) => (
-                  <Skeleton key={i} className="h-16 w-full rounded-md" />
+                <Skeleton className="h-4 w-28 rounded-md border border-border bg-card " />
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <InvoiceRowSkeleton key={i} />
                 ))}
               </div>
+            }
+            error={<ErrorState message="Failed to load invoices." />}
+            isEmpty={() => !hasResults}
+            empty={<EmptyState message="No invoices match your filters." />}
+          >
+            {(invoicesByMonth) => (
+              <div className="space-y-6">
+                {invoicesByMonth.map(([month, monthInvoices]) => (
+                  <InvoiceMonthGroup
+                    key={month}
+                    month={month}
+                    invoices={monthInvoices}
+                    selectedInvoiceId={selectedInvoice?.docEntry}
+                    onInvoiceContextMenu={handleInvoiceContextMenu}
+                  />
+                ))}
+                {hasNextPage && <div ref={sentinelRef} style={{ height: 1 }} />}
+
+                {isFetchingNextPage && (
+                  <div className="space-y-3">
+                    {Array.from({ length: 2 }).map((_, i) => (
+                      <InvoiceRowSkeleton key={i} />
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
+          </QueryState>
+        </div>
+
+        {isLoading ? (
+          <div className="w-[40%]">
+            <InvoiceDetailPanelSkeleton />
           </div>
+        ) : (
+          selectedInvoice && (
+            <div className="w-[40%]">
+              <InvoiceDetailPanel invoice={selectedInvoice} />
+            </div>
+          )
         )}
-      </QueryState>
+      </div>
     </>
   );
 };

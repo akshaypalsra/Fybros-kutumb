@@ -58,8 +58,8 @@ export const InvoiceItemsTable = ({ invoiceId }: InvoiceItemsTableProps) => {
                     {items.map((item) => (
                         <div key={item.id} className="p-5  bg-muted rounded-md my-2 ">
                             <div className="flex items-start justify-between gap-3">
-                                <p className="font-semibold text-foreground">{item.itemCode}</p>
-                                <p className="font-semibold text-foreground">{formatCurrency(item.lineTotal)}</p>
+                                <p className="font-heading text-foreground">{item.itemCode}</p>
+                                <p className="font-heading text-foreground">{formatCurrency(item.lineTotal)}</p>
                             </div>
 
                             <div className="mt-1 flex items-start justify-between gap-3">

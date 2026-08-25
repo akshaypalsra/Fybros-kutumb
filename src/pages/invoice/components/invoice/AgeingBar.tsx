@@ -23,7 +23,7 @@ export const AgeingBar = ({ buckets }: { buckets: AgeingBucketResponse[] }) => {
             <span className={cn("h-2 w-2 shrink-0 rounded-full", getAgeingColor(b.ageingBucket))} />
             <div className="min-w-0">
               <p className="text-xs text-muted-foreground">{b.ageingBucket} days</p>
-              <p className="text-sm font-semibold text-foreground">{formatCompactCurrency(b.bucketAmount)}</p>
+              <p className="text-sm font-heading text-foreground">{formatCompactCurrency(b.bucketAmount)}</p>
             </div>
           </div>
         ))}

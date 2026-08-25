@@ -30,67 +30,67 @@ const InvoiceDetailPage = () => {
     enabled: !!invoiceId,
   });
 
- return (
-  <QueryState<Invoice>
-    isLoading={isLoading}
-    isError={isError}
-    data={invoice}
-    loading={<InvoiceDetailSkeleton />}
-    error={<InvoiceDetailError />}
-  >
-    {(invoice) => (
-      <div className="mx-auto max-w-6xl">
-        <DetailPageHeader
-          title={`Invoice ${invoice.invoiceNumber ?? invoice.docEntry}`}
-          onBack={() => navigate(-1)}
-          onDownload={() => generateInvoicePdf(invoice)}
-        />
+  return (
+    <QueryState<Invoice>
+      isLoading={isLoading}
+      isError={isError}
+      data={invoice}
+      loading={<InvoiceDetailSkeleton />}
+      error={<InvoiceDetailError />}
+    >
+      {(invoice) => (
+        <div className="mx-auto max-w-6xl">
+          <DetailPageHeader
+            title={`Invoice ${invoice.invoiceNumber ?? invoice.docEntry}`}
+            onBack={() => navigate(-1)}
+            onDownload={() => generateInvoicePdf(invoice)}
+          />
 
-     
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
-     <div className="space-y-5 lg:col-span-3">
-      <InvoiceSummaryCard invoice={invoice}/>
-      </div>     
-          <div className="space-y-5 lg:col-span-3">   
-            <InvoiceInfoCard invoice={invoice} />
-            <InvoiceItemsTable invoiceId={invoiceId} />
 
-          </div>
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
+            <div className="space-y-5 lg:col-span-3">
+              <InvoiceSummaryCard invoice={invoice} />
+            </div>
+            <div className="space-y-5 lg:col-span-3">
+              <InvoiceInfoCard invoice={invoice} />
+              <InvoiceItemsTable invoiceId={invoiceId} />
 
-          <div className="space-y-5 lg:col-span-2">
-            <TaxSummary
-              taxableValue={37984}
-              gst={6837}
-              roundOff={-0.12}
-              totalInvoiceValue={44821}
-            />
+            </div>
 
-            <PaymentTimeline
-              payments={[
-                {
-                  id: "ID-765890",
-                  date: "4 May, 2026",
-                  amount: 30000,
-                },
-                {
-                  id: "ID-765891",
-                  date: "8 May, 2026",
-                  amount: 14821,
-                },
-              ]}
-            />
+            <div className="space-y-5 lg:col-span-2">
+              <TaxSummary
+                taxableValue={37984}
+                gst={6837}
+                roundOff={-0.12}
+                totalInvoiceValue={44821}
+              />
 
-            <InvoiceTaxDetails
-              buyerGSTIN="01AFNPN7720G2ZJ"
-              irn="5f1d10fe9d60939a4d4509f433bc1720ef277cb49a8626fcb68956e816125c9f"
-            />
+              <PaymentTimeline
+                payments={[
+                  {
+                    id: "ID-765890",
+                    date: "4 May, 2026",
+                    amount: 30000,
+                  },
+                  {
+                    id: "ID-765891",
+                    date: "8 May, 2026",
+                    amount: 14821,
+                  },
+                ]}
+              />
 
+              <InvoiceTaxDetails
+                buyerGSTIN="01AFNPN7720G2ZJ"
+                irn="5f1d10fe9d60939a4d4509f433bc1720ef277cb49a8626fcb68956e816125c9f"
+              />
+
+            </div>
           </div>
         </div>
-      </div>
-    )}
-  </QueryState>
-)
+      )}
+    </QueryState>
+  )
 }
 
 export default InvoiceDetailPage;

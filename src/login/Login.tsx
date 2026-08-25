@@ -70,7 +70,7 @@ const WebLogin = () => {
               sessionStorage.removeItem("redirectTo")
               await auth.signinRedirect({ state: { redirectTo } })
             }}
-            className="h-12 w-full gap-2.5 bg-secondary hover:bg-secondary/95 rounded-lg text-base font-semibold shadow-md transition-shadow hover:shadow-lg"
+            className="h-12 w-full gap-2.5 bg-secondary hover:bg-secondary/95 rounded-lg text-base font-heading shadow-md transition-shadow hover:shadow-lg"
             size="lg"
           >
             <LogIn className="h-5 w-5" />

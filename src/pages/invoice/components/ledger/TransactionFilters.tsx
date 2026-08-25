@@ -68,6 +68,7 @@ export const TransactionFilters = ({
                         },
                     ]}
                     align="end"
+                    variant="default"
                     className="w-full md:w-auto"
                 />
             </div>

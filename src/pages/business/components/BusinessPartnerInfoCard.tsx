@@ -69,7 +69,7 @@ export const BusinessPartnerInfoCard = ({ partner }: BusinessPartnerInfoCardProp
               <p className="text-sm font-medium text-foreground">Partner Type</p>
               <Badge
                 variant="outline"
-                className="mt-1 rounded-full border-transparent bg-secondary/10 px-3 py-0.5 text-xs font-semibold text-secondary"
+                className="mt-1 rounded-full border-transparent bg-secondary/10 px-3 py-0.5 text-xs font-heading text-secondary"
               >
                 {partner.cardType}
               </Badge>

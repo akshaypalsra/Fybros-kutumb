@@ -25,7 +25,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
           <Package className="h-5 w-5 font-light" />
         </div>
         <div className="min-w-0">
-          <p className="truncate font-mono text-[13px] font-semibold text-foreground">
+          <p className="truncate font-heading text-[13px] text-foreground">
             {order.orderNumber}
           </p>
           <p className="mt-0.5 text-[11px] text-muted-foreground">
@@ -44,12 +44,12 @@ export const OrderRow = ({ order }: OrderRowProps) => {
           {formatCurrency(order.docTotal)}
         </p>
         {order.openOrderValue > 0 && (
-          <p className="text-[11px] font-semibold text-[#B4222E]">
+          <p className="text-[11px] font-heading text-[#B4222E]">
             {formatCurrency(order.openOrderValue)} open
           </p>
         )}
         <div className="flex flex-col items-end gap-1.5">
-          <StatusBadge status={order.orderDeliveryStatus} className="font-light"  />
+          <StatusBadge status={order.orderDeliveryStatus} className="font-light" />
 
         </div>
       </div>

@@ -19,12 +19,12 @@ export const TransactionRow = ({ entry }: TransactionRowProps) => {
 
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-2">
-          <p className="truncate text-sm font-semibold text-foreground">
+          <p className="truncate text-sm font-heading text-foreground">
             {entry.docNumber ? entry.docNumber : "-"}
           </p>
           <p
             className={cn(
-              "shrink-0 text-sm font-semibold",
+              "shrink-0 text-sm font-heading",
               isCredit ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"
             )}
           >

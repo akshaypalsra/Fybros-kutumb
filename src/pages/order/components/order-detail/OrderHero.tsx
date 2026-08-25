@@ -30,7 +30,7 @@ export const OrderHero = ({ order, status, className, itemsSummary }: OrderHeroP
       )}
     >
       <div className="flex items-start justify-between gap-3">
-        <p className="text-lg font-heading font-semibold">
+        <p className="text-lg font-heading">
           {order?.orderNumber ?? order?.docEntry}
         </p>
         <StatusBadge status={status} variant="hero" />

@@ -10,6 +10,7 @@ import type { LedgerEntry } from "@/types/ledger.types";
 import { CreditStatsRow } from "../invoices/CreditStatsRow";
 import { TransactionFilters } from "./TransactionFilters";
 import type { useLedgerFilterState } from "../../hooks/useLedgerFilterState";
+import { TransactionRowSkeleton } from "./TransactionRowSkeleton";
 
 interface TransactionsTabProps {
   businessPartnerId: string;
@@ -80,37 +81,43 @@ export const TransactionsTab = ({ businessPartnerId, enabled, filters }: Transac
         onClearDates={() => filters.clearFields(["dateFrom", "dateTo"])}
       />
 
-      <QueryState<LedgerEntry[]>
-        isLoading={isLoading}
-        isError={isError}
-        data={transactions}
-        loading={
-          <div className="space-y-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 w-full rounded-md" />
-            ))}
-          </div>
-        }
-        error={<ErrorState message="Failed to load transactions. Please try again." />}
-        isEmpty={(data) => data.length === 0}
-        empty={<EmptyState message="No transactions match your filters." />}
-      >
-        {() => (
-          <div className="space-y-6">
-            {groupedTransactions.map(([dateKey, entries]) => (
-              <TransactionDateGroup key={dateKey} dateKey={dateKey} entries={entries} />
-            ))}
-            {hasNextPage && <div ref={sentinelRef} style={{ height: 1 }} />}
-            {isFetchingNextPage && (
-              <div className="space-y-3">
-                {Array.from({ length: 2 }).map((_, i) => (
-                  <Skeleton key={i} className="h-16 w-full rounded-md" />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-      </QueryState>
-    </div>
+        <QueryState<LedgerEntry[]>
+          isLoading={isLoading}
+          isError={isError}
+          data={transactions}
+          loading={
+            <div className="space-y-6">
+              {Array.from({ length: 3 }).map((_, groupIdx) => (
+                <div key={groupIdx} className="space-y-3">
+                  <Skeleton className="h-4 w-24 rounded-md border border-border bg-card" />
+                  {Array.from({ length: 2 }).map((_, rowIdx) => (
+                    <TransactionRowSkeleton key={rowIdx} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          }
+          error={<ErrorState message="Failed to load transactions. Please try again." />}
+          isEmpty={(data) => data.length === 0}
+          empty={<EmptyState message="No transactions match your filters." />}
+        >
+          {() => (
+            <div className="space-y-6 ">
+              {groupedTransactions.map(([dateKey, entries]) => (
+                <TransactionDateGroup key={dateKey} dateKey={dateKey} entries={entries} />
+              ))}
+              {hasNextPage && <div ref={sentinelRef} style={{ height: 1 }} />}
+              {isFetchingNextPage && (
+                <div className="space-y-3">
+                  {Array.from({ length: 2 }).map((_, i) => (
+                    <Skeleton key={i} className="h-16 w-full rounded-md" />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </QueryState>
+      </div>
+   
   );
 };

@@ -15,7 +15,7 @@ export const OrderInfoCard = ({ order, items, computedTotal }: OrderInfoCardProp
   if (!order?.cardName) return null;
 
   return (
-    <div className="rounded-md border col-span-2 border-border bg-card p-5">
+    <div className="rounded-md border col-span-2 border-border bg-card p-5 max-block-fit">
       <Heading title={'Order Detail'}/>
       <div className="grid grid-cols-3 mt-2 bg-muted rounded-md p-3 space-x-3 space-y-3">
         <DetailField
@@ -34,7 +34,7 @@ export const OrderInfoCard = ({ order, items, computedTotal }: OrderInfoCardProp
         )}
         <DetailField
           label="Order Value"
-          value={<span className="font-semibold text-secondary">{formatCurrency(computedTotal)}</span>}
+          value={<span className="font-heading text-secondary">{formatCurrency(computedTotal)}</span>}
         />
         {order.deliveredValue != null && (
           <DetailField

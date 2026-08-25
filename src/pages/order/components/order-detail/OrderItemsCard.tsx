@@ -40,7 +40,7 @@ const OrderItemCard = ({
         />
 
         <div className="flex items-baseline justify-between pr-24">
-            <p className="text-sm font-semibold text-foreground">
+            <p className="text-sm font-heading text-foreground">
                 {item.itemCode}
             </p>
         </div>
@@ -54,7 +54,7 @@ const OrderItemCard = ({
                 {item.quantity} {item.measureUnit} | {formatCurrency(item.price)} each
             </p>
 
-            <p className="text-sm font-semibold text-foreground">
+            <p className="text-sm font-heading text-foreground">
                 {formatCurrency(item.lineTotal)}
             </p>
         </div>

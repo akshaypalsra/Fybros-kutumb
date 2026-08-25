@@ -17,7 +17,7 @@ export const SalesSnapshotSummary = ({
   return (
     <>
       <div>
-        <p className="text-2xl font-semibold text-foreground">
+        <p className="text-2xl font-heading text-foreground">
           {formatCompactCurrency(bookedLastMonth)}
         </p>
 

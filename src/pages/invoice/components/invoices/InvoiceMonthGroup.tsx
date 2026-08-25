@@ -5,24 +5,35 @@ import type { Invoice } from "@/types/invoice.types";
 interface InvoiceMonthGroupProps {
   month: string;
   invoices: Invoice[];
+  selectedInvoiceId?: Invoice["docEntry"];
+  onInvoiceContextMenu?: (event: React.MouseEvent, invoice: Invoice) => void;
 }
 
-export const InvoiceMonthGroup = ({ month, invoices }: InvoiceMonthGroupProps) => (
+export const InvoiceMonthGroup = ({
+  month,
+  invoices,
+  selectedInvoiceId,
+  onInvoiceContextMenu,
+}: InvoiceMonthGroupProps) => (
   <div>
-   
-   <Heading
-  title={
-    <>
-      {month}{" "}
-      <span className="font-normal text-muted-foreground">
-        ({invoices.length} Invoices)
-      </span>
-    </>
-  }
-/>
-    <div >
+    <Heading
+      title={
+        <>
+          {month}{" "}
+          <span className="font-normal text-muted-foreground">
+            ({invoices.length} Invoices)
+          </span>
+        </>
+      }
+    />
+    <div>
       {invoices.map((invoice) => (
-        <InvoiceRow key={invoice.docEntry} invoice={invoice} />
+        <InvoiceRow
+          key={invoice.docEntry}
+          invoice={invoice}
+          isSelected={selectedInvoiceId === invoice.docEntry}
+          onContextMenu={onInvoiceContextMenu}
+        />
       ))}
     </div>
   </div>

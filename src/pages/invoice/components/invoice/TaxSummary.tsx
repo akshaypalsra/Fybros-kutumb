@@ -1,10 +1,12 @@
 import { Heading } from "@/common/components/Heading";
+import { cn } from "@/lib/utils";
 
 interface TaxSummaryProps {
     taxableValue: number;
     gst: number;
     roundOff: number;
     totalInvoiceValue: number;
+    className?: string;
 }
 
 const formatCurrency = (value: number) =>
@@ -18,9 +20,10 @@ export default function TaxSummary({
     gst,
     roundOff,
     totalInvoiceValue,
+    className,
 }: TaxSummaryProps) {
     return (
-        <section className="rounded-md bg-card p-5 text-card-foreground">
+        <section className={cn("rounded-md bg-card p-5 text-card-foreground", className)}>
             <Heading title={'Tax Summary'} />
 
             <div className="rounded-md bg-muted p-5">

@@ -45,7 +45,7 @@ export function AppSidebar() {
                                         <NavLink
                                             to={item.url}
                                             className={({ isActive }) =>
-                                                isActive ? "font-semibold" : ""
+                                                isActive ? "font-heading" : ""
                                             }
                                         >
                                             <HugeiconsIcon icon={item.icon} size={20} />

@@ -42,7 +42,7 @@ const ChartTooltip = ({ active, payload, label }: ChartTooltipProps) => {
       <p className="text-[11px]" style={{ color: AXIS_TEXT_COLOR }}>
         {label}
       </p>
-      <p className="text-sm font-semibold text-foreground">
+      <p className="text-sm font-heading text-foreground">
         {formatCompactCurrency(payload[0].value)}
       </p>
     </div>

@@ -35,10 +35,10 @@ export function Dropdown<T extends string>({
     <Select value={value} onValueChange={(v) => onValueChange(v as T)}>
       <SelectTrigger
         className={cn(
-          "h-8 w-fit min-w-20 rounded-md border-border text-sm transition-colors focus:ring-1 focus:ring-ring",
+          "h-8 w-fit min-w-20 cursor-pointer rounded-md border-border text-sm transition-colors focus:ring-1 focus:ring-ring",
           variant === "secondary"
             ? "border-0 bg-secondary text-white hover:bg-secondary/90 focus:ring-secondary [&_svg]:text-white"
-            : "hover:bg-muted/50",
+            : "hover:bg-card bg-card",
           className
         )}
       >
