@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { AuthProvider } from "react-oidc-context"
 import { authConfig } from "./auth/config/authConfig"
 import { isTauri } from "@tauri-apps/api/core"
+import { AxiosTauriAuthBinding } from "./axios/AxiosTauriAuthBinding"
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,16 +24,22 @@ declare global {
 window.__TANSTACK_QUERY_CLIENT__ = queryClient
 
 const App = () => {
-  if (isTauri()) {
-    return null
-  }
-
-  return <WebRenderer />
+  if (isTauri()) return <TauriApp />
+  return <WebApp />
 }
 
 export default App
 
-const WebRenderer = () => {
+const TauriApp = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AxiosTauriAuthBinding />
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  )
+}
+
+const WebApp = () => {
   return (
     <AuthProvider {...authConfig}>
       <QueryClientProvider client={queryClient}>

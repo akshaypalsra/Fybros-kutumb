@@ -3,11 +3,11 @@ import { useLocation } from "react-router-dom"
 import { useAuth } from "react-oidc-context"
 import { Button } from "../common/components/ui/button"
 import loginHero from "@/assets/login-hero.jpg"
-import fybrosLogo from "../../public/image.png"
 import { LogIn } from "lucide-react"
+import { TauriLogin } from "./TauriLogin"
 
 const Login = () => {
-  return isTauri() ? null : <WebLogin />
+  return isTauri() ? <TauriLogin /> : <WebLogin />
 }
 
 export default Login
@@ -31,7 +31,7 @@ const WebLogin = () => {
         />
 
         <img
-          src={fybrosLogo}
+          src='/image.png'
           alt="Kutumb illustration"
           className="absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2"
           width={10}
@@ -44,7 +44,7 @@ const WebLogin = () => {
       <div className="flex flex-1 flex-col items-center justify-center bg-background px-6">
         <div className="mb-10 flex items-center gap-3 lg:hidden">
           <img
-            src={fybrosLogo}
+            src='/image.png'
             alt="Fybros"
             className="h-8 w-8 invert dark:invert-0"
             width={32}

@@ -74,25 +74,29 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
     !!hasNextPage && !isFetchingNextPage,
   );
 
-  const handleInvoiceContextMenu = (event: React.MouseEvent, invoice: Invoice) => {
-    event.preventDefault();
-    setSelectedInvoice(invoice);
-  };
+const handleInvoiceClick = (invoice: Invoice) => {
+  setSelectedInvoice(invoice);
+};
 
   useEffect(() => {
-    if (isLoading || !hasResults) return;
+  if (isLoading) return;
 
-    const firstInvoice = invoicesByMonth[0]?.[1]?.[0];
-    if (!firstInvoice) return;
+  if (!hasResults) {
+    setSelectedInvoice(null);
+    return;
+  }
 
-    const selectionStillValid = invoicesByMonth.some(([, monthInvoices]) =>
-      monthInvoices.some((inv) => inv.docEntry === selectedInvoice?.docEntry),
-    );
+  const firstInvoice = invoicesByMonth[0]?.[1]?.[0];
+  if (!firstInvoice) return;
 
-    if (!selectedInvoice || !selectionStillValid) {
-      setSelectedInvoice(firstInvoice);
-    }
-  }, [invoicesByMonth, isLoading, hasResults]);
+  const selectionStillValid = invoicesByMonth.some(([, monthInvoices]) =>
+    monthInvoices.some((inv) => inv.docEntry === selectedInvoice?.docEntry),
+  );
+
+  if (!selectedInvoice || !selectionStillValid) {
+    setSelectedInvoice(firstInvoice);
+  }
+}, [invoicesByMonth, isLoading, hasResults]);
 
   return (
     <>
@@ -150,7 +154,7 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
                     month={month}
                     invoices={monthInvoices}
                     selectedInvoiceId={selectedInvoice?.docEntry}
-                    onInvoiceContextMenu={handleInvoiceContextMenu}
+                    onInvoiceClick={handleInvoiceClick}
                   />
                 ))}
                 {hasNextPage && <div ref={sentinelRef} style={{ height: 1 }} />}

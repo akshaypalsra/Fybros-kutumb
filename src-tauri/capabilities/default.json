@@ -6,6 +6,10 @@
     "main"
   ],
   "permissions": [
-    "core:default"
+    "core:default",
+    "store:default",
+    "shell:allow-open",
+    "oauth:allow-start",
+    "oauth:allow-cancel"
   ]
 }

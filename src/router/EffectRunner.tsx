@@ -17,6 +17,8 @@ import { SidebarUserMenu } from "@/sidebar/components/SidebarUserMenu";
 const EffectRunner = () => {
     const { isPending, isError } = useCurrentUser();
     const { theme, toggleTheme } = useTheme();
+
+    console.log(isError,'error')
     return (
         <QueryState
             isLoading={isPending}

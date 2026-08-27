@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import { useAuth } from "react-oidc-context";
+import { useState } from "react";
 import { ChevronDown, LogOutIcon } from "lucide-react";
 import {
     DropdownMenu,
@@ -16,14 +15,8 @@ import { UserAvatar } from "@/common/components/UserAvatar";
 import { SidebarUserMenuSkeleton } from "./SidebarUserMenuSkeleton";
 
 export function SidebarUserMenu() {
-    const auth = useAuth();
-    const { me, isPending, displayName, email, code, avatarUrl } = useCurrentUser();
+    const { me, isPending, displayName, email, code, avatarUrl, logout } = useCurrentUser();
     const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
-
-    const handleLogout = useCallback(async () => {
-        sessionStorage.removeItem("redirectTo");
-        await auth.signoutRedirect();
-    }, [auth]);
 
     if (isPending) {
         return (
@@ -106,7 +99,7 @@ export function SidebarUserMenu() {
             <LogoutDialog
                 open={logoutDialogOpen}
                 onOpenChange={setLogoutDialogOpen}
-                onConfirm={handleLogout}
+                onConfirm={logout}
             />
         </>
     );

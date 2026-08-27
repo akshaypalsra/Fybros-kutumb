@@ -6,14 +6,14 @@ interface InvoiceMonthGroupProps {
   month: string;
   invoices: Invoice[];
   selectedInvoiceId?: Invoice["docEntry"];
-  onInvoiceContextMenu?: (event: React.MouseEvent, invoice: Invoice) => void;
+  onInvoiceClick?: (invoice: Invoice) => void;
 }
 
 export const InvoiceMonthGroup = ({
   month,
   invoices,
   selectedInvoiceId,
-  onInvoiceContextMenu,
+  onInvoiceClick,
 }: InvoiceMonthGroupProps) => (
   <div>
     <Heading
@@ -32,7 +32,7 @@ export const InvoiceMonthGroup = ({
           key={invoice.docEntry}
           invoice={invoice}
           isSelected={selectedInvoiceId === invoice.docEntry}
-          onContextMenu={onInvoiceContextMenu}
+          onClick={onInvoiceClick}
         />
       ))}
     </div>
