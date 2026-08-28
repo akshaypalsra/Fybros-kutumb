@@ -10,41 +10,38 @@ import type { OrderItemDetail } from "@/types/order.types";
 import { QueryState } from "@/wrapper/QueryState";
 import { generateOrderItemPdf } from "@/utils/generate-order-item-pdf";
 
-
-
 const OrderItemDetailPage = () => {
-    const navigate = useNavigate();
-    const { orderItemId = "" } = useParams<{ orderItemId: string }>();
-    const { data: item, isLoading, isError } = useOrderItemDetail(orderItemId);
+  const navigate = useNavigate();
+  const { orderItemId = "" } = useParams<{ orderItemId: string }>();
+  const { data: item, isLoading, isError } = useOrderItemDetail(orderItemId);
 
-    return (
-        <QueryState<OrderItemDetail>
-            isLoading={isLoading}
-            isError={isError}
-            data={item}
-            loading={<OrderItemDetailSkeleton />}
-            error={<OrderItemDetailError />}
-        >
-
-            {(item) => (
-                <div className="mx-auto max-w-6xl">
-                    <DetailPageHeader
-                        title="Item Detail"
-                        onBack={() => navigate(-1)}
-                        onDownload={() => generateOrderItemPdf(item)}
-                    />
-                    <div className="grid gap-4 lg:grid-cols-3">
-                        <div className="lg:col-span-1">
-                            <OrderItemHeroCard item={item} />
-                        </div>
-                        <div className="lg:col-span-2">
-                            <OrderItemDetailsList item={item} />
-                        </div>
-                    </div>
-                </div>
-            )}
-        </QueryState>
-    );
+  return (
+    <QueryState<OrderItemDetail>
+      isLoading={isLoading}
+      isError={isError}
+      data={item}
+      loading={<OrderItemDetailSkeleton />}
+      error={<OrderItemDetailError />}
+    >
+      {(item) => (
+        <div className="mx-auto max-w-6xl space-y-6 pb-10">
+          <DetailPageHeader
+            title="Order Item Detail"
+            onBack={() => navigate(-1)}
+            onDownload={() => generateOrderItemPdf(item)}
+          />
+          <div className="grid gap-5 lg:grid-cols-3">
+            <div className="lg:col-span-1">
+              <OrderItemHeroCard item={item} />
+            </div>
+            <div className="lg:col-span-2">
+              <OrderItemDetailsList item={item} />
+            </div>
+          </div>
+        </div>
+      )}
+    </QueryState>
+  );
 };
 
 export default OrderItemDetailPage;

@@ -63,7 +63,7 @@ export const OrderFilters = ({
                 className="gap-1 rounded-md py-4.5 border border-border text-xs font-medium text-muted-foreground hover:text-foreground"
             >
                 <X className="h-3.5 w-3.5" />
-                Clear all
+                Clear All
             </Button>
         </div>
     )

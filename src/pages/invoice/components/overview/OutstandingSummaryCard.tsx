@@ -1,6 +1,7 @@
 import { formatCompactCurrency } from "@/utils/common.utils";
 import type { OutstandingSummary } from "@/types/business-partner.types";
 import { StatSummaryCard } from "@/common/components/StatSummaryCard";
+import { Heading } from "@/common/components/Heading";
 
 interface OutstandingSummaryCardProps {
   outstandingSummary?: OutstandingSummary;
@@ -8,7 +9,7 @@ interface OutstandingSummaryCardProps {
 
 export const OutstandingSummaryCard = ({ outstandingSummary }: OutstandingSummaryCardProps) => (
   <div className="rounded-md border bg-card p-6 shadow-sm lg:col-span-2">
-    <p className="mb-4 text-sm font-medium text-muted-foreground">Outstanding summary</p>
+    <Heading title='Outstanding Summary'/>
     <div className="grid grid-cols-3 gap-3">
       <StatSummaryCard
         variant="accent"

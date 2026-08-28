@@ -26,15 +26,15 @@ export const OrderSummaryCard = ({ items, counts }: OrderSummaryCardProps) => {
         <div className="rounded-md border border-border bg-card p-5 col-span-2">
             <Heading title="Summary" />
             <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="rounded-md bg-muted/50 p-3">
+                <div className="rounded-md bg-muted p-3">
                     <p className="text-xs text-muted-foreground">Delivered</p>
                     <p className="text-lg font-bold text-foreground">{counts.delivered}</p>
                 </div>
-                <div className="rounded-md bg-muted/50 p-3">
+                <div className="rounded-md bg-muted p-3">
                     <p className="text-xs text-muted-foreground">Pending</p>
                     <p className="text-lg font-bold text-foreground">{counts.pending}</p>
                 </div>
-                <div className="rounded-md bg-muted/50 p-3">
+                <div className="rounded-md bg-muted p-3">
                     <p className="text-xs text-muted-foreground">Cancelled</p>
                     <p className="text-lg font-bold text-foreground">{counts.cancelled}</p>
                 </div>

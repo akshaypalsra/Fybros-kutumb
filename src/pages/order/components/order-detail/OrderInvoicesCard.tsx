@@ -22,7 +22,7 @@ const InvoiceListItem = ({ invoice }: { invoice: Invoice }) => {
   return (
     <Link
       to={`/invoices/${invoice.docEntry}`}
-      className="flex items-start justify-between gap-3 rounded-md  p-3 bg-muted"
+      className="flex items-start justify-between gap-3 rounded-md  p-3 transition-all bg-muted hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex items-start gap-3">
         <div className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-muted text-muted-foreground">
@@ -86,9 +86,9 @@ export const OrderInvoicesCard = ({ invoices, isLoading, isError = false }: Orde
           />
         }
         isEmpty={(items) => items.length === 0}
-        empty={<EmptyState
-          title="No items found"
-          message="There are no items associated with this order."
+   empty={<EmptyState
+          title="No invoices found"
+          message="There are no invoices associated with this order."
         />}
       >
         {(items) => (

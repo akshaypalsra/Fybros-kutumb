@@ -32,7 +32,7 @@ const OrderItemCard = ({
 }) => (
     <Link
         to={`/orders/${orderId}/items/${item.id}`}
-        className="relative block rounded-md bg-muted p-4 transition-colors hover:bg-muted"
+        className="relative block rounded-md bg-muted p-4  hover:bg-muted transition-all hover:-translate-y-0.5 hover:shadow-md"
     >
         <StatusBadge
             status={item.deliveryStatus}
@@ -78,7 +78,7 @@ export const OrderItemsCard = ({
 }: OrderItemsCardProps) => (
     <div className="rounded-md col-span-4 border border-border bg-card p-5">
         <div className="mb-4 flex items-center justify-start space-x-3">
-            <Heading className="mb-0" title={`Items${items ? ` (${items.length})` : ""}`} />
+            <Heading className="mb-0" title={`Order Items${items ? ` (${items.length})` : ""}`} />
 
             <SegmentedControl
                 options={FILTERS}

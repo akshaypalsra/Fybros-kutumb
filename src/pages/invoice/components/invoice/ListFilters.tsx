@@ -56,7 +56,7 @@ export const ListFilters = ({
                 className="gap-1 rounded-md py-4.5 border border-border text-xs font-medium text-muted-foreground hover:text-foreground disabled:opacity-100 disabled:cursor-not-allowed disabled:border-border/50 disabled:text-muted-foreground/40 disabled:hover:text-muted-foreground/40"
             >
                 <X className="h-3.5 w-3.5" />
-                Clear all
+                Clear All
             </Button>
         </div>
     )

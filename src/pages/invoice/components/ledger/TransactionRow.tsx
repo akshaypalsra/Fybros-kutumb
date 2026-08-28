@@ -2,7 +2,6 @@ import { Receipt } from "lucide-react";
 import { cn, formatCurrency } from "@/utils/common.utils";
 import type { LedgerEntry } from "@/types/ledger.types";
 
-
 interface TransactionRowProps {
   entry: LedgerEntry;
 }
@@ -14,7 +13,12 @@ export const TransactionRow = ({ entry }: TransactionRowProps) => {
   return (
     <div className="flex items-start gap-3 rounded-md border border-border bg-card p-4">
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted">
-        <Receipt className="h-4 w-4 text-muted-foreground" />
+        <Receipt
+          className={cn(
+            "h-4 w-4",
+            isCredit ? "text-emerald-600 dark:text-emerald-400" : "text-destructive",
+          )}
+        />
       </div>
 
       <div className="min-w-0 flex-1">
@@ -25,7 +29,7 @@ export const TransactionRow = ({ entry }: TransactionRowProps) => {
           <p
             className={cn(
               "shrink-0 text-sm font-heading",
-              isCredit ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"
+              isCredit ? "text-emerald-600 dark:text-emerald-400" : "text-destructive",
             )}
           >
             {isCredit ? "+ " : "- "}
@@ -33,7 +37,9 @@ export const TransactionRow = ({ entry }: TransactionRowProps) => {
           </p>
         </div>
 
-        {entry.lineMemo && <p className="mt-1 text-xs text-muted-foreground">{entry.lineMemo}</p>}
+        {entry.lineMemo && (
+          <p className="mt-1 text-xs text-muted-foreground">{entry.lineMemo}</p>
+        )}
       </div>
     </div>
   );

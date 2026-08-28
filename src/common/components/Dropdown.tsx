@@ -38,7 +38,7 @@ export function Dropdown<T extends string>({
           "h-8 w-fit min-w-20 cursor-pointer rounded-md border-border text-sm transition-colors focus:ring-1 focus:ring-ring",
           variant === "secondary"
             ? "border-0 bg-secondary text-white hover:bg-secondary/90 focus:ring-secondary [&_svg]:text-white"
-            : "hover:bg-card bg-card",
+            : "hover:bg-card bg-card text-muted-foreground",
           className
         )}
       >

@@ -3,6 +3,7 @@ import { Button } from "@/common/components/ui/button";
 import { EmptyState } from "@/common/components/EmptyState";
 import type { Invoice } from "@/types/invoice.types";
 import { InvoiceRow } from "../invoices/InvoiceRow";
+import { Heading } from "@/common/components/Heading";
 
 interface PendingInvoicesCardProps {
   invoices: Invoice[];
@@ -12,7 +13,18 @@ interface PendingInvoicesCardProps {
 export const PendingInvoicesCard = ({ invoices, onViewAll }: PendingInvoicesCardProps) => (
   <div className="lg:col-span-4">
     <div className="mb-4 flex items-center justify-between">
-      <p className="text-sm font-medium text-muted-foreground">Pending invoices ({invoices.length})</p>
+      <Heading
+        className="mb-0"
+        title={
+          <>
+            Pending invoices{" "}
+            <span className="font-normal text-muted-foreground">
+              ({invoices.length} Invoices)
+            </span>
+          </>
+        }
+      />
+
       <Button
         type="button"
         variant="link"

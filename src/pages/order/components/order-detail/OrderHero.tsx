@@ -11,12 +11,12 @@ interface OrderHeroProps {
 }
 
 export const OrderHero = ({ order, status, className, itemsSummary }: OrderHeroProps) => {
+  const count = order?.itemCount ?? order?.totalItems;
+
   const summary =
     itemsSummary ??
     [
-      order?.itemCount || order?.totalItems
-        ? `${order?.itemCount ?? order?.totalItems} items`
-        : undefined,
+      count ? `${count} ${count === 1 ? "item" : "items"}` : undefined,
       order?.category ?? order?.vertical,
     ]
       .filter(Boolean)

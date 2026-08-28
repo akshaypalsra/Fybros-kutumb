@@ -8,12 +8,19 @@ export function SidebarBrand() {
         <img
           src={Logo}
           alt="Fybros"
-
           width={36}
           height={36}
           loading="eager"
+          className="shrink-0"
         />
-        <span className="text-md font-normal tracking-tight">Fybros Kutumb</span>
+        <div className="flex flex-col ">
+          <div className="text-base font-medium leading-3 tracking-wide text-foreground">
+            Kutumb
+          </div>
+          <div className=" text-[11px] font-medium tracking-wider text-muted-foreground">
+            by Fybros
+          </div>
+        </div>
       </header>
     </SidebarHeader>
   );

@@ -1,3 +1,4 @@
+import { Heading } from "@/common/components/Heading";
 import { useMemo } from "react";
 
 const CHART_WIDTH = 300;
@@ -89,7 +90,7 @@ export default function FinanceHealthCard({
       return { x, y, raw: d };
     });
 
-    const { linePath, areaPath } = buildSmoothPaths(points,  CHART_HEIGHT);
+    const { linePath, areaPath } = buildSmoothPaths(points, CHART_HEIGHT);
 
     const peak = points.reduce((best, p) => (p.y <= best.y ? p : best), points[0]);
 
@@ -100,8 +101,7 @@ export default function FinanceHealthCard({
     <div className="w-full col-span-2 rounded-md border bg-card p-6 shadow-sm">
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col">
-          <h3 className="text-[15px] font-heading text-black dark:text-white">{title}</h3>
-
+          <Heading title={title} className="text-md mb-0" />
           <div className="mt-3 flex items-baseline gap-1">
             <span className="text-4xl font-bold leading-none text-emerald-600">{score}</span>
             <span className="text-base font-medium text-neutral-400">/{maxScore}</span>

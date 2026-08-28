@@ -428,7 +428,6 @@ export const generateOrderItemPdf = (item: OrderItemDetail): void => {
   }
   y += 14;
 
-  // ---- Details grid ----
   sectionTitle("Item Details");
   const detailGrid: [string, string][] = [
     ["Item Code", item.itemCode ?? "-"],
