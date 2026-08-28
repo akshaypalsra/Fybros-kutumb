@@ -35,7 +35,7 @@ export const InvoiceRow = ({ invoice, isSelected, onClick }: InvoiceRowProps) =>
         "flex mb-2 items-start w-full cursor-pointer justify-between gap-4 p-4 rounded-md border border-border bg-card px-6 py-5 transition-all hover:-translate-y-0.5 hover:shadow-md",
         "focus:outline-none",
         isSelected
-          ? "border-secondary border-2"
+          ? "border-secondary border"
           : "focus-visible:ring-1 focus-visible:ring-primary",
       )}
     >

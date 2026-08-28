@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { open } from "@tauri-apps/plugin-shell"
-import { CONSTANTS } from "@/constants/Constants"
+import { oidcSettingsDesktop } from "@/auth/config/authConfig"
 import { Button } from "../common/components/ui/button"
 import { LogIn } from "lucide-react"
 import { saveTokens } from "@/axios/AxiosTauriAuthBinding"
@@ -25,13 +25,12 @@ export const TauriLogin = () => {
         setUserCode(null)
 
         try {
-
-            const deviceRes = await fetch(CONSTANTS.TAURI_SSO_DEVICE_LOGIN_URL, {
+            const deviceRes = await fetch(oidcSettingsDesktop.deviceAuthorizationUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: new URLSearchParams({
-                    client_id: CONSTANTS.SSO_DESKTOP_CLIENT_ID,
-                    scope: "profile",
+                    client_id: oidcSettingsDesktop.client_id,
+                    scope: oidcSettingsDesktop.scope,
                 }),
             })
 
@@ -40,23 +39,22 @@ export const TauriLogin = () => {
             const device: DeviceAuthResponse = await deviceRes.json()
             setUserCode(device.user_code)
 
-
             await open(device.verification_uri_complete ?? device.verification_uri)
 
-            const intervalMs = (device.interval || 5) * 1000
+            let intervalMs = (device.interval || 5) * 1000
             const deadline = Date.now() + device.expires_in * 1000
 
             const poll = async (): Promise<{ access_token: string; refresh_token: string }> => {
                 while (Date.now() < deadline) {
                     await new Promise((res) => setTimeout(res, intervalMs))
 
-                    const tokenRes = await fetch(CONSTANTS.TAURI_SSO_TOKEN_URL, {
+                    const tokenRes = await fetch(oidcSettingsDesktop.tokenUrl, {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: new URLSearchParams({
                             grant_type: "urn:ietf:params:oauth:grant-type:device_code",
                             device_code: device.device_code,
-                            client_id: CONSTANTS.SSO_DESKTOP_CLIENT_ID,
+                            client_id: oidcSettingsDesktop.client_id,
                         }),
                     })
 
@@ -67,7 +65,7 @@ export const TauriLogin = () => {
                     const body = await tokenRes.json().catch(() => ({}))
                     if (body.error === "authorization_pending") continue
                     if (body.error === "slow_down") {
-                        await new Promise((res) => setTimeout(res, intervalMs))
+                        intervalMs += 5000 // per RFC 8628, back off by 5s and keep that pace
                         continue
                     }
                     throw new Error(body.error ?? `Token request failed: ${tokenRes.status}`)

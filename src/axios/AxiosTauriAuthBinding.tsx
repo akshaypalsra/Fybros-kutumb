@@ -56,7 +56,6 @@ async function refreshAccessToken(): Promise<string> {
 }
 
 export const AxiosTauriAuthBinding = () => {
-    // useAxios returns { axiosInstance } — destructure it, don't assign the whole object
     const { axiosInstance } = useAxios();
     const refreshPromiseRef = useRef<Promise<string> | null>(null);
 
@@ -97,7 +96,6 @@ export const AxiosTauriAuthBinding = () => {
                 } catch (refreshErr) {
                     console.error("[AxiosTauriAuthBinding] Token refresh failed:", refreshErr);
                     await clearTokens();
-                    // TODO: redirect to login / show "session expired"
                     return Promise.reject(refreshErr);
                 }
             }
@@ -107,7 +105,6 @@ export const AxiosTauriAuthBinding = () => {
             axiosInstance.interceptors.request.eject(requestId);
             axiosInstance.interceptors.response.eject(responseId);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [axiosInstance]);
 
     return null;

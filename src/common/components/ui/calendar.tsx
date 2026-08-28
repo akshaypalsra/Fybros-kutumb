@@ -6,10 +6,10 @@ import {
     type Locale,
 } from "react-day-picker"
 
-import { cn } from "@/lib/utils.tsx"
 
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "lucide-react"
 import { Button, buttonVariants } from "@/common/components/ui/button.tsx"
+import { cn } from "@/lib/utils"
 
 function Calendar({
     className,

@@ -54,14 +54,13 @@ export const MultiSelectDropdown = ({
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="outline"
-          className={`h-auto gap-1.5 rounded-md border-border bg-card px-3.5 py-2 text-sm font-medium text-foreground ${triggerClassName}`}
+
+          className={`h-auto gap-1.5 rounded-md border-border hover:bg-transparent  bg-card px-3.5 py-2 text-sm font-normal text-muted-foreground  ${triggerClassName}`}
         >
           {label}
           <ChevronDown
-            className={`size-4 text-muted-foreground transition-transform duration-200 ${
-              open ? "rotate-180" : ""
-            }`}
+            className={`size-4 text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""
+              }`}
           />
         </Button>
       </PopoverTrigger>
@@ -75,9 +74,10 @@ export const MultiSelectDropdown = ({
           {options.map((option) => (
             <label
               key={option.value}
-              className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
+              className="flex cursor-pointer text-muted-foreground  items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
             >
               <Checkbox
+                className="cursor-pointer"
                 checked={selected.includes(option.value)}
                 onCheckedChange={() => toggle(option.value)}
               />
@@ -88,8 +88,9 @@ export const MultiSelectDropdown = ({
         {selected.length > 0 && (
           <Button
             type="button"
+            variant="ghost"
             onClick={() => onChange([])}
-            className="mt-2 cursor-pointer w-full bg-secondary/10 hover:bg-secondary/20 text-black rounded-md px-2 py-1.5 text-left text-xs font-medium "
+            className="mt-2 h-auto w-full  rounded-md bg-muted px-2 py-1.5 text-left text-xs font-medium text-foreground hover:bg-muted/80"
           >
             Clear selection
           </Button>
