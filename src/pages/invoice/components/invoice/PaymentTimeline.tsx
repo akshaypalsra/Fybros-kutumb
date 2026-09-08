@@ -1,4 +1,5 @@
 import { Heading } from "@/common/components/Heading";
+import { formatCurrency } from "@/utils/common.utils";
 
 interface Payment {
     id: string;
@@ -10,8 +11,6 @@ interface PaymentTimelineProps {
     payments: Payment[];
 }
 
-const formatCurrency = (value: number) =>
-    `₹ ${value.toLocaleString("en-IN")}`;
 
 export default function PaymentTimeline({
     payments,

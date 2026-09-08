@@ -22,6 +22,8 @@ export interface OutstandingSummary {
   outstandingAmount: number
   overdueAmount: number
   totalInvoices: number
+  openOrderBalance: number
+  totalInvoiceAmount: number
 }
 
 export interface AgeingBucketResponse {

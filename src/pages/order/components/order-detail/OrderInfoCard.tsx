@@ -1,17 +1,15 @@
 import { DetailField } from "@/common/components/DetailField";
 import type { OrderWithExtras } from "@/types/order-detail.types";
-import type { OrderItem } from "@/types/order.types";
 import { formatCurrency, formatDate } from "@/utils/common.utils";
 import { Heading } from "@/common/components/Heading";
 import { StatusBadge } from "@/common/components/StatusBadge";
 
 interface OrderInfoCardProps {
   order?: OrderWithExtras;
-  items: OrderItem[];
   computedTotal: number | undefined;
 }
 
-export const OrderInfoCard = ({ order, items, computedTotal }: OrderInfoCardProps) => {
+export const OrderInfoCard = ({ order, computedTotal }: OrderInfoCardProps) => {
   if (!order?.cardName) return null;
 
   return (
@@ -24,7 +22,7 @@ export const OrderInfoCard = ({ order, items, computedTotal }: OrderInfoCardProp
         />
         <DetailField
           label="Total Items"
-          value={items.length}
+          value={order.totalQuantity}
         />
         {order.orderType && (
           <DetailField

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 interface DetailFieldProps {
   label: string;
@@ -6,9 +7,17 @@ interface DetailFieldProps {
   layout?: "stacked" | "row";
   isFirst?: boolean;
   isLast?: boolean;
+  valueClassName?: string;
 }
 
-export function DetailField({ label, value, layout = "stacked", isFirst, isLast }: DetailFieldProps) {
+export function DetailField({
+  label,
+  value,
+  layout = "stacked",
+  isFirst,
+  isLast,
+  valueClassName,
+}: DetailFieldProps) {
   if (layout === "row") {
     return (
       <div
@@ -16,7 +25,7 @@ export function DetailField({ label, value, layout = "stacked", isFirst, isLast 
           }`}
       >
         <span className="text-sm text-muted-foreground">{label}</span>
-        <span className="text-sm font-normal text-foreground">{value ?? "—"}</span>
+        <span className={cn("text-sm font-normal text-foreground", valueClassName)}>{value ?? "—"}</span>
       </div>
     );
   }
@@ -24,7 +33,7 @@ export function DetailField({ label, value, layout = "stacked", isFirst, isLast 
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="text-sm font-normal text-foreground">{value ?? "—"}</p>
+      <p className={cn("text-sm font-normal text-foreground", valueClassName)}>{value ?? "—"}</p>
     </div>
   );
 }

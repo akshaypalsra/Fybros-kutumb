@@ -1,6 +1,7 @@
 import { FileText } from "lucide-react";
 import { StatusBadge } from "@/common/components/StatusBadge";
-import { formatCurrency, formatDate } from "@/utils/common.utils";
+import { DetailField } from "@/common/components/DetailField";
+import { formatCurrency, formatDate, formatInvoiceAge } from "@/utils/common.utils";
 import { getInvoiceDueLabel } from "@/utils/invoice.utils";
 import { cn } from "@/lib/utils";
 import type { Invoice } from "@/types/invoice.types";
@@ -26,6 +27,8 @@ export const InvoiceRow = ({ invoice, isSelected, onClick }: InvoiceRowProps) =>
     rows[nextIndex]?.focus();
   };
 
+  const showInvoiceAge = invoice.status === "PAID" || invoice.status === "OVERDUE";
+
   return (
     <button
       data-invoice-row="true"
@@ -44,8 +47,17 @@ export const InvoiceRow = ({ invoice, isSelected, onClick }: InvoiceRowProps) =>
           <FileText className="h-4 w-4" />
         </div>
         <div className="min-w-0 flex flex-col items-start">
-          <p className="truncate text-sm font-heading text-foreground">{invoice.invoiceNumber}</p>
-          <p className="text-xs text-muted-foreground mt-3">
+          {showInvoiceAge && (
+            <DetailField
+              valueClassName="text-secondary text-md"
+              label="Invoice age"
+              value={formatInvoiceAge(invoice.docDate)}
+            />
+          )}
+          <p className={cn("truncate font-heading text-foreground", showInvoiceAge ? "mt-1 text-lg" : "text-sm")}>
+            {invoice.invoiceNumber}
+          </p>
+          <p className="text-xs text-muted-foreground mt-1">
             {formatDate(invoice.docDate)} &middot; Due {formatDate(invoice.docDueDate)}
           </p>
           <p className="text-xs text-muted-foreground">{getInvoiceDueLabel(invoice)}</p>

@@ -4,6 +4,7 @@ import { EmptyState } from "@/common/components/EmptyState";
 import type { Invoice } from "@/types/invoice.types";
 import { InvoiceRow } from "../invoices/InvoiceRow";
 import { Heading } from "@/common/components/Heading";
+import { PendingInvoiceRow } from "./PendingInvoiceRow";
 
 interface PendingInvoicesCardProps {
   invoices: Invoice[];
@@ -41,7 +42,7 @@ export const PendingInvoicesCard = ({ invoices, onViewAll }: PendingInvoicesCard
     ) : (
       <div className="divide-y">
         {invoices.map((invoice) => (
-          <InvoiceRow key={invoice.docEntry} invoice={invoice} />
+          <PendingInvoiceRow key={invoice.docEntry} invoice={invoice} />
         ))}
       </div>
     )}

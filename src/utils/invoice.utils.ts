@@ -3,7 +3,7 @@ import type { DatePreset, Invoice } from "@/types/invoice.types"
 
 export const getAgeingColor = (label: string) => {
   const normalized = label.replace(/\s*days?$/i, "").trim()
-  return AGEING_COLOR_BY_LABEL[normalized] ?? "bg-slate-400"
+  return AGEING_COLOR_BY_LABEL[normalized] ?? "#94A3B8"
 }
 
 export const getInvoiceDueLabel = (invoice: Invoice) => {

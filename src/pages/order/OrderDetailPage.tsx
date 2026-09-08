@@ -58,7 +58,7 @@ const OrderDetailPage = () => {
   });
 
   const computedTotal = order?.docTotal ?? items?.reduce((sum, item) => sum + (item.lineTotal ?? 0), 0);
-  const { counts, filteredItems, overallStatus } = useOrderItemCounts(items, itemFilter);
+  const { filteredItems, overallStatus } = useOrderItemCounts(items, itemFilter);
 
   return (
     <QueryState<OrderWithExtras>
@@ -79,8 +79,8 @@ const OrderDetailPage = () => {
 
           <div className="grid gap-3 lg:grid-cols-4">
             <OrderHero order={order} status={overallStatus} />
-            <OrderSummaryCard items={items ?? []} counts={counts} />
-            <OrderInfoCard order={order} items={items ?? []} computedTotal={computedTotal} />
+            <OrderSummaryCard order={order} items={items ?? []} />
+            <OrderInfoCard order={order} computedTotal={computedTotal} />
             <OrderInvoicesCard invoices={invoices} isLoading={isInvoicesLoading} />
             <OrderItemsCard
               orderId={orderId}
@@ -91,13 +91,8 @@ const OrderDetailPage = () => {
               itemFilter={itemFilter}
               onFilterChange={setItemFilter}
             />
-
           </div>
-
         </div>
-
-
-
       )}
     </QueryState>
   );

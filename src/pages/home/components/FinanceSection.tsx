@@ -50,7 +50,7 @@ export const FinanceSection = ({
                 <StatSummaryCard
                     icon={<Receipt className="h-4 w-4 font-light" />}
                     label="Invoices"
-                    value={invoices != null ? String(invoices) : "0"}
+                    value={formatCompactCurrency(invoices)}
                     sublabel=""
                 />
             </div>

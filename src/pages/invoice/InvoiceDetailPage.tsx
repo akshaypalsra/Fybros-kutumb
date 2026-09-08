@@ -59,10 +59,10 @@ const InvoiceDetailPage = () => {
 
             <div className="space-y-5 lg:col-span-2">
               <TaxSummary
-                taxableValue={37984}
-                gst={6837}
+                taxableValue={37984.00}
+                gst={6837.00}
                 roundOff={-0.12}
-                totalInvoiceValue={44821}
+                totalInvoiceValue={44821.00}
               />
 
               <PaymentTimeline
@@ -70,12 +70,12 @@ const InvoiceDetailPage = () => {
                   {
                     id: "ID-765890",
                     date: "4 May, 2026",
-                    amount: 30000,
+                    amount: 30000.00,
                   },
                   {
                     id: "ID-765891",
                     date: "8 May, 2026",
-                    amount: 14821,
+                    amount: 14821.00,
                   },
                 ]}
               />

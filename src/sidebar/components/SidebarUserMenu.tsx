@@ -15,7 +15,7 @@ import { UserAvatar } from "@/common/components/UserAvatar";
 import { SidebarUserMenuSkeleton } from "./SidebarUserMenuSkeleton";
 
 export function SidebarUserMenu() {
-    const { me, isPending, displayName, email, code, avatarUrl, logout } = useCurrentUser();
+    const { me, isPending, email, avatarUrl, logout } = useCurrentUser();
     const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
     if (isPending) {
@@ -23,7 +23,11 @@ export function SidebarUserMenu() {
             <SidebarUserMenuSkeleton />
         );
     }
-    
+
+    const companyName = me?.cardName;
+    const crCode = me?.crCode;
+    const childCardCodes = me?.childCardCodes ?? [];
+
     return (
         <>
             <DropdownMenu>
@@ -33,14 +37,14 @@ export function SidebarUserMenu() {
                         variant="ghost"
                         className="h-auto w-auto items-center justify-start gap-3 rounded-md p-2 text-left hover:bg-muted data-[state=open]:bg-muted"
                     >
-                        <UserAvatar name={displayName} imageUrl={avatarUrl} />
+                        <UserAvatar name={companyName} imageUrl={avatarUrl} />
                         <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-foreground">
-                                {displayName}
+                            <p className="truncate text-sm w-42.5 font-medium text-foreground">
+                                {companyName}
                             </p>
-                            {code && (
+                            {crCode && (
                                 <p className="truncate text-xs text-muted-foreground">
-                                    {code}
+                                    {crCode}
                                 </p>
                             )}
                         </div>
@@ -51,10 +55,10 @@ export function SidebarUserMenu() {
                 <DropdownMenuContent side="top" align="end" sideOffset={8} className="w-64">
                     <DropdownMenuLabel className="font-normal">
                         <div className="flex items-center gap-3 py-1">
-                            <UserAvatar name={displayName} imageUrl={avatarUrl} />
+                            <UserAvatar name={companyName} imageUrl={avatarUrl} />
                             <div className="min-w-0 flex-1">
-                                <p className="truncate text-sm font-heading text-foreground">
-                                    {displayName}
+                                <p className="whitespace-normal wrap-break-words text-sm font-heading text-foreground">
+                                    {companyName}
                                 </p>
                                 {email && (
                                     <p className="truncate text-xs text-muted-foreground">
@@ -67,16 +71,18 @@ export function SidebarUserMenu() {
 
                     <DropdownMenuSeparator />
 
-                    {me?.role && (
+                    {crCode && (
                         <div className="flex items-center justify-between px-2 py-1.5 text-xs">
-                            <span className="text-muted-foreground">Role</span>
-                            <span className="font-medium text-foreground">{me.role}</span>
+                            <span className="text-muted-foreground">CR Code</span>
+                            <span className="font-medium text-foreground">{crCode}</span>
                         </div>
                     )}
-                    {me?.id && (
-                        <div className="flex items-center justify-between px-2 py-1.5 text-xs">
-                            <span className="text-muted-foreground">User ID</span>
-                            <span className="font-medium text-foreground">{me.id}</span>
+                    {childCardCodes.length > 0 && (
+                        <div className="flex items-start justify-between px-2 py-1.5 text-xs">
+                            <span className="text-muted-foreground">Codes</span>
+                            <span className="text-right font-medium text-foreground">
+                                {childCardCodes.join(", ")}
+                            </span>
                         </div>
                     )}
 

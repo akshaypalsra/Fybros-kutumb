@@ -20,9 +20,7 @@ export const InvoiceMonthGroup = ({
       title={
         <>
           {month}{" "}
-          <span className="font-normal text-muted-foreground">
-            ({invoices.length} Invoices)
-          </span>
+         
         </>
       }
     />

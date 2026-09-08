@@ -49,7 +49,7 @@ const HomePage = () => {
           overdueAmount={
             outstandingSummary?.overdueAmount
           }
-          invoices={outstandingSummary?.totalInvoices ?? 0}
+          invoices={outstandingSummary?.totalInvoiceAmount ?? 0}
         />
 
         <OrderSection cardCode={partner?.cardCode} />

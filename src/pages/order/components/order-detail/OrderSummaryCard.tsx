@@ -1,54 +1,39 @@
-
-
 import { Heading } from "@/common/components/Heading";
+import type { OrderWithExtras } from "@/types/order-detail.types";
 import type { OrderItem } from "@/types/order.types";
 
-interface ItemCounts {
-    delivered: number;
-    pending: number;
-    cancelled: number;
-    deliveredPct: number;
-    pendingPct: number;
-    cancelledPct: number;
-}
-
 interface OrderSummaryCardProps {
-
+    order?: OrderWithExtras;
     items: OrderItem[];
-    counts: ItemCounts;
-
 }
 
-export const OrderSummaryCard = ({ items, counts }: OrderSummaryCardProps) => {
-    if (items.length === 0) return null;
+
+
+export const OrderSummaryCard = ({ order, items }: OrderSummaryCardProps) => {
+    if (items.length === 0 || !order) return null;
 
     return (
         <div className="rounded-md border border-border bg-card p-5 col-span-2">
-            <Heading title="Summary" />
+            <div className="flex items-center justify-between">
+                <Heading title="Summary" />
+                {order.orderNumber && (
+                    <span className="text-xs text-muted-foreground">{order.orderNumber}</span>
+                )}
+            </div>
+
             <div className="grid grid-cols-3 gap-2 text-center">
                 <div className="rounded-md bg-muted p-3">
                     <p className="text-xs text-muted-foreground">Delivered</p>
-                    <p className="text-lg font-bold text-foreground">{counts.delivered}</p>
+                    <p className="text-lg font-bold text-foreground">{order.deliveredQuantity}</p>
                 </div>
                 <div className="rounded-md bg-muted p-3">
                     <p className="text-xs text-muted-foreground">Pending</p>
-                    <p className="text-lg font-bold text-foreground">{counts.pending}</p>
+                    <p className="text-lg font-bold text-foreground">{order.pendingQuantity}</p>
                 </div>
                 <div className="rounded-md bg-muted p-3">
                     <p className="text-xs text-muted-foreground">Cancelled</p>
-                    <p className="text-lg font-bold text-foreground">{counts.cancelled}</p>
+                    <p className="text-lg font-bold text-foreground">{order.cancelledQuantity}</p>
                 </div>
-            </div>
-
-            <div className="mt-4 flex h-2 w-full overflow-hidden rounded-full bg-muted">
-                <div className="h-full bg-emerald-500" style={{ width: `${counts.deliveredPct}%` }} />
-                <div className="h-full bg-amber-500" style={{ width: `${counts.pendingPct}%` }} />
-                <div className="h-full bg-secondary" style={{ width: `${counts.cancelledPct}%` }} />
-            </div>
-            <div className="mt-2 flex justify-between text-xs">
-                <span className="text-emerald-600">{counts.deliveredPct}% Delivered</span>
-                <span className="text-amber-600">{counts.pendingPct}% Pending</span>
-                <span className="text-secondary">{counts.cancelledPct}% Cancelled</span>
             </div>
 
 

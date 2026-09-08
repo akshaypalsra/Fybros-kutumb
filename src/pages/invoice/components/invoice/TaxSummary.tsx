@@ -1,5 +1,6 @@
 import { Heading } from "@/common/components/Heading";
 import { cn } from "@/lib/utils";
+import { formatCurrency } from "@/utils/common.utils";
 
 interface TaxSummaryProps {
     taxableValue: number;
@@ -9,11 +10,6 @@ interface TaxSummaryProps {
     className?: string;
 }
 
-const formatCurrency = (value: number) =>
-    `₹ ${value.toLocaleString("en-IN", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-    })}`;
 
 export default function TaxSummary({
     taxableValue,

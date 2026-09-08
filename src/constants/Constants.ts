@@ -16,11 +16,10 @@ export const CONSTANTS = {
 }
 
 export const AGEING_COLOR_BY_LABEL: Record<string, string> = {
-  "0-30": "bg-emerald-500",
-  "30-60": "bg-violet-500",
-  "60-90": "bg-amber-500",
-  "90+": "bg-red-500",
-  ">90": "bg-red-500",
+  "0-30": "#11A546",
+  "31-60": "#E29400",
+  "61-90": "#E92739",
+  "90+": "#A660FF",
 }
 
 export const STATUS_STYLES: Record<string, string> = {

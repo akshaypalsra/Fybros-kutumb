@@ -8,8 +8,8 @@ interface AgeingDistributionCardProps {
 }
 
 export const AgeingDistributionCard = ({ ageingDistribution }: AgeingDistributionCardProps) => (
-  <div className="rounded-md border bg-card px-6 py-3 shadow-sm lg:col-span-2">
-     <Heading title='Ageing (days)'/>
+  <div className="rounded-md border bg-card px-6 py-3 shadow-sm lg:col-span-4">
+     <Heading title='Aging (days)'/>
     <AgeingBar buckets={ageingDistribution ?? []} />
   </div>
 );

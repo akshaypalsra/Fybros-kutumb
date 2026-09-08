@@ -9,9 +9,6 @@ import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
 import type { Invoice } from "@/types/invoice.types";
 import { InvoiceMonthGroup } from "./InvoiceMonthGroup";
 import { InvoiceDetailPanel } from "./InvoiceDetailPanel";
-import { useOrderValue } from "@/pages/order/hooks/useOrderValue";
-import { OrderStatsCards } from "@/pages/order/components/order/OrderStatsCards";
-import { useOrdersData } from "@/pages/order/hooks/useOrdersData";
 import { ListFilters } from "../invoice/ListFilters";
 import { useVerticals } from "@/hooks/useVerticals";
 
@@ -20,6 +17,8 @@ import { useListFiltersState } from "../../hooks/useListFiltersState";
 import InvoiceRowSkeleton from "./InvoiceRowSkeleton";
 import InvoiceDetailPanelSkeleton from "./InvoiceDetailPanelSkeleton";
 import { Skeleton } from "@/common/components/ui/skeleton";
+import { FinanceSection } from "@/pages/home/components/FinanceSection";
+import { useHomeData } from "@/pages/home/hooks/useHomeData";
 
 interface InvoicesTabProps {
   businessPartnerId: string;
@@ -30,6 +29,7 @@ interface InvoicesTabProps {
 export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTabProps) => {
   const { verticals } = useVerticals();
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+const { outstandingSummary } = useHomeData({ salesRange: "QoQ" });
 
   const {
     counts,
@@ -50,24 +50,7 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
     subTab: filters.subTab,
   });
 
-  const { partner } = useOrdersData({
-    query: filters.search,
-    dateFrom: filters.dateFrom,
-    dateTo: filters.dateTo,
-    selectedVerticals: filters.selectedVerticals,
-    tab: "ALL",
-  });
 
-  const { orderValue, isOrderValueLoading } = useOrderValue({
-    cardCode: partner?.cardCode,
-    dateFrom: filters.dateFrom,
-    dateTo: filters.dateTo,
-    fromDateIso: filters.fromDateIso,
-    toDateIso: filters.toDateIso,
-    query: filters.search,
-    selectedVerticals: filters.selectedVerticals,
-    tab: "ALL",
-  });
 
   const sentinelRef = useInfiniteScrollTrigger(
     () => fetchNextPage(),
@@ -100,7 +83,15 @@ const handleInvoiceClick = (invoice: Invoice) => {
 
   return (
     <>
-      <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
+      <FinanceSection
+                outstandingAmount={
+                  outstandingSummary?.outstandingAmount
+                }
+                overdueAmount={
+                  outstandingSummary?.overdueAmount
+                }
+                invoices={outstandingSummary?.totalInvoiceAmount ?? 0}
+              />
 
       <ListFilters
         search={filters.search}

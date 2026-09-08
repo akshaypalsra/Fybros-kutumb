@@ -25,7 +25,7 @@ export const OutstandingSummaryCard = ({ outstandingSummary }: OutstandingSummar
       />
       <StatSummaryCard
         variant="accent"
-        label="Invoices"
+        label="Orders"
         value={String(outstandingSummary?.totalInvoices ?? 0)}
       />
     </div>

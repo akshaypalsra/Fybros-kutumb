@@ -29,8 +29,11 @@ export const OrderRow = ({ order }: OrderRowProps) => {
             {order.orderNumber}
           </p>
           <p className="mt-0.5 text-[11px] text-muted-foreground">
-            {formatDate(order.docDate)} &middot; {order.totalItems} Items
+            {formatDate(order.docDate)} &middot; {order.totalQuantity} Items
           </p>
+          <div className="flex flex-col mt-1 gap-1.5">
+            <StatusBadge status={order.orderType} className="font-light" />
+          </div>
         </div>
       </div>
 
@@ -50,7 +53,6 @@ export const OrderRow = ({ order }: OrderRowProps) => {
         )}
         <div className="flex flex-col items-end gap-1.5">
           <StatusBadge status={order.orderDeliveryStatus} className="font-light" />
-
         </div>
       </div>
     </Link>

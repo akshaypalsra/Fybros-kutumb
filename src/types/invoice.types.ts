@@ -71,12 +71,14 @@ export interface Invoice {
   docDate: string
   docDueDate: string
   docTotal: number
+  billTo: string
+  shipTo: string
+  shipToCode: string | null
   vertical: string
   status: string
   cardName: string | null
-  shipToCode: string | null
   orders: InvoiceOrder[]
-  ewayBillNumber: string | null
+  eWayBillNumber: string | null
   edocNo: string | null
 }
 
