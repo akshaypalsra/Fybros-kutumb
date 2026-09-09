@@ -1,9 +1,8 @@
 import {
-  Area,
   Bar,
+  BarChart,
   CartesianGrid,
-  ComposedChart,
-  Line,
+  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -14,119 +13,124 @@ import { formatCompactCurrency } from "@/utils/common.utils";
 
 export interface SalesTrendPoint {
   month: string;
-  value: number | null;
+  previousYear: number | null;
+  currentYear: number | null;
 }
 
 interface SalesSnapshotChartProps {
   points?: SalesTrendPoint[];
+  previousYearLabel?: string;
+  currentYearLabel?: string;
 }
 
 interface ChartTooltipProps {
   active?: boolean;
-  payload?: { value: number; payload: SalesTrendPoint }[];
+  payload?: { value: number; name: string; dataKey: string }[];
   label?: string;
 }
 
-// Fixed colors — sidesteps hsl(var(--token)) format mismatches in dark mode.
-// Swap back to CSS vars once you confirm your tokens are raw HSL triplets
-// e.g. --muted-foreground: 215 20.2% 65.1%;
-const CHART_COLOR = "#ef4444";
-const AXIS_TEXT_COLOR = "#9ca3af"; // gray-400, visible on dark backgrounds
-const GRID_COLOR = "#374151"; // gray-700
+const PREVIOUS_YEAR_COLOR = "#fbb6b6";
+const CURRENT_YEAR_COLOR = "#ef4444";
+const AXIS_TEXT_COLOR = "#9ca3af";
+const GRID_COLOR = "#e5e7eb";
+
+// Strips any year/digits and returns a 3-letter abbreviation, e.g. "July 2026" -> "Jul", "Q1 2026" -> "Q1"
+const formatAxisLabel = (label: string) => {
+  const alpha = label.replace(/[^a-zA-Z]/g, "");
+  if (!alpha) return label.replace(/\s*\d{4}$/, "").trim(); // e.g. "Q1 2026" -> "Q1"
+  return alpha.slice(0, 1).toUpperCase() + alpha.slice(1, 3).toLowerCase();
+};
 
 const ChartTooltip = ({ active, payload, label }: ChartTooltipProps) => {
-  if (!active || !payload?.length || payload[0].value == null) return null;
+  if (!active || !payload?.length || !label) return null;
 
   return (
     <div className="rounded-md border border-border bg-card px-3 py-2 shadow-md">
       <p className="text-[11px]" style={{ color: AXIS_TEXT_COLOR }}>
         {label}
       </p>
-      <p className="text-sm font-heading text-foreground">
-        {formatCompactCurrency(payload[0].value)}
-      </p>
+      {payload.map((entry) => (
+        <p key={entry.dataKey} className="text-sm font-heading text-foreground">
+          {entry.name}: {formatCompactCurrency(entry.value)}
+        </p>
+      ))}
     </div>
   );
 };
 
-export const SalesSnapshotChart = ({ points = [] }: SalesSnapshotChartProps) => {
+export const SalesSnapshotChart = ({
+  points = [],
+  previousYearLabel = "2025",
+  currentYearLabel = "2026",
+}: SalesSnapshotChartProps) => {
   return (
-    <div className="h-56 w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart
-          data={points}
-          margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
-          className="mt-5"
-        >
-          <defs>
-            <linearGradient id="salesBarGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={CHART_COLOR} stopOpacity={0.55} />
-              <stop offset="100%" stopColor={CHART_COLOR} stopOpacity={0.15} />
-            </linearGradient>
-            <linearGradient id="salesAreaGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={CHART_COLOR} stopOpacity={0.2} />
-              <stop offset="100%" stopColor={CHART_COLOR} stopOpacity={0} />
-            </linearGradient>
-          </defs>
+    <div className="w-full">
+      <div className="h-72 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={points}
+            margin={{ top: 8, right: 8, left: 0, bottom: 8 }}
+            barGap={4}
+            barCategoryGap="24%"
+          >
+            <CartesianGrid vertical={false} strokeDasharray="3 3" stroke={GRID_COLOR} />
 
-          <CartesianGrid
-            vertical={false}
-            strokeDasharray="3 3"
-            stroke={GRID_COLOR}
-            opacity={0.5}
-          />
+            <XAxis
+              dataKey="month"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 11, fill: AXIS_TEXT_COLOR }}
+              tickFormatter={formatAxisLabel}
+              dy={8}
+            />
 
-          <XAxis
-            dataKey="month"
-            axisLine={false}
-            tickLine={false}
-            tick={{ fontSize: 10, fill: AXIS_TEXT_COLOR }}
-            dy={8}
-          />
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 11, fill: AXIS_TEXT_COLOR }}
+              tickFormatter={(value: number) => formatCompactCurrency(value)}
+              width={56}
+              tickMargin={4}
+            />
 
-          <YAxis
-            axisLine={false}
-            tickLine={false}
-            tick={{ fontSize: 10, fill: AXIS_TEXT_COLOR }}
-            tickFormatter={(value) => formatCompactCurrency(value)}
-            width={60}
-            tickMargin={4}
-          />
+            <Tooltip
+              content={<ChartTooltip />}
+              cursor={{ fill: AXIS_TEXT_COLOR, opacity: 0.08 }}
+            />
 
-          <Tooltip
-            content={<ChartTooltip />}
-            cursor={{ fill: AXIS_TEXT_COLOR, opacity: 0.1 }}
-          />
+            <Legend
+              verticalAlign="middle"
+              align="right"
+              layout="vertical"
+              iconType="square"
+              iconSize={10}
+              wrapperStyle={{ fontSize: 12, right: 0 }}
+            />
 
-          <Bar
-            dataKey="value"
-            fill="url(#salesBarGradient)"
-            radius={[6, 6, 0, 0]}
-            barSize={20}
-            isAnimationActive={false}
-          />
+            <Bar
+              dataKey="previousYear"
+              name={previousYearLabel}
+              fill={PREVIOUS_YEAR_COLOR}
+              radius={[3, 3, 0, 0]}
+              barSize={18}
+              isAnimationActive={false}
+            />
 
-          <Area
-            type="monotone"
-            dataKey="value"
-            stroke="none"
-            fill="url(#salesAreaGradient)"
-            connectNulls={false}
-            isAnimationActive={false}
-          />
+            <Bar
+              dataKey="currentYear"
+              name={currentYearLabel}
+              fill={CURRENT_YEAR_COLOR}
+              radius={[3, 3, 0, 0]}
+              barSize={18}
+              isAnimationActive={false}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
 
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke={CHART_COLOR}
-            strokeWidth={2.5}
-            dot={{ r: 4, fill: CHART_COLOR, strokeWidth: 2, stroke: "white" }}
-            activeDot={{ r: 5, fill: CHART_COLOR, strokeWidth: 2, stroke: "white" }}
-            connectNulls={false}
-            isAnimationActive={false}
-          />
-        </ComposedChart>
-      </ResponsiveContainer>
+      <p className="mt-2 text-end text-xs text-muted-foreground">
+        *Current and Previous Financial Year
+      </p>
     </div>
   );
 };

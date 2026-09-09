@@ -16,6 +16,20 @@ export interface InvoiceItem {
   measureUnit: string;
 }
 
+export interface InvoiceAnalyticsPeriodPoint {
+  amount: number;
+  label: string;
+  period: string;
+}
+
+
+export interface InvoiceAnalyticsYear {
+  year: number;
+  data: InvoiceAnalyticsPeriodPoint[];
+}
+
+export type InvoiceAnalyticsPoint = InvoiceAnalyticsYear
+
 export interface SearchInvoicesFilters {
   fromDate?: string;
   toDate?: string;

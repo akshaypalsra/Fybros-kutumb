@@ -16,13 +16,14 @@ import type { Order } from "@/types/order.types";
 import { QueryState } from "@/wrapper/QueryState";
 import { ErrorState } from "@/common/components/ErrorState";
 import { EmptyState } from "@/common/components/EmptyState";
-import { Dropdown } from "@/common/components/Dropdown";
+import { cn } from "@/lib/utils";
+import { Button } from "@/common/components/ui/button";
 
-type OrderViewMode = "ORDER" | "ITEM";
+type OrderViewMode = "ORDERS" | "PENDING_ITEMS";
 
-const VIEW_MODE_OPTIONS: { label: string; value: OrderViewMode }[] = [
-  { label: "Order Wise", value: "ORDER" },
-  { label: "Item Wise", value: "ITEM" },
+const VIEW_MODE_TABS: { label: string; value: OrderViewMode }[] = [
+  { label: "Orders", value: "ORDERS" },
+  { label: "Pending items", value: "PENDING_ITEMS" },
 ];
 
 const OrdersPage = () => {
@@ -43,7 +44,8 @@ const OrdersPage = () => {
     clearFields
   } = useOrderFilterState();
 
-  const [viewMode, setViewMode] = useState<OrderViewMode>("ORDER");
+  const [viewMode, setViewMode] = useState<OrderViewMode>("ORDERS");
+  const isPendingItemsView = viewMode === "PENDING_ITEMS";
 
   const {
     partner,
@@ -78,6 +80,7 @@ const OrdersPage = () => {
     <div className="mx-auto max-w-295">
       <OrdersHeader partnerName={partner?.cardName} partnerCode={partner?.cardCode} />
       <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
+
       <OrderFilters
         query={query}
         onQueryChange={setQuery}
@@ -90,17 +93,33 @@ const OrdersPage = () => {
         onVerticalsChange={setSelectedVerticals}
         clearAll={clearAll}
         onClearDates={() => clearFields(["dateFrom", "dateTo"])}
+        dateMode={isPendingItemsView ? "as-of-today" : "range"}
       />
-      <div className="mb-4 flex  gap-3">
-        <Dropdown<OrderViewMode>
-          options={VIEW_MODE_OPTIONS}
-          value={viewMode}
-          onValueChange={setViewMode}
-          className="rounded-full"
-          variant="secondary"
-        />
-        <OrderTabs counts={counts} value={tab} onChange={setTab} />
+
+      <div className="mb-4 flex w-fit items-center gap-6 border-b border-border">
+  {VIEW_MODE_TABS.map((option) => (
+    <Button
+      key={option.value}
+      type="button"
+      variant="ghost"
+      onClick={() => setViewMode(option.value)}
+      className={cn(
+        "relative h-auto rounded-none px-0 pb-2.5 text-sm font-medium hover:bg-transparent",
+        viewMode === option.value
+          ? "text-foreground after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:rounded-full after:bg-secondary"
+          : "text-muted-foreground hover:text-foreground",
+      )}
+    >
+            {option.label}
+          </Button>
+        ))}
       </div>
+
+      {!isPendingItemsView && (
+        <div className="mb-4">
+          <OrderTabs counts={counts} value={tab} onChange={setTab} />
+        </div>
+      )}
 
       <QueryState<Order[]>
         isLoading={isLoading}

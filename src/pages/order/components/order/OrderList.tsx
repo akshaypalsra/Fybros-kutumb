@@ -16,9 +16,6 @@ export const OrderList = ({ groupedByMonth }: OrderListProps) => (
           title={
             <>
               {month}{" "}
-              <span className="font-normal text-muted-foreground">
-                ({monthOrders.length} Order{monthOrders.length > 1 ? "s" : ""})
-              </span>
             </>
           }
         />

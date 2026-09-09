@@ -31,9 +31,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
           <p className="mt-0.5 text-[11px] text-muted-foreground">
             {formatDate(order.docDate)} &middot; {order.totalQuantity} Items
           </p>
-          <div className="flex flex-col mt-1 gap-1.5">
-            <StatusBadge status={order.orderType} className="font-light" />
-          </div>
+          
         </div>
       </div>
 
@@ -48,12 +46,15 @@ export const OrderRow = ({ order }: OrderRowProps) => {
         </p>
         {order.openOrderValue > 0 && (
           <p className="text-[11px] font-heading text-[#B4222E]">
-            {formatCurrency(order.openOrderValue)} open
+            {formatCurrency(order.openOrderValue)} pending
           </p>
         )}
         <div className="flex flex-col items-end gap-1.5">
           <StatusBadge status={order.orderDeliveryStatus} className="font-light" />
         </div>
+        <div className="flex flex-col mt-1 gap-1.5">
+            <StatusBadge status={order.orderType}  className="font-light uppercase" />
+          </div>
       </div>
     </Link>
   );

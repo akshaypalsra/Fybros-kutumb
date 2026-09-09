@@ -1,20 +1,12 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import type { InvoiceAnalyticsPoint, InvoiceAnalyticsType } from "@/api/invoice/invoiceApi";
+import type { InvoiceAnalyticsType} from "@/api/invoice/invoiceApi";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
 import { useOutstandingSummary } from "@/hooks/useOutstandingSummary";
 import { useActiveBusinessPartner } from "@/hooks/useActiveBusinessPartner";
 import { useOrderValue } from "@/pages/order/hooks/useOrderValue";
+import type { SalesTrend } from "../components/SalesSnapshotSection";
+import type { InvoiceAnalyticsYear } from "@/types/invoice.types";
 
-interface SalesTrendPoint {
-  month: string;
-  value: number;
-}
-
-interface SalesTrend {
-  points: SalesTrendPoint[];
-  bookedLastMonth: number;
-  growthPercent: number;
-}
 
 interface UseHomeDataParams {
   salesRange: "MoM" | "QoQ";
@@ -25,16 +17,23 @@ const RANGE_TO_ANALYTICS_TYPE: Record<"MoM" | "QoQ", InvoiceAnalyticsType> = {
   QoQ: "QUARTER_OVER_QUARTER",
 };
 
-function toSalesTrend(points: InvoiceAnalyticsPoint[]): SalesTrend {
-  const mapped = points.map((p) => ({ month: p.label, value: p.amount }));
-  const last = mapped.at(-1);
-  const prev = mapped.at(-2);
+function toSalesTrend(years: InvoiceAnalyticsYear[]): SalesTrend {
+  const sorted = [...years].sort((a, b) => a.year - b.year);
+  const current = sorted.at(-1);
+  const currentData = current?.data ?? [];
 
-  const bookedLastMonth = last?.value ?? 0;
+  // Last non-zero entry in the current year, so a fully-zeroed future quarter/month doesn't count as "last booked"
+  const lastBooked = [...currentData].reverse().find((d) => d.amount > 0);
+  const lastIndex = lastBooked ? currentData.indexOf(lastBooked) : -1;
+  const prevInSameYear = lastIndex > 0 ? currentData[lastIndex - 1] : undefined;
+
+  const bookedLastMonth = lastBooked?.amount ?? 0;
   const growthPercent =
-    prev && prev.value !== 0 ? Math.round(((bookedLastMonth - prev.value) / prev.value) * 100) : 0;
+    prevInSameYear && prevInSameYear.amount !== 0
+      ? Math.round(((bookedLastMonth - prevInSameYear.amount) / prevInSameYear.amount) * 100)
+      : 0;
 
-  return { points: mapped, bookedLastMonth, growthPercent };
+  return { years: sorted, bookedLastMonth, growthPercent };
 }
 
 export function useHomeData({ salesRange }: UseHomeDataParams) {
@@ -48,18 +47,13 @@ export function useHomeData({ salesRange }: UseHomeDataParams) {
     isError: isOutstandingError,
   } = useOutstandingSummary(businessPartnerId, enabled);
 
-  const {
-    orderValue,
-    isOrderValueLoading,
-    isOrderValueError,
-  } = useOrderValue({
+  const { orderValue, isOrderValueLoading, isOrderValueError } = useOrderValue({
     cardCode: businessPartnerId,
     queryKeyPrefix: ["home", "order-value"],
   });
 
-
   const {
-    data: analyticsPoints,
+    data: analyticsYears,
     isLoading: isSalesTrendLoading,
     isError: isSalesTrendError,
   } = useQuery({
@@ -72,7 +66,7 @@ export function useHomeData({ salesRange }: UseHomeDataParams) {
     partner,
     outstandingSummary,
     orderValue,
-    salesTrend: toSalesTrend(analyticsPoints ?? []),
+    salesTrend: toSalesTrend(analyticsYears ?? []),
     isSalesTrendLoading,
     isSalesTrendError,
     isLoading: isPartnerLoading || isOutstandingLoading || isOrderValueLoading,

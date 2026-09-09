@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface DetailFieldProps {
-  label: string;
+  label: ReactNode;
   value: ReactNode;
   layout?: "stacked" | "row";
   isFirst?: boolean;

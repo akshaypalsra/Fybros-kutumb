@@ -11,7 +11,7 @@ const stringField = (param: string, defaultValue = "") => ({
 
 type SortDirection = "ASC" | "DESC"
 
-const sortDirectionField = (param: string, defaultValue: SortDirection = "ASC") => ({
+const sortDirectionField = (param: string, defaultValue: SortDirection = "DESC") => ({
   param,
   defaultValue,
   parse: (raw: string) => (raw === "DESC" ? "DESC" : "ASC") as SortDirection,

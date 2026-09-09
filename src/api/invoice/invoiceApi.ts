@@ -82,17 +82,22 @@ export const getInvoiceItems = async (
 
 export type InvoiceAnalyticsType = "MONTH_OVER_MONTH" | "QUARTER_OVER_QUARTER" | "YEAR_OVER_YEAR";
 
-export interface InvoiceAnalyticsPoint {
+export interface InvoiceAnalyticsPeriodPoint {
     period: string;
     label: string;
     amount: number;
 }
 
+export interface InvoiceAnalyticsYear {
+    year: number;
+    data: InvoiceAnalyticsPeriodPoint[];
+}
+
 export const getInvoiceAnalytics = async (
     axiosInstance: AxiosInstance,
     analyticsType: InvoiceAnalyticsType
-): Promise<InvoiceAnalyticsPoint[]> => {
-    const response = await axiosInstance.get<InvoiceAnalyticsPoint[]>(
+): Promise<InvoiceAnalyticsYear[]> => {
+    const response = await axiosInstance.get<InvoiceAnalyticsYear[]>(
         "/business-partners/invoices/analytics",
         { params: { analyticsType } }
     );

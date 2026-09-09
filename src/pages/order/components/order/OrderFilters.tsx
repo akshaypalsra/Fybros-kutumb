@@ -1,4 +1,4 @@
-import { X } from "lucide-react"
+import { X, Calendar } from "lucide-react"
 import type { Vertical } from "@/api/vertical/verticalApi"
 import { DateFilter } from "../../../../common/components/DateFilter"
 import { VerticalFilter } from "../../../../common/components/VerticalFilter"
@@ -17,7 +17,7 @@ interface OrderFiltersBarProps {
     onVerticalsChange: (value: string[]) => void
     clearAll: () => void
     onClearDates: () => void
-
+    dateMode?: "range" | "as-of-today"
 }
 
 export const OrderFilters = ({
@@ -32,23 +32,29 @@ export const OrderFilters = ({
     onVerticalsChange,
     clearAll,
     onClearDates,
-
-
+    dateMode = "range",
 }: OrderFiltersBarProps) => {
-    const hasActiveFilters = !!query || !!dateFrom || !!dateTo || selectedVerticals.length > 0
+    const hasActiveFilters = !!query || (dateMode === "range" && (!!dateFrom || !!dateTo)) || selectedVerticals.length > 0
 
     return (
         <div className="mb-6 flex flex-wrap items-center gap-3">
             <div className="flex-1 min-w-50">
                 <SearchBar value={query} onChange={onQueryChange} />
             </div>
-            <DateFilter
-                from={dateFrom}
-                to={dateTo}
-                onFromChange={onDateFromChange}
-                onToChange={onDateToChange}
-                onClearDates={onClearDates}
-            />
+            {dateMode === "as-of-today" ? (
+                <div className="flex items-center gap-2 rounded-md border border-border px-3 py-2.5 text-sm text-muted-foreground">
+                    <Calendar className="h-3.5 w-3.5" />
+                    As of today
+                </div>
+            ) : (
+                <DateFilter
+                    from={dateFrom}
+                    to={dateTo}
+                    onFromChange={onDateFromChange}
+                    onToChange={onDateToChange}
+                    onClearDates={onClearDates}
+                />
+            )}
             <VerticalFilter
                 verticals={verticals}
                 selected={selectedVerticals}

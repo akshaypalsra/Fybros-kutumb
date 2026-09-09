@@ -14,7 +14,7 @@ export const OrderInfoCard = ({ order, computedTotal }: OrderInfoCardProps) => {
 
   return (
     <div className="rounded-md border col-span-2 border-border bg-card p-5 max-block-fit">
-      <Heading title={'Order Detail'}/>
+      <Heading title={'Order Detail'} />
       <div className="grid grid-cols-3 mt-2 bg-muted rounded-md p-3 space-x-3 space-y-3">
         <DetailField
           label="Order Date"
@@ -27,11 +27,15 @@ export const OrderInfoCard = ({ order, computedTotal }: OrderInfoCardProps) => {
         {order.orderType && (
           <DetailField
             label="Order Type"
-            value={<StatusBadge status={order.orderType}/>}
+            value={<StatusBadge status={order.orderType} className="uppercase" />}
           />
         )}
         <DetailField
-          label="Order Value"
+          label={
+            <>
+              Order value <span className="text-[10px] text-muted-foreground">(Inc. of tax)</span>
+            </>
+          }
           value={<span className="font-heading text-secondary">{formatCurrency(computedTotal)}</span>}
         />
         {order.deliveredValue != null && (
