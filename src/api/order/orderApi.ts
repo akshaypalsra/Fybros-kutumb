@@ -4,6 +4,7 @@ import type { Invoice } from "@/types/invoice.types";
 import type { PagedResponse } from "@/types/common.types";
 
 import { toIsoStart, toIsoEnd } from "@/utils/date.utils";
+import type { PendingItem, PendingItemOrderDetail, SearchPendingItemsParams } from "@/types/pending-item.types";
 
 export const searchOrders = async (
     axiosInstance: AxiosInstance,
@@ -80,6 +81,38 @@ export const getOrderValue = async (
     const response = await axiosInstance.get<OrderValue>(
         "/business-partners/order-value",
         { params: { businessPartnerId, ...filters } }
+    );
+
+    return response.data;
+};
+
+export const searchPendingItems = async (
+    axiosInstance: AxiosInstance,
+    params: SearchPendingItemsParams,
+): Promise<PagedResponse<PendingItem>> => {
+    const { page, size, ...rest } = params;
+
+    const response = await axiosInstance.post<PagedResponse<PendingItem>>(
+        "/business-partners/pending-items/search",
+        {
+            ...rest,
+            fromDate: params.fromDate ? toIsoStart(params.fromDate) : undefined,
+            toDate: params.toDate ? toIsoEnd(params.toDate) : undefined,
+        },
+        {
+            params: { page, size },
+        },
+    );
+
+    return response.data;
+};
+
+export const getPendingItemDetails = async (
+    axiosInstance: AxiosInstance,
+    itemCode: string,
+): Promise<PendingItemOrderDetail[]> => {
+    const response = await axiosInstance.get<PendingItemOrderDetail[]>(
+        `/pending-items/${itemCode}`,
     );
 
     return response.data;

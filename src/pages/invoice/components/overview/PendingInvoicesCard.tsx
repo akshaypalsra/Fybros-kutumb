@@ -2,7 +2,6 @@ import { ChevronRight } from "lucide-react";
 import { Button } from "@/common/components/ui/button";
 import { EmptyState } from "@/common/components/EmptyState";
 import type { Invoice } from "@/types/invoice.types";
-import { InvoiceRow } from "../invoices/InvoiceRow";
 import { Heading } from "@/common/components/Heading";
 import { PendingInvoiceRow } from "./PendingInvoiceRow";
 

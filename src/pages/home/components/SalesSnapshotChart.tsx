@@ -34,7 +34,7 @@ const CURRENT_YEAR_COLOR = "#ef4444";
 const AXIS_TEXT_COLOR = "#9ca3af";
 const GRID_COLOR = "#e5e7eb";
 
-// Strips any year/digits and returns a 3-letter abbreviation, e.g. "July 2026" -> "Jul", "Q1 2026" -> "Q1"
+
 const formatAxisLabel = (label: string) => {
   const alpha = label.replace(/[^a-zA-Z]/g, "");
   if (!alpha) return label.replace(/\s*\d{4}$/, "").trim(); // e.g. "Q1 2026" -> "Q1"

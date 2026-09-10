@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useOrdersData } from "./hooks/useOrdersData";
+import { usePendingItemsData } from "./hooks/usePendingItemsData";
 import { useOrderFilterState } from "./hooks/useOrderFilterState";
 import { useOrderFilters } from "./hooks/useOrderFilters";
 import { useOrderValue } from "./hooks/useOrderValue";
@@ -8,22 +8,25 @@ import { OrderFilters } from "./components/order/OrderFilters";
 import { OrderStatsCards } from "./components/order/OrderStatsCards";
 import { OrderTabs } from "./components/order/OrderTabs";
 import { OrderList } from "./components/order/OrderList";
+
 import { OrdersListSkeleton } from "./components/order/OrdersListSkeleton";
 
 import { useVerticals } from "@/hooks/useVerticals";
 import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
-import type { Order } from "@/types/order.types";
+import type { Order, OrderViewMode } from "@/types/order.types";
+import type { PendingItem } from "@/types/pending-item.types";
 import { QueryState } from "@/wrapper/QueryState";
 import { ErrorState } from "@/common/components/ErrorState";
 import { EmptyState } from "@/common/components/EmptyState";
-import { cn } from "@/lib/utils";
-import { Button } from "@/common/components/ui/button";
 
-type OrderViewMode = "ORDERS" | "PENDING_ITEMS";
+import { PendingItemsList } from "./components/pending-item/PendingItemsList";
+import { SegmentedControl } from "@/common/components/SegmentedControl";
 
-const VIEW_MODE_TABS: { label: string; value: OrderViewMode }[] = [
-  { label: "Orders", value: "ORDERS" },
-  { label: "Pending items", value: "PENDING_ITEMS" },
+
+
+const VIEW_MODE_TABS: { key: OrderViewMode; label: string }[] = [
+  { key: "ORDERS", label: "Orders" },
+  { key: "PENDING_ITEMS", label: "Pending items" },
 ];
 
 const OrdersPage = () => {
@@ -41,10 +44,12 @@ const OrdersPage = () => {
     selectedVerticals,
     setSelectedVerticals,
     clearAll,
-    clearFields
+    clearFields,
+    viewMode,
+   setViewMode,
   } = useOrderFilterState();
 
-  const [viewMode, setViewMode] = useState<OrderViewMode>("ORDERS");
+
   const isPendingItemsView = viewMode === "PENDING_ITEMS";
 
   const {
@@ -57,6 +62,15 @@ const OrdersPage = () => {
     hasNextPage,
     isFetchingNextPage,
   } = useOrdersData({ query, dateFrom, dateTo, selectedVerticals, tab });
+
+  const {
+    pendingItems,
+    isLoading: isPendingItemsLoading,
+    isError: isPendingItemsError,
+    fetchNextPage: fetchNextPendingItemsPage,
+    hasNextPage: hasNextPendingItemsPage,
+    isFetchingNextPage: isFetchingNextPendingItemsPage,
+  } = usePendingItemsData({ query, dateFrom, dateTo, selectedVerticals });
 
   const { verticals } = useVerticals();
   const { groupedByMonth } = useOrderFilters(orders);
@@ -71,15 +85,32 @@ const OrdersPage = () => {
     tab,
   });
 
+  const activeFetchNextPage = isPendingItemsView ? fetchNextPendingItemsPage : fetchNextPage;
+  const activeHasNextPage = isPendingItemsView ? hasNextPendingItemsPage : hasNextPage;
+  const activeIsFetchingNextPage = isPendingItemsView
+    ? isFetchingNextPendingItemsPage
+    : isFetchingNextPage;
+  const activeIsLoading = isPendingItemsView ? isPendingItemsLoading : isLoading;
+
   const sentinelRef = useInfiniteScrollTrigger(
-    fetchNextPage,
-    !!hasNextPage && !isFetchingNextPage && !isLoading,
+    activeFetchNextPage,
+    !!activeHasNextPage && !activeIsFetchingNextPage && !activeIsLoading,
   );
 
   return (
     <div className="mx-auto max-w-295">
       <OrdersHeader partnerName={partner?.cardName} partnerCode={partner?.cardCode} />
-      <OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />
+
+      <div className="mb-4 w-fit">
+        <SegmentedControl
+          variant="underline"
+          options={VIEW_MODE_TABS.map((t) => t.key)}
+          value={viewMode}
+          onChange={setViewMode}
+          getLabel={(key) => VIEW_MODE_TABS.find((t) => t.key === key)?.label ?? key}
+        />
+      </div>
+
 
       <OrderFilters
         query={query}
@@ -96,24 +127,11 @@ const OrdersPage = () => {
         dateMode={isPendingItemsView ? "as-of-today" : "range"}
       />
 
-      <div className="mb-4 flex w-fit items-center gap-6 border-b border-border">
-  {VIEW_MODE_TABS.map((option) => (
-    <Button
-      key={option.value}
-      type="button"
-      variant="ghost"
-      onClick={() => setViewMode(option.value)}
-      className={cn(
-        "relative h-auto rounded-none px-0 pb-2.5 text-sm font-medium hover:bg-transparent",
-        viewMode === option.value
-          ? "text-foreground after:absolute after:inset-x-0 after:-bottom-px after:h-0.5 after:rounded-full after:bg-secondary"
-          : "text-muted-foreground hover:text-foreground",
-      )}
-    >
-            {option.label}
-          </Button>
-        ))}
-      </div>
+      {!isPendingItemsView && (<OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />)}
+
+
+
+
 
       {!isPendingItemsView && (
         <div className="mb-4">
@@ -121,23 +139,43 @@ const OrdersPage = () => {
         </div>
       )}
 
-      <QueryState<Order[]>
-        isLoading={isLoading}
-        isError={isError}
-        data={orders}
-        loading={<OrdersListSkeleton rows={5} />}
-        error={<ErrorState message="Failed to load orders. Please try again." />}
-        isEmpty={(data) => data.length === 0}
-        empty={<EmptyState message="No orders match with filters." />}
-      >
-        {() => (
-          <>
-            <OrderList groupedByMonth={groupedByMonth} />
-            <div ref={sentinelRef} className="h-1" />
-            {isFetchingNextPage && <OrdersListSkeleton rows={2} />}
-          </>
-        )}
-      </QueryState>
+      {isPendingItemsView ? (
+        <QueryState<PendingItem[]>
+          isLoading={isPendingItemsLoading}
+          isError={isPendingItemsError}
+          data={pendingItems}
+          loading={<OrdersListSkeleton rows={5} />}
+          error={<ErrorState message="Failed to load pending items. Please try again." />}
+          isEmpty={(data) => data.length === 0}
+          empty={<EmptyState message="No pending items match with filters." />}
+        >
+          {() => (
+            <>
+              <PendingItemsList items={pendingItems} />
+              <div ref={sentinelRef} className="h-1" />
+              {isFetchingNextPendingItemsPage && <OrdersListSkeleton rows={2} />}
+            </>
+          )}
+        </QueryState>
+      ) : (
+        <QueryState<Order[]>
+          isLoading={isLoading}
+          isError={isError}
+          data={orders}
+          loading={<OrdersListSkeleton rows={5} />}
+          error={<ErrorState message="Failed to load orders. Please try again." />}
+          isEmpty={(data) => data.length === 0}
+          empty={<EmptyState message="No orders match with filters." />}
+        >
+          {() => (
+            <>
+              <OrderList groupedByMonth={groupedByMonth} />
+              <div ref={sentinelRef} className="h-1" />
+              {isFetchingNextPage && <OrdersListSkeleton rows={2} />}
+            </>
+          )}
+        </QueryState>
+      )}
     </div>
   );
 };

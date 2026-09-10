@@ -3,6 +3,8 @@ import { useUrlPersistedFilters } from "@/hooks/useUrlPersistedFilters"
 import type { TabFilter } from "@/types/order.types"
 import { toIsoDateRange } from "@/utils/date.utils"
 
+type OrderViewMode = "ORDERS" | "PENDING_ITEMS"
+
 const stringField = (param: string, defaultValue = "") => ({
   param,
   defaultValue,
@@ -29,13 +31,18 @@ export const useOrderFilterState = () => {
     dateFrom: stringField("from"),
     dateTo: stringField("to"),
     selectedVerticals: arrayField("verticals"),
+    viewMode: {
+      param: "view",
+      defaultValue: "ORDERS" as OrderViewMode,
+      parse: (raw) => raw as OrderViewMode,
+      serialize: (v: OrderViewMode) => (v !== "ORDERS" ? v : null),
+    },
   })
 
   const { fromDateIso, toDateIso } = useMemo(
     () => toIsoDateRange(values.dateFrom, values.dateTo),
     [values.dateFrom, values.dateTo],
-  );
-
+  )
 
   return {
     tab: values.tab, setTab: setters.tab,
@@ -44,7 +51,8 @@ export const useOrderFilterState = () => {
     dateTo: values.dateTo, setDateTo: setters.dateTo,
     fromDateIso, toDateIso,
     selectedVerticals: values.selectedVerticals, setSelectedVerticals: setters.selectedVerticals,
+    viewMode: values.viewMode, setViewMode: setters.viewMode,
     clearAll,
-    clearFields
+    clearFields,
   }
 }

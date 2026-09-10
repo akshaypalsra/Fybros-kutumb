@@ -10,6 +10,8 @@ import OrderDetailPage from "@/pages/order/OrderDetailPage";
 import OrderItemDetailPage from "@/pages/order/OrderItemDetailPage";
 import InvoicesPage from "@/pages/invoice/InvoicesPage";
 import InvoiceDetailPage from "@/pages/invoice/InvoiceDetailPage";
+import PendingItemDetailPage from "@/pages/order/components/pending-item/PendingItemDetailPage";
+
 
 const router = createBrowserRouter([
     {
@@ -35,6 +37,10 @@ const router = createBrowserRouter([
             {
                 path: "orders/:orderId",
                 element: <OrderDetailPage />,
+            },
+            {
+                path: "orders/pending-items/:itemCode",
+                element: <PendingItemDetailPage />,
             },
             {
                 path: "orders/:orderId/items/:orderItemId",

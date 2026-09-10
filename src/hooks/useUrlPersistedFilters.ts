@@ -21,26 +21,32 @@ export function useUrlPersistedFilters<C extends FieldsConfig>(
   const [searchParams, setSearchParams] = useSearchParams()
   const fieldsRef = useRef(fields)
   fieldsRef.current = fields
-  useEffect(() => {
-    if (searchParams.toString()) return
-    let stored: Record<string, string> = {}
-    try {
-      const raw = window.localStorage.getItem(storageKey)
-      stored = raw ? JSON.parse(raw) : {}
-    } catch {
-      return
-    }
-    if (Object.keys(stored).length === 0) return
+  
 
-    const next = new URLSearchParams()
-    for (const key of Object.keys(fieldsRef.current)) {
-      const config = fieldsRef.current[key]
-      const rawValue = stored[config.param]
-      if (rawValue) next.set(config.param, rawValue)
+  useEffect(() => {
+  let stored: Record<string, string> = {}
+  try {
+    const raw = window.localStorage.getItem(storageKey)
+    stored = raw ? JSON.parse(raw) : {}
+  } catch {
+    return
+  }
+  if (Object.keys(stored).length === 0) return
+
+  const next = new URLSearchParams(searchParams)  // ← start from current URL params
+  let changed = false
+
+  for (const key of Object.keys(fieldsRef.current)) {
+    const config = fieldsRef.current[key]
+    const rawValue = stored[config.param]
+    if (rawValue && !next.has(config.param)) {
+      next.set(config.param, rawValue)
+      changed = true
     }
-    setSearchParams(next, { replace: true })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }
+
+  if (changed) setSearchParams(next, { replace: true })
+}, [])
 
   const values = useMemo(() => {
     const result = {} as ValuesOf<C>

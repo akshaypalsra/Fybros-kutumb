@@ -1,23 +1,32 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useInfiniteScrollTrigger = (onIntersect: () => void, enabled: boolean) => {
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const [node, setNode] = useState<HTMLDivElement | null>(null);
+  const onIntersectRef = useRef(onIntersect);
+  const enabledRef = useRef(enabled);
+
+  onIntersectRef.current = onIntersect;
+  enabledRef.current = enabled;
+
+  const sentinelRef = useCallback((el: HTMLDivElement | null) => {
+    setNode(el);
+  }, []);
 
   useEffect(() => {
-    if (!enabled) return;
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
+    if (!node) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) onIntersect();
+        if (entry.isIntersecting && enabledRef.current) {
+          onIntersectRef.current();
+        }
       },
       { rootMargin: "200px" },
     );
 
-    observer.observe(sentinel);
+    observer.observe(node);
     return () => observer.disconnect();
-  }, [onIntersect, enabled]);
+  }, [node]); // re-runs only when the actual DOM node changes (mounts/unmounts)
 
   return sentinelRef;
 };

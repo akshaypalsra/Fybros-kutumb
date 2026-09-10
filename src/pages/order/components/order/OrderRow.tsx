@@ -31,7 +31,7 @@ export const OrderRow = ({ order }: OrderRowProps) => {
           <p className="mt-0.5 text-[11px] text-muted-foreground">
             {formatDate(order.docDate)} &middot; {order.totalQuantity} Items
           </p>
-          
+
         </div>
       </div>
 
@@ -53,8 +53,8 @@ export const OrderRow = ({ order }: OrderRowProps) => {
           <StatusBadge status={order.orderDeliveryStatus} className="font-light" />
         </div>
         <div className="flex flex-col mt-1 gap-1.5">
-            <StatusBadge status={order.orderType}  className="font-light uppercase" />
-          </div>
+          <StatusBadge status={order.orderType} className="font-light uppercase" />
+        </div>
       </div>
     </Link>
   );

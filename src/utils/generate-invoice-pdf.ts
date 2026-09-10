@@ -157,12 +157,11 @@ export const generateInvoicePdf = (invoice: Invoice): void => {
     y += 10;
   }
 
-  // ---- Section: Compliance ----
-  if (invoice.edocNo || invoice.ewayBillNumber) {
+  if (invoice.edocNo || invoice.eWayBillNumber) {
     sectionTitle("Compliance");
     const rows: [string, string][] = [];
     if (invoice.edocNo) rows.push(["E-Doc No", invoice.edocNo]);
-    if (invoice.ewayBillNumber) rows.push(["E-Way Bill No", invoice.ewayBillNumber]);
+    if (invoice.eWayBillNumber) rows.push(["E-Way Bill No", invoice.eWayBillNumber]);
 
     rows.forEach(([labelText, value]) => {
       doc.setFont("helvetica", "bold");

@@ -47,7 +47,7 @@ export interface OrderValue {
 
 
 export type TabFilter = "ALL" | "OPEN" | "CLOSED";
-
+export type OrderViewMode = "ORDERS" | "PENDING_ITEMS";
 
 
 export interface OrderItem {
