@@ -7,8 +7,8 @@ import { Button } from "@/common/components/ui/button";
 import type { PendingItemOrderDetail } from "@/types/pending-item.types";
 import { QueryState } from "@/wrapper/QueryState";
 import { usePendingItemDetails } from "../../hooks/usePendingItemDetails";
-import { OrdersListSkeleton } from "../order/OrdersListSkeleton";
 import { PendingItemOrderRow } from "./PendingItemOrderRow";
+import PendingItemDetailSkeleton from "./PendingItemDetailSkeleton";
 
 
 const PendingItemDetailPage = () => {
@@ -64,7 +64,7 @@ const PendingItemDetailPage = () => {
                 isLoading={isLoading}
                 isError={isError}
                 data={orders}
-                loading={<OrdersListSkeleton rows={5} />}
+                loading={<PendingItemDetailSkeleton rows={5} />}
                 isEmpty={(data) => data.length === 0}
                 error={<ErrorState message="Failed to load order details. Please try again." />}
                 empty={<EmptyState message="No orders found for this item." />}
