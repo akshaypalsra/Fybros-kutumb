@@ -1,0 +1,11 @@
+{
+    "version": "1.1.0",
+    "notes": "Bug fixes and improvements",
+    "pub_date": "2026-09-11T00:00:00Z",
+    "platforms": {
+        "darwin-aarch64": {
+            "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUR0w5a21sZ3ViaFAyWXRhUlVWQ1pDZDBLNkE3ZDNkcDAvS3IxbEpNZ3RRdmgvaFRQeGFidGVUYnlVaVllM1ZYNG1ieVBNVkYvTCthUG8rdkRJL2o3Rkp0ekZtVktPc3dvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzg5MTE2OTU0CWZpbGU6Znlicm9zLWt1dHVtYi13ZWItYXBwLmFwcC50YXIuZ3oKTi9xcStabEVRSi9WT3pjN1EwejhiUEEzN055dWE4ZERsQnpIbjJadWZMdWE4dHQ0WWhoSUR1eW5uWElFQTlqVHI1dDYyZzBNN1FFdDJvNDhoMHpsQnc9PQo=",
+            "url": "https://kutumb.carvia-test.org/updates/releases/1.1.0/fybros-kutumb-web-app.app.tar.gz"
+        }
+    }
+}

@@ -26,6 +26,7 @@
     "bundle": {
         "active": true,
         "targets": "all",
+        "createUpdaterArtifacts": true,
         "icon": [
             "icons/32x32.png",
             "icons/128x128.png",
@@ -37,9 +38,16 @@
             "debugApplicationIdSuffix": ".debug"
         },
         "macOS": {
-            "signingIdentity": "Developer ID Application: Munish Chandel (39MQ5QH6QY)",
             "entitlements": null,
             "exceptionDomain": null
+        }
+    },
+    "plugins": {
+        "updater": {
+            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDg0OUIwQjk2MjZEOTJGQzYKUldUR0w5a21sZ3ViaEYxNU5JUmNJeXdpUDdoZmpzTHZiMHNxQ3RHSzlObFVYanRtTmtQWDI0cDMK",
+            "endpoints": [
+                "https://kutumb.carvia-test.org/updates/latest.json"
+            ]
         }
     }
 }
