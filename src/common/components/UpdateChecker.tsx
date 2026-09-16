@@ -19,7 +19,7 @@ type UpdateState =
   | { phase: "installing" }
   | { phase: "error"; message: string };
 
-const MANIFEST_URL = "https://your-host/latest.json"; // ← replace with your real manifest URL
+const MANIFEST_URL = "https://github.com/akshaypalsra/Fybros-kutumb/releases/latest/download/latest.json";
 
 export function UpdateChecker() {
   const [state, setState] = useState<UpdateState>({ phase: "idle" });
@@ -71,7 +71,7 @@ export function UpdateChecker() {
         >
           <span className="flex items-center gap-2">
             <RefreshCw className="h-3.5 w-3.5" />
-            <span className="text-xs">Check for updates</span>
+      <span className="text-xs">Check for updates</span>
           </span>
           {currentVersion && (
             <span className="text-[10px] tabular-nums text-muted-foreground/70">
