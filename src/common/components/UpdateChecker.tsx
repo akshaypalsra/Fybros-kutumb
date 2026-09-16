@@ -55,8 +55,6 @@ export function UpdateChecker() {
     setState({ phase: "installing" });
     try {
       await invoke("install_update_manual", { downloadUrl: update.url });
-      // app restarts automatically inside the Rust command (app_handle.restart())
-      // execution won't reach here on success since the process exits
     } catch (e) {
       setState({ phase: "error", message: e instanceof Error ? e.message : String(e) });
     }

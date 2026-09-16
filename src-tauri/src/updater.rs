@@ -1,6 +1,7 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 use serde::{Deserialize, Serialize};
+use semver::Version;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateManifest {
@@ -38,8 +39,13 @@ pub async fn check_for_updates_manual(
         .await
         .map_err(|e| format!("Failed to parse manifest: {e}"))?;
 
-    if raw.version == current_version {
-        return Ok(None); // already up to date
+    let current = Version::parse(&current_version)
+        .map_err(|e| format!("Invalid current version '{current_version}': {e}"))?;
+    let latest = Version::parse(&raw.version)
+        .map_err(|e| format!("Invalid manifest version '{}': {e}", raw.version))?;
+
+    if latest <= current {
+        return Ok(None); // already up to date (or manifest is older/same)
     }
 
     let platform_key = if cfg!(target_arch = "aarch64") {
