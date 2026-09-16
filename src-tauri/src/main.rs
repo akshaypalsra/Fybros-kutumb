@@ -1,5 +1,11 @@
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+mod updater;
 
 fn main() {
-  app_lib::run();
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![
+            updater::check_for_updates_manual,
+            updater::install_update_manual
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }

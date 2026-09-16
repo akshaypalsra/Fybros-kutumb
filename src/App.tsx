@@ -6,7 +6,6 @@ import { authConfig } from "./auth/config/authConfig"
 import { isTauri } from "@tauri-apps/api/core"
 import { AxiosTauriAuthBinding } from "./axios/AxiosTauriAuthBinding"
 
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

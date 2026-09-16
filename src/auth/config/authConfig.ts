@@ -25,5 +25,5 @@ export const oidcSettingsDesktop = {
     deviceAuthorizationUrl: CONSTANTS.TAURI_SSO_DEVICE_LOGIN_URL,
     tokenUrl: CONSTANTS.TAURI_SSO_TOKEN_URL,
     client_id: CONSTANTS.SSO_DESKTOP_CLIENT_ID,
-    scope: "profile",
+    scope: "profile email",
 } as const;
