@@ -54,6 +54,12 @@ export function UpdateChecker() {
     }
   }
 
+
+  useEffect(() => {
+    handleCheck();
+  }, []);
+
+
   async function handleInstall(update: UpdateManifest) {
     setState({ phase: "installing" });
     try {
@@ -68,17 +74,17 @@ export function UpdateChecker() {
     await invoke("restart_app");
   }
 
-useEffect(() => {
-  const unlisten = listen<UpdateManifest>("update-available", (event) => {
-    setState((prev) => {
-      if (prev.phase === "installing" || prev.phase === "installed") {
-        return prev; // don't interrupt an in-progress or completed install
-      }
-      return { phase: "available", update: event.payload };
+  useEffect(() => {
+    const unlisten = listen<UpdateManifest>("update-available", (event) => {
+      setState((prev) => {
+        if (prev.phase === "installing" || prev.phase === "installed") {
+          return prev; // don't interrupt an in-progress or completed install
+        }
+        return { phase: "available", update: event.payload };
+      });
     });
-  });
-  return () => { unlisten.then((fn) => fn()); };
-}, []);
+    return () => { unlisten.then((fn) => fn()); };
+  }, []);
 
 
   return (

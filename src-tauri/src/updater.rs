@@ -30,7 +30,7 @@ struct RawManifest {
 
 const MANIFEST_URL: &str =
     "https://github.com/akshaypalsra/Fybros-kutumb/releases/latest/download/latest.json";
-const CHECK_INTERVAL_SECS: u64 = 60 * 60; // check every hour
+const CHECK_INTERVAL_SECS: u64 = 30; // check every hour
 
 #[tauri::command]
 pub async fn check_for_updates_manual(
