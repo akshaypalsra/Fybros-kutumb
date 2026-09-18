@@ -46,12 +46,14 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      - name: Locate build artifact
+      - name: Locate build artifacts
         id: artifact
         run: |
           TARBALL=$(find src-tauri/target/universal-apple-darwin/release/bundle/macos -name "*.app.tar.gz")
+          DMG=$(find src-tauri/target/universal-apple-darwin/release/bundle/dmg -name "*.dmg")
           echo "TARBALL_PATH=$TARBALL" >> "$GITHUB_OUTPUT"
           echo "TARBALL_NAME=$(basename "$TARBALL")" >> "$GITHUB_OUTPUT"
+          echo "DMG_PATH=$DMG" >> "$GITHUB_OUTPUT"
 
       - name: Generate latest.json
         run: |
@@ -78,4 +80,5 @@ jobs:
           name: ${{ github.ref_name }}
           files: |
             ${{ steps.artifact.outputs.TARBALL_PATH }}
+            ${{ steps.artifact.outputs.DMG_PATH }}
             latest.json
