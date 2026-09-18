@@ -10,7 +10,8 @@ pub fn run() {
     .plugin(tauri_plugin_process::init())
     .invoke_handler(tauri::generate_handler![
       updater::check_for_updates_manual,
-      updater::install_update_manual
+      updater::install_update_manual,
+      updater::restart_app
     ])
     .setup(|app| {
       if cfg!(debug_assertions) {
@@ -20,6 +21,13 @@ pub fn run() {
             .build(),
         )?;
       }
+
+      let handle = app.handle().clone();
+      let current_version = app.package_info().version.to_string();
+      tauri::async_runtime::spawn(async move {
+        updater::start_auto_update_checker(handle, current_version).await;
+      });
+
       Ok(())
     })
     .run(tauri::generate_context!())

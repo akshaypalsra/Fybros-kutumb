@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { getVersion } from "@tauri-apps/api/app";
 import { Button } from "@/common/components/ui/button";
-import { Download, Loader2, RefreshCw, CheckCircle2, AlertCircle } from "lucide-react";
+import { Download, Loader2, RefreshCw, CheckCircle2, AlertCircle, RotateCw } from "lucide-react";
+import { listen } from "@tauri-apps/api/event";
+
 
 interface UpdateManifest {
   version: string;
@@ -17,6 +19,7 @@ type UpdateState =
   | { phase: "up-to-date" }
   | { phase: "available"; update: UpdateManifest }
   | { phase: "installing" }
+  | { phase: "installed"; version: string }
   | { phase: "error"; message: string };
 
 const MANIFEST_URL = "https://github.com/akshaypalsra/Fybros-kutumb/releases/latest/download/latest.json";
@@ -55,10 +58,28 @@ export function UpdateChecker() {
     setState({ phase: "installing" });
     try {
       await invoke("install_update_manual", { downloadUrl: update.url });
+      setState({ phase: "installed", version: update.version });
     } catch (e) {
       setState({ phase: "error", message: e instanceof Error ? e.message : String(e) });
     }
   }
+
+  async function handleRestart() {
+    await invoke("restart_app");
+  }
+
+useEffect(() => {
+  const unlisten = listen<UpdateManifest>("update-available", (event) => {
+    setState((prev) => {
+      if (prev.phase === "installing" || prev.phase === "installed") {
+        return prev; // don't interrupt an in-progress or completed install
+      }
+      return { phase: "available", update: event.payload };
+    });
+  });
+  return () => { unlisten.then((fn) => fn()); };
+}, []);
+
 
   return (
     <div className="border-t px-3 py-2.5 text-sm">
@@ -69,7 +90,7 @@ export function UpdateChecker() {
         >
           <span className="flex items-center gap-2">
             <RefreshCw className="h-3.5 w-3.5" />
-      <span className="text-xs">Update For Poc -Check for updates</span>
+            <span className="text-xs">Check for updates</span>
           </span>
           {currentVersion && (
             <span className="text-[10px] tabular-nums text-muted-foreground/70">
@@ -112,20 +133,14 @@ export function UpdateChecker() {
           <div className="flex items-start gap-2">
             <Download className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium leading-tight">
-                Update available
-              </p>
+              <p className="text-xs font-medium leading-tight">Update available</p>
               <p className="text-xs text-muted-foreground">
                 {currentVersion && `v${currentVersion} → `}v{state.update.version}
               </p>
             </div>
           </div>
-          <Button
-            size="sm"
-            className="h-7 w-full text-xs"
-            onClick={() => handleInstall(state.update)}
-          >
-            Install & restart
+          <Button size="sm" className="h-7 w-full text-xs" onClick={() => handleInstall(state.update)}>
+            Install update
           </Button>
         </div>
       )}
@@ -136,6 +151,24 @@ export function UpdateChecker() {
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
             <span className="text-xs">Installing update…</span>
           </span>
+        </div>
+      )}
+
+      {state.phase === "installed" && (
+        <div className="space-y-2 rounded-md bg-accent/50 p-2.5">
+          <div className="flex items-start gap-2">
+            <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium leading-tight">Update installed</p>
+              <p className="text-xs text-muted-foreground">
+                v{state.version} is ready — restart to apply
+              </p>
+            </div>
+          </div>
+          <Button size="sm" className="h-7 w-full text-xs" onClick={handleRestart}>
+            <RotateCw className="mr-1.5 h-3.5 w-3.5" />
+            Restart now
+          </Button>
         </div>
       )}
 

@@ -1,9 +1,12 @@
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::time::Duration;
 use serde::{Deserialize, Serialize};
 use semver::Version;
+use tauri::{AppHandle, Emitter};
 
-#[derive(Debug, Serialize, Deserialize)]
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UpdateManifest {
     pub version: String,
     pub notes: String,
@@ -25,6 +28,10 @@ struct RawManifest {
     platforms: std::collections::HashMap<String, PlatformEntry>,
 }
 
+const MANIFEST_URL: &str =
+    "https://github.com/akshaypalsra/Fybros-kutumb/releases/latest/download/latest.json";
+const CHECK_INTERVAL_SECS: u64 = 60 * 60; // check every hour
+
 #[tauri::command]
 pub async fn check_for_updates_manual(
     current_version: String,
@@ -45,7 +52,7 @@ pub async fn check_for_updates_manual(
         .map_err(|e| format!("Invalid manifest version '{}': {e}", raw.version))?;
 
     if latest <= current {
-        return Ok(None); // already up to date (or manifest is older/same)
+        return Ok(None);
     }
 
     let platform_key = if cfg!(target_arch = "aarch64") {
@@ -67,11 +74,11 @@ pub async fn check_for_updates_manual(
     }))
 }
 
+/// Downloads, extracts, and installs the update — but does NOT restart the app.
+/// Call `restart_app` separately once the user confirms.
 #[tauri::command]
-pub async fn install_update_manual(app_handle: tauri::AppHandle, download_url: String) -> Result<(), String> {
-    // 1. Find current .app bundle path
+pub async fn install_update_manual(download_url: String) -> Result<(), String> {
     let current_exe = std::env::current_exe().map_err(|e| e.to_string())?;
-    // current_exe is .../YourApp.app/Contents/MacOS/YourApp — walk up to the .app folder
     let app_bundle_path = current_exe
         .parent().and_then(|p| p.parent()).and_then(|p| p.parent())
         .ok_or("Could not resolve .app bundle path")?
@@ -82,20 +89,17 @@ pub async fn install_update_manual(app_handle: tauri::AppHandle, download_url: S
         .ok_or("Could not resolve parent directory")?
         .to_path_buf();
 
-    // 2. Create temp dir INSIDE the same parent as the app (guarantees same volume)
     let temp_dir = parent_dir.join(".update_staging_tmp");
     if temp_dir.exists() {
         fs::remove_dir_all(&temp_dir).ok();
     }
     fs::create_dir_all(&temp_dir).map_err(|e| e.to_string())?;
 
-    // 3. Download the .tar.gz
     let archive_path = temp_dir.join("update.tar.gz");
     let resp = reqwest::get(&download_url).await.map_err(|e| e.to_string())?;
     let bytes = resp.bytes().await.map_err(|e| e.to_string())?;
     fs::write(&archive_path, &bytes).map_err(|e| e.to_string())?;
 
-    // 4. Extract it (same volume, so this is fast/local)
     let extract_dir = temp_dir.join("extracted");
     fs::create_dir_all(&extract_dir).map_err(|e| e.to_string())?;
     let tar_gz = fs::File::open(&archive_path).map_err(|e| e.to_string())?;
@@ -103,20 +107,23 @@ pub async fn install_update_manual(app_handle: tauri::AppHandle, download_url: S
     let mut archive = tar::Archive::new(tar);
     archive.unpack(&extract_dir).map_err(|e| e.to_string())?;
 
-    // 5. Find the extracted .app bundle
     let extracted_app = find_app_bundle(&extract_dir)
         .ok_or("Could not find .app bundle in extracted update")?;
 
-    // 6. Swap: remove old, move new into place.
-    //    Since extracted_app and app_bundle_path share the same parent volume,
-    //    fs::rename works fine here — no EXDEV.
     fs::remove_dir_all(&app_bundle_path).map_err(|e| e.to_string())?;
     fs::rename(&extracted_app, &app_bundle_path).map_err(|e| e.to_string())?;
 
-    // 7. Clean up
     fs::remove_dir_all(&temp_dir).ok();
 
-    // 8. Relaunch
+    // No restart here — installation is done, app is updated on disk,
+    // but the currently-running process keeps running the OLD code in memory
+    // until the user explicitly restarts.
+    Ok(())
+}
+
+/// Called separately once the user clicks "Restart" in the UI.
+#[tauri::command]
+pub fn restart_app(app_handle: tauri::AppHandle) {
     app_handle.restart();
 }
 
@@ -134,4 +141,35 @@ fn find_app_bundle(dir: &Path) -> Option<PathBuf> {
         }
     }
     None
+}
+
+// ---------- Auto update checker ----------
+
+/// Runs a check on launch, then repeats every `CHECK_INTERVAL_SECS`.
+/// Emits an "update-available" event to the frontend when a newer version is found.
+pub async fn start_auto_update_checker(app: AppHandle, current_version: String) {
+    check_and_emit(&app, &current_version).await;
+
+    let mut interval = tokio::time::interval(Duration::from_secs(CHECK_INTERVAL_SECS));
+    interval.tick().await; // skip the immediate first tick, we already checked above
+
+    loop {
+        interval.tick().await;
+        check_and_emit(&app, &current_version).await;
+    }
+}
+
+async fn check_and_emit(app: &AppHandle, current_version: &str) {
+    match check_for_updates_manual(current_version.to_string(), MANIFEST_URL.to_string()).await {
+        Ok(Some(manifest)) => {
+            log::info!("Update available: {}", manifest.version);
+            let _ = app.emit("update-available", manifest);
+        }
+        Ok(None) => {
+            log::info!("No update available");
+        }
+        Err(e) => {
+            log::error!("Auto update check failed: {e}");
+        }
+    }
 }
