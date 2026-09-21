@@ -96,7 +96,7 @@ export function UpdateChecker() {
         >
           <span className="flex items-center gap-2">
             <RefreshCw className="h-3.5 w-3.5" />
-            <span className="text-xs">Check for updates</span>
+            <span className="text-xs">Check for updates - test</span>
           </span>
           {currentVersion && (
             <span className="text-[10px] tabular-nums text-muted-foreground/70">
