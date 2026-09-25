@@ -15,8 +15,9 @@ import { useVerticals } from "@/hooks/useVerticals";
 import { getSearchPlaceholder } from "@/utils/financeTabs.utils";
 import { useListFiltersState } from "../../hooks/useListFiltersState";
 import InvoiceRowSkeleton from "./InvoiceRowSkeleton";
-import InvoiceDetailPanelSkeleton from "./InvoiceDetailPanelSkeleton";
+
 import { Skeleton } from "@/common/components/ui/skeleton";
+import InvoiceDetailPanelSkeleton from "./InvoiceDetailPanelSkeleton";
 // import { FinanceSection } from "@/pages/home/components/FinanceSection";
 // import { useHomeData } from "@/pages/home/hooks/useHomeData";
 
@@ -29,7 +30,7 @@ interface InvoicesTabProps {
 export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTabProps) => {
   const { verticals } = useVerticals();
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
-// const { outstandingSummary } = useHomeData({ salesRange: "QoQ" });
+  // const { outstandingSummary } = useHomeData({ salesRange: "QoQ" });
 
   const {
     counts,
@@ -57,33 +58,33 @@ export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTab
     !!hasNextPage && !isFetchingNextPage,
   );
 
-const handleInvoiceClick = (invoice: Invoice) => {
-  setSelectedInvoice(invoice);
-};
+  const handleInvoiceClick = (invoice: Invoice) => {
+    setSelectedInvoice(invoice);
+  };
 
   useEffect(() => {
-  if (isLoading) return;
+    if (isLoading) return;
 
-  if (!hasResults) {
-    setSelectedInvoice(null);
-    return;
-  }
+    if (!hasResults) {
+      setSelectedInvoice(null);
+      return;
+    }
 
-  const firstInvoice = invoicesByMonth[0]?.[1]?.[0];
-  if (!firstInvoice) return;
+    const firstInvoice = invoicesByMonth[0]?.[1]?.[0];
+    if (!firstInvoice) return;
 
-  const selectionStillValid = invoicesByMonth.some(([, monthInvoices]) =>
-    monthInvoices.some((inv) => inv.docEntry === selectedInvoice?.docEntry),
-  );
+    const selectionStillValid = invoicesByMonth.some(([, monthInvoices]) =>
+      monthInvoices.some((inv) => inv.docEntry === selectedInvoice?.docEntry),
+    );
 
-  if (!selectedInvoice || !selectionStillValid) {
-    setSelectedInvoice(firstInvoice);
-  }
-}, [invoicesByMonth, isLoading, hasResults]);
+    if (!selectedInvoice || !selectionStillValid) {
+      setSelectedInvoice(firstInvoice);
+    }
+  }, [invoicesByMonth, isLoading, hasResults]);
 
   return (
     <>
-       {/* <FinanceSection
+      {/* <FinanceSection
           outstandingInvoiceAmount={dashboardStats?.outstandingInvoiceAmount}
           overdueInvoiceAmount={dashboardStats?.overdueInvoiceAmount}
           pendingOrderAmount={dashboardStats?.pendingOrderAmount}
@@ -115,25 +116,32 @@ const handleInvoiceClick = (invoice: Invoice) => {
         />
       </div>
 
-      <div className="flex gap-6">
-        <div className="w-[60%]">
-          <QueryState<[string, Invoice[]][]>
-            isLoading={isLoading}
-            isError={isError}
-            data={invoicesByMonth}
-            loading={
-              <div className="space-y-3">
-                <Skeleton className="h-4 w-28 rounded-md border border-border bg-card " />
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <InvoiceRowSkeleton key={i} />
-                ))}
-              </div>
-            }
-            error={<ErrorState message="Failed to load invoices." />}
-            isEmpty={() => !hasResults}
-            empty={<EmptyState message="No invoices match your filters." />}
-          >
-            {(invoicesByMonth) => (
+
+
+      <QueryState<[string, Invoice[]][]>
+        isLoading={isLoading}
+        isError={isError}
+        data={invoicesByMonth}
+        loading={
+          <div className="flex gap-6">
+            <div className="w-[60%] space-y-3">
+              <Skeleton className="h-4 w-28 rounded-md border border-border bg-card " />
+              {Array.from({ length: 6 }).map((_, i) => (
+                <InvoiceRowSkeleton key={i} />
+              ))}
+            </div>
+            <div className="w-[40%]">
+              <InvoiceDetailPanelSkeleton />
+            </div>
+          </div>
+        }
+        error={<ErrorState message="Failed to load invoices." />}
+        isEmpty={() => !hasResults}
+        empty={<EmptyState message="No invoices match your filters." />}
+      >
+        {(invoicesByMonth) => (
+          <div className="flex gap-6">
+            <div className="w-[60%]">
               <div className="space-y-6">
                 {invoicesByMonth.map(([month, monthInvoices]) => (
                   <InvoiceMonthGroup
@@ -154,22 +162,20 @@ const handleInvoiceClick = (invoice: Invoice) => {
                   </div>
                 )}
               </div>
-            )}
-          </QueryState>
-        </div>
-
-        {isLoading ? (
-          <div className="w-[40%]">
-            <InvoiceDetailPanelSkeleton />
-          </div>
-        ) : (
-          selectedInvoice && (
-            <div className="w-[40%]">
-              <InvoiceDetailPanel invoice={selectedInvoice} />
             </div>
-          )
+
+            {selectedInvoice && (
+              <div className="w-[40%]">
+                <InvoiceDetailPanel invoice={selectedInvoice} />
+              </div>
+            )}
+          </div>
         )}
-      </div>
+      </QueryState>
+
+
+
+
     </>
   );
 };

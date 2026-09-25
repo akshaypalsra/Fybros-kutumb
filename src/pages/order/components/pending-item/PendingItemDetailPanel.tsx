@@ -12,8 +12,8 @@ export const PendingItemDetailPanel = ({ item }: PendingItemDetailPanelProps) =>
 
   return (
     <div className="sticky top-20 rounded-md border border-border bg-card">
-      <div className="flex justify-between">
-        <div className="flex flex-col border-b border-border p-5">
+      <div className="flex justify-between  border-b border-border">
+        <div className="flex flex-col p-5">
           <div className="font-heading text-md text-secondary">Item Details</div>
           <div className="text-xs">{item.itemCode}</div>
         </div>
@@ -31,7 +31,11 @@ export const PendingItemDetailPanel = ({ item }: PendingItemDetailPanelProps) =>
       <div className="flex flex-col gap-4 border-b border-border p-5">
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Description</span>
-          <span className="text-right">{item.itemDescription}</span>
+          <span className="mt-0.5 text-sm text-muted-foreground">
+            {item.itemDescription.length > 30
+              ? `${item.itemDescription.slice(0, 30)}...`
+              : item.itemDescription}
+          </span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Vertical</span>
@@ -53,7 +57,7 @@ export const PendingItemDetailPanel = ({ item }: PendingItemDetailPanelProps) =>
         </div>
       </div>
 
-    
+
     </div>
   );
 };

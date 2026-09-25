@@ -56,15 +56,15 @@ export const PendingItemsTab = ({ query, dateFrom, dateTo, selectedVerticals }: 
       isError={isError}
       data={pendingItems}
       loading={
-  <div className="flex gap-6">
-    <div className="w-[60%]">
-      <OrdersListSkeleton rows={5} />
-    </div>
-    <div className="w-[40%]">
-      <PendingItemDetailPanelSkeleton />
-    </div>
-  </div>
-}
+        <div className="flex gap-6">
+          <div className="w-[60%]">
+            <OrdersListSkeleton rows={5} />
+          </div>
+          <div className="w-[40%]">
+            <PendingItemDetailPanelSkeleton />
+          </div>
+        </div>
+      }
       error={<ErrorState message="Failed to load pending items. Please try again." />}
       isEmpty={(data) => data.length === 0}
       empty={<EmptyState message="No pending items match with filters." />}

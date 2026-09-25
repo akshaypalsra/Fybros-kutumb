@@ -1,14 +1,13 @@
-import { ArrowLeft, Download } from "lucide-react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import type { PendingItem } from "@/types/pending-item.types";
 import { ErrorState } from "@/common/components/ErrorState";
 import { EmptyState } from "@/common/components/EmptyState";
-import { Button } from "@/common/components/ui/button";
 import type { PendingItemOrderDetail } from "@/types/pending-item.types";
 import { QueryState } from "@/wrapper/QueryState";
 import { usePendingItemDetails } from "../../hooks/usePendingItemDetails";
 import { PendingItemOrderRow } from "./PendingItemOrderRow";
 import PendingItemDetailSkeleton from "./PendingItemDetailSkeleton";
+import { DetailPageHeader } from "@/common/components/DetailPageHeader";
 
 
 const PendingItemDetailPage = () => {
@@ -17,37 +16,25 @@ const PendingItemDetailPage = () => {
     const location = useLocation();
 
     const item: PendingItem = (location.state as { item?: PendingItem } | null)?.item ?? {
-    itemCode,
-    itemDescription: "",
-    pendingQuantity: 0,
-    orderCount: 0,
-    vertical: "",
-    pendingOrderValue: 0,
-    measureUnit: "",
-};
+        itemCode,
+        itemDescription: "",
+        pendingQuantity: 0,
+        orderCount: 0,
+        vertical: "",
+        pendingOrderValue: 0,
+        measureUnit: "",
+    };
 
     const { orders, isLoading, isError } = usePendingItemDetails(itemCode);
 
     return (
         <div >
-            <div className="mb-6 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => navigate(-1)}
-                    >
-                        <ArrowLeft className="h-4 w-4" />
-                    </Button>
-                    <h1 className="text-lg font-semibold text-foreground">Item Detail</h1>
-                </div>
+            <DetailPageHeader
+                title="Pending Item Detail"
+                subtitle={itemCode}
+                onBack={() => navigate(-1)}
 
-                <Button type="button" className="gap-2 rounded-md cursor-pointer bg-secondary text-white hover:bg-secondary/90">
-                    <Download className="h-4 w-4" />
-                    Download
-                </Button>
-            </div>
+            />
 
             <div className="mb-6 rounded-lg bg-secondary p-6 text-white">
                 <div className="flex items-start justify-between gap-4">
@@ -73,31 +60,31 @@ const PendingItemDetailPage = () => {
             >
                 {() => (
                     <div className="overflow-hidden rounded-lg border border-border">
-                     <div className="overflow-hidden rounded-lg border border-border">
-    <table className="w-full border-collapse">
-        <thead>
-            <tr className="bg-muted/50">
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground">
-                    Sales order
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground">
-                    Date
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground">
-                    Total
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground">
-                    Pending
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {orders.map((order, index) => (
-                <PendingItemOrderRow key={`${order.orderNumber}-${index}`} order={order} />
-            ))}
-        </tbody>
-    </table>
-</div>
+                        <div className="overflow-hidden rounded-lg border border-border">
+                            <table className="w-full border-collapse">
+                                <thead>
+                                    <tr className="bg-muted/50">
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground">
+                                            Sales order
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground">
+                                            Date
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground">
+                                            Total
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground">
+                                            Pending
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {orders.map((order, index) => (
+                                        <PendingItemOrderRow key={`${order.orderNumber}-${index}`} order={order} />
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 )}
             </QueryState>

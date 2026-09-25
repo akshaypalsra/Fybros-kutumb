@@ -18,7 +18,7 @@ export const AgeingBar = ({ buckets }: { buckets: AgeingBucketResponse[] }) => {
           />
         ))}
       </div>
-      <div className="mt-4 grid grid-cols-2 gap-y-3 sm:grid-cols-4">
+      <div className="mt-4 grid grid-cols-2 gap-y-3 sm:grid-cols-5">
         {buckets.map((b) => (
           <div key={b.ageingBucket} className="flex items-center gap-2">
             <span
