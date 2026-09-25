@@ -94,5 +94,14 @@ export interface InvoiceAnalyticsYear {
 }
 
 
+export const downloadInvoicePdf = async (
+  axiosInstance: AxiosInstance,
+  docEntry: string
+): Promise<Blob> => {
+  const response = await axiosInstance.get(`/invoices/${docEntry}/pdf/download`, {
+    responseType: "blob",
+  });
 
+  return response.data;
+};
 

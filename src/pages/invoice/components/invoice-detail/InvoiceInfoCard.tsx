@@ -6,7 +6,6 @@ import { Heading } from "@/common/components/Heading"
 import { Link } from "react-router-dom"
 
 export const InvoiceInfoCard = ({ invoice }: { invoice: Invoice }) => (
-  console.log(invoice),
   <div className="rounded-md bg-card p-5 border">
     <Heading title={'Invoice Details'} />
     <div className="grid grid-cols-2 border rounded-md bg-muted p-5  gap-x-6 gap-y-4 sm:grid-cols-3">

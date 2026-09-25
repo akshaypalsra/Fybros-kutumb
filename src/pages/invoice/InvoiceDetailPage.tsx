@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { useInvoiceApi } from "@/api/invoice/useInvoiceApi";
@@ -8,7 +9,6 @@ import { InvoiceDetailSkeleton } from "./components/invoice-detail/InvoiceDetail
 import { InvoiceDetailError } from "./components/invoice-detail/InvoiceDetailError";
 import { DetailPageHeader } from "@/common/components/DetailPageHeader";
 import { QueryState } from "@/wrapper/QueryState";
-import { generateInvoicePdf } from "@/utils/generate-invoice-pdf";
 import { InvoiceItemsTable } from "./components/invoice-detail/InvoiceItem";
 import PaymentTimeline from "./components/invoice/PaymentTimeline";
 import TaxSummary from "./components/invoice/TaxSummary";
@@ -18,7 +18,8 @@ import InvoiceTaxDetails from "./components/invoice/InvoiceTaxDetails";
 const InvoiceDetailPage = () => {
   const navigate = useNavigate();
   const { invoiceId = "" } = useParams<{ invoiceId: string }>();
-  const { getInvoice } = useInvoiceApi();
+  const { getInvoice, downloadInvoicePdf } = useInvoiceApi();
+  const [isPreviewLoading, setIsPreviewLoading] = useState(false);
 
   const {
     data: invoice,
@@ -29,6 +30,18 @@ const InvoiceDetailPage = () => {
     queryFn: () => getInvoice(invoiceId),
     enabled: !!invoiceId,
   });
+
+  const handleDownload = async (invoice: Invoice) => {
+    setIsPreviewLoading(true);
+    try {
+      const blob = await downloadInvoicePdf(String(invoice.docEntry));
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, "_blank");
+      setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+    } finally {
+      setIsPreviewLoading(false);
+    }
+  };
 
   return (
     <QueryState<Invoice>
@@ -43,7 +56,8 @@ const InvoiceDetailPage = () => {
           <DetailPageHeader
             title={`Invoice ${invoice.invoiceNumber ?? invoice.docEntry}`}
             onBack={() => navigate(-1)}
-            onDownload={() => generateInvoicePdf(invoice)}
+            onDownload={() => handleDownload(invoice)}
+            isDownloading={isPreviewLoading}
           />
 
 
@@ -54,7 +68,6 @@ const InvoiceDetailPage = () => {
             <div className="space-y-5 lg:col-span-3">
               <InvoiceInfoCard invoice={invoice} />
               <InvoiceItemsTable invoiceId={invoiceId} />
-
             </div>
 
             <div className="space-y-5 lg:col-span-2">

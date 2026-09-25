@@ -11,9 +11,9 @@ interface InvoiceDetailPanelProps {
 export const InvoiceDetailPanel = ({ invoice }: InvoiceDetailPanelProps) => {
     if (!invoice) return null;
     return (
-        <div className="sticky top-20 rounded-md border border-border bg-card mt-7.75 ">
-            <div className="flex justify-between">
-                <div className=" flex flex-col  border-b border-border  p-5 ">
+        <div className="sticky top-20 p-2 space-y-2 rounded-md border border-border bg-card mt-7.75 ">
+            <div className="flex justify-between   border-b border-border">
+                <div className=" flex flex-col  p-5 ">
                     <div className="font-heading text-md text-secondary">Invoice Details</div>
                     <div className="text-xs ">{invoice.invoiceNumber}</div>
                 </div>
@@ -27,9 +27,9 @@ export const InvoiceDetailPanel = ({ invoice }: InvoiceDetailPanelProps) => {
                 </Link>
             </div>
 
-            <InvoiceInfoCard invoice={invoice} />
+            <InvoiceInfoCard  invoice={invoice} />
             <TaxSummary
-                className="pt-0"
+        
                 taxableValue={37984}
                 gst={6837}
                 roundOff={-0.12}

@@ -33,7 +33,7 @@ export function DetailField({
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
-      <p className={cn("text-sm font-normal text-foreground", valueClassName)}>{value ?? "—"}</p>
+      <div className={cn("text-sm font-normal text-foreground", valueClassName)}>{value ?? "—"}</div>
     </div>
   );
 }

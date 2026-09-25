@@ -17,12 +17,14 @@ const PendingItemDetailPage = () => {
     const location = useLocation();
 
     const item: PendingItem = (location.state as { item?: PendingItem } | null)?.item ?? {
-        itemCode,
-        itemDescription: "",
-        pendingQuantity: 0,
-        orderCount: 0,
-        vertical: "",
-    };
+    itemCode,
+    itemDescription: "",
+    pendingQuantity: 0,
+    orderCount: 0,
+    vertical: "",
+    pendingOrderValue: 0,
+    measureUnit: "",
+};
 
     const { orders, isLoading, isError } = usePendingItemDetails(itemCode);
 

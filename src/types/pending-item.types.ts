@@ -1,12 +1,12 @@
 export interface PendingItem {
-    itemCode: string;
-    itemDescription: string;
-    pendingQuantity: number;
-    orderCount: number;
-    vertical: string;
-    pendingOrderValue:string;
+  itemCode: string;
+  itemDescription: string;
+  pendingQuantity: number;
+  orderCount: number;
+  vertical: string;
+  pendingOrderValue: number;
+  measureUnit: string;
 }
-
 export interface SearchPendingItemsParams {
     page?: number;
     size?: number;

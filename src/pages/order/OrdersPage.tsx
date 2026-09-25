@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useOrdersData } from "./hooks/useOrdersData";
-import { usePendingItemsData } from "./hooks/usePendingItemsData";
 import { useOrderFilterState } from "./hooks/useOrderFilterState";
 import { useOrderFilters } from "./hooks/useOrderFilters";
 import { useOrderValue } from "./hooks/useOrderValue";
@@ -16,14 +15,14 @@ import { OrdersListSkeleton } from "./components/order/OrdersListSkeleton";
 import { useVerticals } from "@/hooks/useVerticals";
 import { useInfiniteScrollTrigger } from "@/hooks/useInfiniteScrollTrigger";
 import type { Order, OrderViewMode } from "@/types/order.types";
-import type { PendingItem } from "@/types/pending-item.types";
 import { QueryState } from "@/wrapper/QueryState";
 import { ErrorState } from "@/common/components/ErrorState";
 import { EmptyState } from "@/common/components/EmptyState";
 
-import { PendingItemsList } from "./components/pending-item/PendingItemsList";
 import { SegmentedControl } from "@/common/components/SegmentedControl";
-
+import { useEffect } from "react";
+import { PendingItemsTab } from "./components/pending-item/PendingItemsTab";
+import PendingItemDetailPanelSkeleton from "./components/pending-item/PendingItemDetailPanelSkeleton";
 
 
 const VIEW_MODE_TABS: { key: OrderViewMode; label: string }[] = [
@@ -48,7 +47,7 @@ const OrdersPage = () => {
     clearAll,
     clearFields,
     viewMode,
-   setViewMode,
+    setViewMode,
   } = useOrderFilterState();
 
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -66,15 +65,6 @@ const OrdersPage = () => {
     isFetchingNextPage,
   } = useOrdersData({ query, dateFrom, dateTo, selectedVerticals, tab });
 
-  const {
-    pendingItems,
-    isLoading: isPendingItemsLoading,
-    isError: isPendingItemsError,
-    fetchNextPage: fetchNextPendingItemsPage,
-    hasNextPage: hasNextPendingItemsPage,
-    isFetchingNextPage: isFetchingNextPendingItemsPage,
-  } = usePendingItemsData({ query, dateFrom, dateTo, selectedVerticals });
-
   const { verticals } = useVerticals();
   const { groupedByMonth } = useOrderFilters(orders);
   const { orderValue, isOrderValueLoading } = useOrderValue({
@@ -88,16 +78,9 @@ const OrdersPage = () => {
     tab,
   });
 
-  const activeFetchNextPage = isPendingItemsView ? fetchNextPendingItemsPage : fetchNextPage;
-  const activeHasNextPage = isPendingItemsView ? hasNextPendingItemsPage : hasNextPage;
-  const activeIsFetchingNextPage = isPendingItemsView
-    ? isFetchingNextPendingItemsPage
-    : isFetchingNextPage;
-  const activeIsLoading = isPendingItemsView ? isPendingItemsLoading : isLoading;
-
   const sentinelRef = useInfiniteScrollTrigger(
-    activeFetchNextPage,
-    !!activeHasNextPage && !activeIsFetchingNextPage && !activeIsLoading,
+    fetchNextPage,
+    !!hasNextPage && !isFetchingNextPage && !isLoading,
   );
 
   useEffect(() => {
@@ -154,29 +137,27 @@ const OrdersPage = () => {
       )}
 
       {isPendingItemsView ? (
-        <QueryState<PendingItem[]>
-          isLoading={isPendingItemsLoading}
-          isError={isPendingItemsError}
-          data={pendingItems}
-          loading={<OrdersListSkeleton rows={5} />}
-          error={<ErrorState message="Failed to load pending items. Please try again." />}
-          isEmpty={(data) => data.length === 0}
-          empty={<EmptyState message="No pending items match with filters." />}
-        >
-          {() => (
-            <>
-              <PendingItemsList items={pendingItems} />
-              <div ref={sentinelRef} className="h-1" />
-              {isFetchingNextPendingItemsPage && <OrdersListSkeleton rows={2} />}
-            </>
-          )}
-        </QueryState>
+        <PendingItemsTab
+          query={query}
+          dateFrom={dateFrom}
+          dateTo={dateTo}
+          selectedVerticals={selectedVerticals}
+        />
       ) : (
         <QueryState<Order[]>
           isLoading={isLoading}
           isError={isError}
           data={orders}
-          loading={<OrdersListSkeleton rows={5} />}
+          loading={
+            <div className="flex gap-6">
+              <div className="w-[60%]">
+                <OrdersListSkeleton rows={5} />
+              </div>
+              <div className="w-[40%]">
+                <PendingItemDetailPanelSkeleton />
+              </div>
+            </div>
+          }
           error={<ErrorState message="Failed to load orders. Please try again." />}
           isEmpty={(data) => data.length === 0}
           empty={<EmptyState message="No orders match with filters." />}

@@ -21,7 +21,7 @@ export const OrderRow = ({ order, isSelected, onClick }: OrderRowProps) => {
     <button
       type="button"
       onClick={() => onClick?.(order)}
-      className="block w-full appearance-none border-0 bg-transparent p-0 m-0 text-left font-inherit leading-normal"
+      className="block w-full cursor-pointer appearance-none border-0 bg-transparent p-0 m-0 text-left font-inherit leading-normal"
     >
       <div
         className={cn(
