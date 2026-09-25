@@ -19,10 +19,10 @@ export default function TaxSummary({
     className,
 }: TaxSummaryProps) {
     return (
-        <section className={cn("rounded-md bg-card p-5 text-card-foreground", className)}>
+        <section className={cn("rounded-md bg-card p-5 border text-card-foreground", className)}>
             <Heading title={'Tax Summary'} />
 
-            <div className="rounded-md bg-muted p-5">
+            <div className="rounded-md bg-muted p-5 border">
                 <div className="space-y-4">
                     <SummaryRow
                         label="Taxable value"

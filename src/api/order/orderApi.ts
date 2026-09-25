@@ -112,7 +112,7 @@ export const getPendingItemDetails = async (
     itemCode: string,
 ): Promise<PendingItemOrderDetail[]> => {
     const response = await axiosInstance.get<PendingItemOrderDetail[]>(
-        `/pending-items/${itemCode}`,
+        `/business-partners/pending-items/${itemCode}`,
     );
 
     return response.data;

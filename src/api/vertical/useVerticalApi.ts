@@ -5,6 +5,6 @@ export const useVerticalApi = () => {
     const { axiosInstance } = useAxios()
 
     return {
-        getVerticals: () => getVerticals(axiosInstance),
+        getVerticals: (lookupTypeCode: string) => getVerticals(axiosInstance, lookupTypeCode),
     }
 }

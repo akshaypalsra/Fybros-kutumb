@@ -22,7 +22,7 @@ export const SalesSnapshotSummary = ({
         </p>
 
         <p className="text-sm text-muted-foreground">
-          Sales booked last month
+          Sales Performance (Amount ₹)
         </p>
       </div>
 

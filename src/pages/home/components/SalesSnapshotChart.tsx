@@ -37,7 +37,7 @@ const GRID_COLOR = "#e5e7eb";
 
 const formatAxisLabel = (label: string) => {
   const alpha = label.replace(/[^a-zA-Z]/g, "");
-  if (!alpha) return label.replace(/\s*\d{4}$/, "").trim(); // e.g. "Q1 2026" -> "Q1"
+  if (!alpha) return label.replace(/\s*\d{4}$/, "").trim();
   return alpha.slice(0, 1).toUpperCase() + alpha.slice(1, 3).toLowerCase();
 };
 

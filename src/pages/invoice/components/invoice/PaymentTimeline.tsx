@@ -16,13 +16,13 @@ export default function PaymentTimeline({
     payments,
 }: PaymentTimelineProps) {
     return (
-        <section className="rounded-md bg-card p-5 text-card-foreground">
+        <section className="rounded-md bg-card p-5 border text-card-foreground">
             <Heading title={'Payment Timeline'} />
             <div className="space-y-3">
                 {payments.map((payment) => (
                     <div
                         key={payment.id}
-                        className="flex items-center justify-between rounded-md  bg-muted px-3 py-3"
+                        className="flex items-center justify-between rounded-md  bg-muted px-3 py-3 border"
                     >
                         <div className="flex items-center gap-3">
                             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted-foreground/60">

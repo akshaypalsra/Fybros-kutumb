@@ -5,7 +5,12 @@ export interface Vertical {
   displayName: string
 }
 
-export const getVerticals = async (axiosInstance: AxiosInstance): Promise<Vertical[]> => {
-  const response = await axiosInstance.get<Vertical[]>("/verticals")
+export const getVerticals = async (
+  axiosInstance: AxiosInstance,
+  lookupTypeCode: string
+): Promise<Vertical[]> => {
+  const response = await axiosInstance.get<Vertical[]>("/lookups", {
+    params: { lookupTypeCode },
+  })
   return response.data
 }

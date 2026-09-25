@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useOrdersData } from "./hooks/useOrdersData";
 import { usePendingItemsData } from "./hooks/usePendingItemsData";
 import { useOrderFilterState } from "./hooks/useOrderFilterState";
@@ -8,6 +9,7 @@ import { OrderFilters } from "./components/order/OrderFilters";
 import { OrderStatsCards } from "./components/order/OrderStatsCards";
 import { OrderTabs } from "./components/order/OrderTabs";
 import { OrderList } from "./components/order/OrderList";
+import { OrderDetailPanel } from "./components/order/OrderDetailPanel";
 
 import { OrdersListSkeleton } from "./components/order/OrdersListSkeleton";
 
@@ -49,6 +51,7 @@ const OrdersPage = () => {
    setViewMode,
   } = useOrderFilterState();
 
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const isPendingItemsView = viewMode === "PENDING_ITEMS";
 
@@ -97,6 +100,21 @@ const OrdersPage = () => {
     !!activeHasNextPage && !activeIsFetchingNextPage && !activeIsLoading,
   );
 
+  useEffect(() => {
+    if (isPendingItemsView || isLoading) return;
+
+    if (orders.length === 0) {
+      setSelectedOrder(null);
+      return;
+    }
+
+    const selectionStillValid = orders.some((o) => o.docEntry === selectedOrder?.docEntry);
+
+    if (!selectedOrder || !selectionStillValid) {
+      setSelectedOrder(orders[0]);
+    }
+  }, [orders, isLoading, isPendingItemsView]);
+
   return (
     <div className="mx-auto max-w-295">
       <OrdersHeader partnerName={partner?.cardName} partnerCode={partner?.cardCode} />
@@ -128,10 +146,6 @@ const OrdersPage = () => {
       />
 
       {!isPendingItemsView && (<OrderStatsCards orderValue={orderValue} isOrderValueLoading={isOrderValueLoading} />)}
-
-
-
-
 
       {!isPendingItemsView && (
         <div className="mb-4">
@@ -168,11 +182,23 @@ const OrdersPage = () => {
           empty={<EmptyState message="No orders match with filters." />}
         >
           {() => (
-            <>
-              <OrderList groupedByMonth={groupedByMonth} />
-              <div ref={sentinelRef} className="h-1" />
-              {isFetchingNextPage && <OrdersListSkeleton rows={2} />}
-            </>
+            <div className="flex gap-6">
+              <div className="w-[60%]">
+                <OrderList
+                  groupedByMonth={groupedByMonth}
+                  selectedOrderId={selectedOrder?.docEntry}
+                  onOrderClick={setSelectedOrder}
+                />
+                <div ref={sentinelRef} className="h-1" />
+                {isFetchingNextPage && <OrdersListSkeleton rows={2} />}
+              </div>
+
+              {selectedOrder && (
+                <div className="w-[40%]">
+                  <OrderDetailPanel order={selectedOrder} />
+                </div>
+              )}
+            </div>
           )}
         </QueryState>
       )}

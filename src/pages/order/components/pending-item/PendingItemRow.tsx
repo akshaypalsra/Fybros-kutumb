@@ -1,4 +1,3 @@
-import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type { PendingItem } from "@/types/pending-item.types";
 import { Card, CardContent } from "@/common/components/ui/card";
@@ -34,7 +33,7 @@ export const PendingItemRow = ({ item }: PendingItemRowProps) => {
           <span className="text-sm text-muted-foreground">
             Orders - {item.orderCount}
           </span>
-          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <span>₹ {item.pendingOrderValue}</span>
         </div>
       </CardContent>
     </Card>

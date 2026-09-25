@@ -4,6 +4,7 @@ export interface PendingItem {
     pendingQuantity: number;
     orderCount: number;
     vertical: string;
+    pendingOrderValue:string;
 }
 
 export interface SearchPendingItemsParams {

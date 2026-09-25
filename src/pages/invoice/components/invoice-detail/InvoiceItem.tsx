@@ -40,7 +40,7 @@ export const InvoiceItemsTable = ({ invoiceId }: InvoiceItemsTableProps) => {
     }, [invoiceId]);
 
     return (
-        <div className="bg-card p-5 rounded-md">
+        <div className="bg-card p-5 rounded-md border">
             <Heading title={'Item Details'} />
 
             {isLoading && <p className="text-sm text-muted-foreground">Loading items…</p>}
@@ -56,7 +56,7 @@ export const InvoiceItemsTable = ({ invoiceId }: InvoiceItemsTableProps) => {
             {!isLoading && !error && items.length > 0 && (
                 <div >
                     {items.map((item) => (
-                        <div key={item.id} className="p-5  bg-muted rounded-md my-2 ">
+                        <div key={item.id} className="p-5  bg-muted rounded-md my-2 border">
                             <div className="flex items-start justify-between gap-3">
                                 <p className="font-heading text-foreground">{item.itemCode}</p>
                                 <p className="font-heading text-foreground">{formatCurrency(item.lineTotal)}</p>

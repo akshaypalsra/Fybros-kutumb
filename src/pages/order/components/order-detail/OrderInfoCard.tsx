@@ -15,7 +15,7 @@ export const OrderInfoCard = ({ order, computedTotal }: OrderInfoCardProps) => {
   return (
     <div className="rounded-md border col-span-2 border-border bg-card p-5 max-block-fit">
       <Heading title={'Order Detail'} />
-      <div className="grid grid-cols-3 mt-2 bg-muted rounded-md p-3 space-x-3 space-y-3">
+      <div className="grid grid-cols-3 mt-2 bg-muted rounded-md p-3 space-x-3 space-y-3 border">
         <DetailField
           label="Order Date"
           value={formatDate(order.docDate)}

@@ -1,4 +1,3 @@
-import { Heading } from "@/common/components/Heading";
 import { SalesSnapshotChart, type SalesTrendPoint } from "./SalesSnapshotChart";
 import { SalesSnapshotSummary } from "./SalesSnapshotSummary";
 import { Dropdown } from "@/common/components/Dropdown";
@@ -66,9 +65,7 @@ export const SalesSnapshotSection = ({
 
   return (
     <section>
-      <Heading title={"Sales Snapshot"} className="text-md" />
-
-      <div className="rounded-md border bg-card p-4">
+      <div className="rounded-md border bg-card p-4 flex flex-col gap-4">
         <div className="mb-1 flex items-start justify-between">
           <SalesSnapshotSummary
             bookedLastMonth={trend?.bookedLastMonth}

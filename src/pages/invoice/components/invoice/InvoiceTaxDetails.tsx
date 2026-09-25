@@ -8,7 +8,7 @@ export default function InvoiceTaxDetails({
   irn,
 }: InvoiceTaxDetailsProps) {
   return (
-    <section className="rounded-md bg-card p-5 text-card-foreground">
+    <section className="rounded-md bg-card p-5 border text-card-foreground">
       <div className="space-y-6">
         <div>
           <p className="text-sm font-normal ">

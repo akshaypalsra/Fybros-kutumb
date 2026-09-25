@@ -1,42 +1,28 @@
-import { Link } from "react-router-dom";
-import { CalendarClock, ChevronRight, FileText, Receipt } from "lucide-react";
-
+import { CalendarClock, FileText, ShoppingCart } from "lucide-react";
 import { formatCompactCurrency } from "@/utils/common.utils";
 import { StatSummaryCard } from "@/common/components/StatSummaryCard";
-import { Heading } from "@/common/components/Heading";
+
 
 interface FinanceSectionProps {
-    outstandingAmount?: number;
-    overdueAmount?: number;
-    invoices?: number;
+    outstandingInvoiceAmount?: number;
+    overdueInvoiceAmount?: number;
+    pendingOrderAmount?: number;
 }
 
 export const FinanceSection = ({
-    outstandingAmount,
-    overdueAmount,
-    invoices,
+    outstandingInvoiceAmount,
+    overdueInvoiceAmount,
+    pendingOrderAmount,
 }: FinanceSectionProps) => {
     return (
         <section className="mb-6">
-            <div className="mb-3 flex items-center justify-between">
-               <Heading title="Finance" className="mb-0 text-md"/>
-
-                <Link
-                    to="/invoices"
-                    className="h-auto gap-1 flex items-center p-0 text-sm font-medium text-secondary"
-                >
-                    View all <ChevronRight className="h-3.5 w-3.5" />
-                </Link>
-            </div>
-
 
 
             <div className="grid grid-cols-3 gap-3">
                 <StatSummaryCard
-                    variant="accent"
                     icon={<FileText className="h-4 w-4 font-light" />}
                     label="Outstanding Balance"
-                    value={formatCompactCurrency(outstandingAmount)}
+                    value={formatCompactCurrency(outstandingInvoiceAmount)}
                     sublabel="As on Today"
 
                 />
@@ -44,14 +30,14 @@ export const FinanceSection = ({
                 <StatSummaryCard
                     icon={<CalendarClock className="h-4 w-4 font-light" />}
                     label="Overdue"
-                    value={formatCompactCurrency(overdueAmount)}
+                    value={formatCompactCurrency(overdueInvoiceAmount)}
                     sublabel="Action needed"
                 />
                 <StatSummaryCard
-                    icon={<Receipt className="h-4 w-4 font-light" />}
-                    label="Invoices"
-                    value={formatCompactCurrency(invoices)}
-                    sublabel=""
+                    icon={<ShoppingCart className="h-4 w-4 font-light" />}
+                    label="Orders"
+                    value={formatCompactCurrency(pendingOrderAmount)}
+                    sublabel="Pending"
                 />
             </div>
         </section>

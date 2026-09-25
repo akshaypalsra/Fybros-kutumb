@@ -32,7 +32,7 @@ const OrderItemCard = ({
 }) => (
     <Link
         to={`/orders/${orderId}/items/${item.id}`}
-        className="relative block rounded-md bg-muted p-4  hover:bg-muted transition-all hover:-translate-y-0.5 hover:shadow-md"
+        className="relative block border rounded-md bg-muted p-4  hover:bg-muted transition-all hover:-translate-y-0.5 hover:shadow-md"
     >
         <StatusBadge
             status={item.deliveryStatus}

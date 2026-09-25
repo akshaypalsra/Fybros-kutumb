@@ -22,15 +22,15 @@ export const OrderSummaryCard = ({ order, items }: OrderSummaryCardProps) => {
             </div>
 
             <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="rounded-md bg-muted p-3">
+                <div className="rounded-md bg-muted border p-3">
                     <p className="text-xs text-muted-foreground">Delivered</p>
                     <p className="text-lg font-bold text-foreground">{order.deliveredQuantity}</p>
                 </div>
-                <div className="rounded-md bg-muted p-3">
+                <div className="rounded-md bg-muted border  p-3">
                     <p className="text-xs text-muted-foreground">Pending</p>
                     <p className="text-lg font-bold text-foreground">{order.pendingQuantity}</p>
                 </div>
-                <div className="rounded-md bg-muted p-3">
+                <div className="rounded-md bg-muted border p-3">
                     <p className="text-xs text-muted-foreground">Cancelled</p>
                     <p className="text-lg font-bold text-foreground">{order.cancelledQuantity}</p>
                 </div>

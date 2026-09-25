@@ -86,7 +86,7 @@ export const TransactionsTab = ({ businessPartnerId, enabled, filters }: Transac
           isError={isError}
           data={transactions}
           loading={
-            <div className="space-y-6">
+            <div className="space-y-6 w-[60%]">
               {Array.from({ length: 3 }).map((_, groupIdx) => (
                 <div key={groupIdx} className="space-y-3">
                   <Skeleton className="h-4 w-24 rounded-md border border-border bg-card" />
@@ -102,7 +102,7 @@ export const TransactionsTab = ({ businessPartnerId, enabled, filters }: Transac
           empty={<EmptyState message="No transactions match your filters." />}
         >
           {() => (
-            <div className="space-y-6 ">
+            <div className="space-y-6 w-[60%] ">
               {groupedTransactions.map(([dateKey, entries]) => (
                 <TransactionDateGroup key={dateKey} dateKey={dateKey} entries={entries} />
               ))}

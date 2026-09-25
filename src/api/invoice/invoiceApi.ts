@@ -93,14 +93,6 @@ export interface InvoiceAnalyticsYear {
     data: InvoiceAnalyticsPeriodPoint[];
 }
 
-export const getInvoiceAnalytics = async (
-    axiosInstance: AxiosInstance,
-    analyticsType: InvoiceAnalyticsType
-): Promise<InvoiceAnalyticsYear[]> => {
-    const response = await axiosInstance.get<InvoiceAnalyticsYear[]>(
-        "/business-partners/invoices/analytics",
-        { params: { analyticsType } }
-    );
 
-    return response.data;
-};
+
+

@@ -17,8 +17,8 @@ import { useListFiltersState } from "../../hooks/useListFiltersState";
 import InvoiceRowSkeleton from "./InvoiceRowSkeleton";
 import InvoiceDetailPanelSkeleton from "./InvoiceDetailPanelSkeleton";
 import { Skeleton } from "@/common/components/ui/skeleton";
-import { FinanceSection } from "@/pages/home/components/FinanceSection";
-import { useHomeData } from "@/pages/home/hooks/useHomeData";
+// import { FinanceSection } from "@/pages/home/components/FinanceSection";
+// import { useHomeData } from "@/pages/home/hooks/useHomeData";
 
 interface InvoicesTabProps {
   businessPartnerId: string;
@@ -29,7 +29,7 @@ interface InvoicesTabProps {
 export const InvoicesTab = ({ businessPartnerId, enabled, filters }: InvoicesTabProps) => {
   const { verticals } = useVerticals();
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
-const { outstandingSummary } = useHomeData({ salesRange: "QoQ" });
+// const { outstandingSummary } = useHomeData({ salesRange: "QoQ" });
 
   const {
     counts,
@@ -83,15 +83,11 @@ const handleInvoiceClick = (invoice: Invoice) => {
 
   return (
     <>
-      <FinanceSection
-                outstandingAmount={
-                  outstandingSummary?.outstandingAmount
-                }
-                overdueAmount={
-                  outstandingSummary?.overdueAmount
-                }
-                invoices={outstandingSummary?.totalInvoiceAmount ?? 0}
-              />
+       {/* <FinanceSection
+          outstandingInvoiceAmount={dashboardStats?.outstandingInvoiceAmount}
+          overdueInvoiceAmount={dashboardStats?.overdueInvoiceAmount}
+          pendingOrderAmount={dashboardStats?.pendingOrderAmount}
+        /> */}
 
       <ListFilters
         search={filters.search}
